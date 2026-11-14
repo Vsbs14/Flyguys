@@ -1,7 +1,7 @@
 {
  "run": {
-  "time_utc": "2026-11-14T19:00:20+00:00",
-  "git_commit": "0d1881ee7a78628e7bf2c9634d1031ee22faca5e",
+  "time_utc": "2026-11-14T19:06:05+00:00",
+  "git_commit": "bd849e68ea50f37c836efd3e4d819403b6a798df",
   "python": "3.14.0",
   "torch": "2.9.0+cpu",
   "device": "cpu",
@@ -37,7 +37,7 @@
   "neurons_full": 138639,
   "neurons_that_spiked": 2840,
   "neurons_kept": 11013,
-  "calibration_seconds": 82.2,
+  "calibration_seconds": 125.1,
   "verification_brains": 64,
   "verification_seed": 1,
   "spikes_compared": 602499,
@@ -94,7 +94,7 @@
   "retreat",
   "advance"
  ],
- "table_seconds": 876.7,
+ "table_seconds": 1114.2,
  "sanity": {
   "silence": true,
   "sugar_feeds": false,

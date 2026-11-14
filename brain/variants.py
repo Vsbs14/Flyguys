@@ -67,7 +67,7 @@ class Variant:
 def interneurons(conn: Connectome, groups: NeuronGroups) -> np.ndarray:
     """Every neuron that is not one of our input or output neurons."""
     is_io = np.zeros(conn.n, dtype=bool)
-    is_io[groups.all_inputs()] = True
+    is_io[groups.core_inputs()] = True
     is_io[groups.all_outputs()] = True
     return np.flatnonzero(~is_io)
 

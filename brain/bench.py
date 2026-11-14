@@ -1,7 +1,7 @@
 """Time one batch of decisions at several batch sizes.
 
 The workload is the one the response tables use: every brain starts from rest,
-gets its own random sugar / bitter / looming rates in 0-200 Hz, and runs for one
+gets its own random rate in 0-200 Hz for every sense, and runs for one
 decision window.
 
   python -m brain.bench --device cpu --sizes 16 64
@@ -29,7 +29,7 @@ def run_benchmark(sim: BrainSim, groups: NeuronGroups, sizes: list[int], decisio
     cuda = sim.device.type == "cuda"
     for B in sizes:
         gen = torch.Generator().manual_seed(seed)
-        rates = torch.rand(3, B, generator=gen) * 200.0
+        rates = torch.rand(len(groups.senses), B, generator=gen) * 200.0
         if cuda:
             torch.cuda.empty_cache()
             torch.cuda.reset_peak_memory_stats(sim.device)
@@ -61,7 +61,7 @@ def to_markdown(rows: list[dict], record: dict) -> str:
         "# Benchmark: one batch of decisions",
         "",
         f"Device: {record['device_name']} ({record['device']}). Each brain runs {rows[0]['decision_ms']:.0f} ms "
-        "from rest with random 0-200 Hz sugar, bitter and looming input.",
+        "from rest with random 0-200 Hz input on every sense.",
         "",
         "| Brains | Wall time (s) | ms per step | Decisions per second | Peak GPU memory (GB) |",
         "|---|---|---|---|---|",

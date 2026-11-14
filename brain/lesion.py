@@ -79,7 +79,7 @@ def find_candidates(device: str = "cpu", seed: int = 0) -> dict:
     idx = conn.index_of(ann.root_id.to_numpy())
     cell_type[idx], super_class[idx], transmitter[idx] = ann.cell_type.to_numpy(), ann.super_class.to_numpy(), ann.top_nt.to_numpy()
 
-    down = hops_from(conn, groups.all_inputs())
+    down = hops_from(conn, groups.core_inputs())
     up = hops_from(conn, groups.all_outputs(), reverse=True)
     on_path = (down <= MAX_HOPS) & (up <= MAX_HOPS)
 
@@ -92,7 +92,7 @@ def find_candidates(device: str = "cpu", seed: int = 0) -> dict:
     active = spikes > 0
 
     is_io = np.zeros(conn.n, dtype=bool)
-    is_io[groups.all_inputs()] = True
+    is_io[groups.core_inputs()] = True
     is_io[groups.all_outputs()] = True
     typed = np.array([isinstance(c, str) for c in cell_type])
     eligible = on_path & active & typed & ~is_io

@@ -10,6 +10,11 @@ from .connectome import ROOT, Connectome
 
 GROUPS_FILE = ROOT / "data" / "neuron_groups.json"
 
+# The three senses of the handbook rule ("tastes good / tastes bad / looms"). The response tables,
+# variants, lesion screen and galaxy use exactly these. neuron_groups.json may define more senses
+# (obstacle and target, for the 5-sense decision interface in brain/interface.py).
+CORE_SENSES = ("sugar", "bitter", "looming")
+
 
 class NeuronGroups:
     def __init__(self, conn: Connectome, path: str | Path = GROUPS_FILE):
@@ -39,6 +44,10 @@ class NeuronGroups:
 
     def all_inputs(self) -> np.ndarray:
         return np.concatenate([self.sense(s) for s in self.senses])
+
+    def core_inputs(self) -> np.ndarray:
+        """Input neurons of the three core senses only."""
+        return np.concatenate([self.sense(s) for s in CORE_SENSES])
 
     def all_outputs(self) -> np.ndarray:
         return np.concatenate([self.output(o) for o in self.outputs])

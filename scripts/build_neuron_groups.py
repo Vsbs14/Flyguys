@@ -12,6 +12,19 @@ same filters as the hackathon starter notebook (fly_brain_starter.ipynb):
   bitter  cell_sub_class == "bitter"     bitter-sensing taste neurons, both sides
   looming cell_type in {LC4, LPLC2}      looming-detecting visual neurons
 
+Two senses were added for Phase 2 so that every output can be driven. They
+were picked by stimulating every sensory and visual projection cell type on
+its own (200 Hz, 200 ms) and keeping the type that drives one output most
+cleanly:
+
+  obstacle cell_type == "LC16"   -> MDN (retreat), ~35 Hz, no other output.
+                                    Matches Wu et al. 2016 (eLife): LC16
+                                    activation makes flies walk backwards.
+  target   cell_type == "LC31b"  -> DNp09 (advance), ~50 Hz, no other output.
+                                    A connectome pick, not a published result.
+                                    The three looming/taste senses never drive
+                                    DNp09 above ~3 Hz.
+
 MN9 is the pair of CB0701 motor neurons. The starter notebook reads only one of
 them (720575940660219265, the ID from Shiu et al.); we average the pair because
 the taste input is bilateral. DNp09 is not in the starter notebook.
@@ -36,6 +49,8 @@ SELECT = {
     "bitter": ("cell_sub_class", "bitter"),
     "LC4": ("cell_type", "LC4"),        # looming detector (visual projection neuron)
     "LPLC2": ("cell_type", "LPLC2"),    # looming detector (visual projection neuron)
+    "LC16": ("cell_type", "LC16"),      # visual projection neuron, drives backward walking (obstacle)
+    "LC31b": ("cell_type", "LC31b"),    # visual projection neuron, drives DNp09 (target)
     "MN9": ("cell_type", "CB0701"),     # proboscis motor neuron 9 (feed)
     "GF": ("cell_type", "DNp01"),       # Giant Fibre (escape)
     "MDN": ("cell_type", "MDN"),        # moonwalker descending neuron (walk backward)
@@ -65,7 +80,8 @@ def main() -> None:
     doc = {
         "materialization": 783,
         "roles": {
-            "inputs": {"sugar": ["sugar"], "bitter": ["bitter"], "looming": ["LC4", "LPLC2"]},
+            "inputs": {"sugar": ["sugar"], "bitter": ["bitter"], "looming": ["LC4", "LPLC2"],
+                       "obstacle": ["LC16"], "target": ["LC31b"]},
             "outputs": {"feed": "MN9", "escape": "GF", "retreat": "MDN", "advance": "DNp09"},
         },
         "groups": groups,

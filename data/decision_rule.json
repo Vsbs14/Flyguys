@@ -1,0 +1,17 @@
+{
+ "ref_hz": {
+  "feed": 69.0625,
+  "escape": 201.25,
+  "retreat": 35.9375,
+  "advance": 47.8125
+ },
+ "threshold": 0.25,
+ "provenance": {
+  "time_utc": "2026-11-14T18:15:13+00:00",
+  "git_commit": "1af21b75f094c9fb83304875b9d26e821a1b9dfb",
+  "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "seed": 0,
+  "replicates": 16,
+  "made_by": "python -m brain.calibrate"
+ }
+}

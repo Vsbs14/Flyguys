@@ -1,7 +1,7 @@
 {
  "run": {
-  "time_utc": "2026-11-14T19:00:20+00:00",
-  "git_commit": "0d1881ee7a78628e7bf2c9634d1031ee22faca5e",
+  "time_utc": "2026-11-14T19:06:05+00:00",
+  "git_commit": "bd849e68ea50f37c836efd3e4d819403b6a798df",
   "python": "3.14.0",
   "torch": "2.9.0+cpu",
   "device": "cpu",
@@ -205,6 +205,6 @@
    }
   },
   "replicates": 4,
-  "wall_seconds": 61.5
+  "wall_seconds": 83.1
  }
 }

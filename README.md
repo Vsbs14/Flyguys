@@ -74,6 +74,7 @@ On a GPU, `fly_brain_gpu.ipynb` runs the sanity checks and benchmark, and its la
 | `galaxy/` | Response-table generator, paired galaxy experiments and recorded playback |
 | `viz/` | Browser playback and local API |
 | `analysis/` | Figures |
+| `docs/` | Plain-language write-ups, e.g. [what Phases 1 and 2 built](docs/phase-1-2-summary.md) |
 | `external/` | Downloaded third-party data. Not committed |
 
 ## Quick start
@@ -83,6 +84,8 @@ pip install -r requirements.txt
 python scripts/fetch_data.py          # Shiu's connectome (about 100 MB), no token needed
 python -m brain.test_equivalence      # the port matches Brian2 spike for spike
 python -m brain.sanity                # the six sanity checks, on CPU (about 2 minutes)
+python -m brain.test_interface        # decision-rule unit checks (instant, no connectome)
+python -m brain.calibrate             # Phase 2: calibrate the decision rule (slow on CPU; section 5b of the Colab notebook runs it on a GPU)
 ```
 
 On a GPU, open [`fly_brain_gpu.ipynb`](fly_brain_gpu.ipynb) in Colab
@@ -132,6 +135,8 @@ Selected from the public FlyWire annotation table with the same filters as the h
 | Sugar (input) | LB3c taste neurons | 32 |
 | Bitter (input) | bitter taste neurons | 42 |
 | Looming (input) | LC4 and LPLC2 | 314 |
+| Obstacle (input) | LC16 | 151 |
+| Target (input) | LC31b | 10 |
 | Feed (output) | MN9 | 2 |
 | Escape (output) | Giant Fibre (DNp01) | 2 |
 | Retreat (output) | MDN | 4 |
@@ -140,8 +145,45 @@ Selected from the public FlyWire annotation table with the same filters as the h
 ### Validation
 
 * **Against Brian2, exact.** `scripts/brian2_equivalence.py` runs a 400-neuron random network in Shiu's original Brian2 model with no random input. `python -m brain.test_equivalence` replays it in the port: all 15,201 spikes match in neuron and time step.
-* **Against Brian2, whole brain.** `scripts/brian2_reference.py` runs Shiu's model on the full connectome and `python -m brain.validate_port` compares output firing rates and writes `results/port_validation.md`. That reference run takes about half an hour and its table is not committed yet.
-* **Sanity checks.** `python -m brain.sanity` runs the six checks and writes a pass/fail table to `results/`.
+* **Against Brian2, whole brain.** `scripts/brian2_reference.py` runs Shiu's model on the full connectome and `python -m brain.validate_port` compares output firing rates ([results/port_validation.md](results/port_validation.md)). Feed and escape rates, whole-brain spike counts and the number of active neurons agree within about 4%. MDN under looming is 22% lower in the port (9.6 vs 12.4 Hz).
+* **Sanity checks.** `python -m brain.sanity` runs the six checks and writes a pass/fail table to `results/`. All six pass on CPU and GPU ([results/sanity_intact_cuda.md](results/sanity_intact_cuda.md)).
+* **Speed.** About 27 decisions (200 ms each) per second at 1,024 brains, using 1.3 GB of GPU memory ([results/benchmark_cuda.md](results/benchmark_cuda.md)). That run used a laptop GPU; a Colab T4 run of `fly_brain_gpu.ipynb` will give the numbers for the project's usual setup.
+
+## Decisions (Phase 2)
+
+Two decision paths exist. The galaxy, response tables, variants and lesion screen use the three core senses of the handbook rule (sugar, bitter, looming) and read output rates directly, with any Giant Fibre spike meaning flee (`galaxy/mapping.py`). The 5-sense interface below, from the `phase-1-2` branch, adds obstacle (LC16) and target (LC31b) so that MDN and DNp09 can be driven too, and picks one action per decision. It is calibrated and tested (`results/decision_calibration.md`) but not yet wired into the galaxy; that is the natural next step.
+
+`brain/interface.py` is the contract between the world and the brain. The world gives each colony five
+sense intensities in [0, 1]. Intensity 1 means 200 Hz Poisson input on every neuron of that sense. The
+brain runs 200 ms from rest and returns one action: `idle`, `feed`, `escape`, `retreat` or `advance`.
+
+```python
+from brain.interface import FlyBrain
+
+brain = FlyBrain.load(device="cuda")
+#                  sugar bitter looming obstacle target
+d = brain.decide([[1,    0,     0,      0,       0],     # food            -> feed
+                  [1,    1,     0,      0,       0],     # toxic food      -> idle
+                  [1,    0,     1,      0,       0]])    # food + a threat -> escape
+d.actions, d.rates_hz, d.scores
+```
+
+Each output's rate is divided by its reference rate, which is what it fires at when its own sense is fully
+on (sugar → MN9, looming → Giant Fibre, obstacle → MDN, target → DNp09). The highest score wins, or
+`idle` if no score reaches 0.25. Normalising matters because the Giant Fibre reaches 200 Hz and MDN only
+about 35 Hz. `python -m brain.calibrate` measures the references, saves them to `data/decision_rule.json`,
+and checks 11 scenarios with fixed expected actions ([results/decision_calibration.md](results/decision_calibration.md)).
+All 11 pass in 16 of 16 brains, and the table also shows the dose at which each action starts.
+
+**Why obstacle and target were added.** With only sugar, bitter and looming, DNp09 (advance) never fires
+above about 3 Hz and MDN (retreat) only appears as a side effect of looming, so two of the four actions
+could not happen. Stimulating every sensory and visual projection cell type on its own picked the types
+that drive one output most cleanly. LC16 drives MDN at about 35 Hz, consistent with LC16 activation
+causing backward walking (Wu et al. 2016). LC31b drives DNp09 at about 50 Hz; this one comes from the
+connectome screen only, not from a published experiment.
+
+Decisions are stochastic because the input is Poisson. Phase 3 should average replicates rather than
+trust a single brain, especially near the threshold.
 
 One detail differs from the starter notebook's simulator: in Brian2, synaptic input that reaches a neuron during its refractory period is discarded, and the port does the same. The starter notebook lets that input accumulate, so its firing rates are somewhat higher.
 

@@ -32,7 +32,7 @@ import numpy as np
 import torch
 
 from .connectome import Connectome
-from .neurons import NeuronGroups
+from .neurons import CORE_SENSES, NeuronGroups
 from .sim import BrainSim
 from .variants import Variant
 
@@ -60,7 +60,7 @@ def random_conditions(seed: int, n: int) -> np.ndarray:
 
 
 def sense_inputs(groups: NeuronGroups, conds: np.ndarray) -> list:
-    return [(groups.sense(s), torch.from_numpy(np.ascontiguousarray(conds[:, i]))) for i, s in enumerate(groups.senses)]
+    return [(groups.sense(s), torch.from_numpy(np.ascontiguousarray(conds[:, i]))) for i, s in enumerate(CORE_SENSES)]
 
 
 def find_active(variant: Variant, groups: NeuronGroups, device: str = "cpu", margin_mv: float = MARGIN_MV,
@@ -74,7 +74,7 @@ def find_active(variant: Variant, groups: NeuronGroups, device: str = "cpu", mar
     peak = res.peak_u.amax(dim=1).cpu().numpy()
     spiked = (res.all_counts.sum(dim=1) > 0).cpu().numpy()
     near = (peak >= margin_mv) & variant.alive          # silenced neurons never matter
-    keep = np.union1d(np.flatnonzero(near), np.concatenate([groups.all_inputs(), groups.all_outputs()]))
+    keep = np.union1d(np.flatnonzero(near), np.concatenate([groups.core_inputs(), groups.all_outputs()]))
     info = {
         "margin_mv": margin_mv,
         "calibration_brains": int(len(conds)),

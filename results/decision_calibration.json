@@ -1,0 +1,1850 @@
+{
+ "run": {
+  "time_utc": "2026-11-14T18:15:13+00:00",
+  "git_commit": "1af21b75f094c9fb83304875b9d26e821a1b9dfb",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu128",
+  "device": "cuda",
+  "device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "lif_params": {
+   "v_rest": -52.0,
+   "v_reset": -52.0,
+   "v_thresh": -45.0,
+   "tau_m": 20.0,
+   "tau_syn": 5.0,
+   "t_refrac": 2.2,
+   "t_delay": 1.8,
+   "w_syn": 0.275,
+   "dt": 0.1,
+   "poisson_gain": 250.0
+  },
+  "connectome": "Shiu et al. Connectivity_783.parquet (FlyWire v783)",
+  "config": {
+   "seed": 0,
+   "replicates": 16,
+   "decision_ms": 200.0,
+   "threshold": 0.25,
+   "pass_fraction": 0.75
+  }
+ },
+ "result": {
+  "rule": {
+   "ref_hz": {
+    "feed": 69.0625,
+    "escape": 201.25,
+    "retreat": 35.9375,
+    "advance": 47.8125
+   },
+   "threshold": 0.25
+  },
+  "ref_hz_sd": {
+   "feed": 8.190838813781738,
+   "escape": 3.4232659339904785,
+   "retreat": 3.6843206882476807,
+   "advance": 2.7775607109069824
+  },
+  "replicates": 16,
+  "checks": [
+   {
+    "scenario": "nothing",
+    "intensity": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 0.0,
+     "obstacle": 0.0,
+     "target": 0.0
+    },
+    "expected": "idle",
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "passed": true
+   },
+   {
+    "scenario": "sugar",
+    "intensity": {
+     "sugar": 1.0,
+     "bitter": 0.0,
+     "looming": 0.0,
+     "obstacle": 0.0,
+     "target": 0.0
+    },
+    "expected": "feed",
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 1.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 70.78125,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 1.0248868465423584,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "passed": true
+   },
+   {
+    "scenario": "bitter",
+    "intensity": {
+     "sugar": 0.0,
+     "bitter": 1.0,
+     "looming": 0.0,
+     "obstacle": 0.0,
+     "target": 0.0
+    },
+    "expected": "idle",
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "passed": true
+   },
+   {
+    "scenario": "looming",
+    "intensity": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 1.0,
+     "obstacle": 0.0,
+     "target": 0.0
+    },
+    "expected": "escape",
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 201.09375,
+     "retreat": 12.265625,
+     "advance": 1.5625
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.9992235898971558,
+     "retreat": 0.34130436182022095,
+     "advance": 0.03267974033951759
+    },
+    "passed": true
+   },
+   {
+    "scenario": "obstacle",
+    "intensity": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 0.0,
+     "obstacle": 1.0,
+     "target": 0.0
+    },
+    "expected": "retreat",
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 1.0,
+     "advance": 0.0
+    },
+    "majority": "retreat",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 36.25,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 1.0086956024169922,
+     "advance": 0.0
+    },
+    "passed": true
+   },
+   {
+    "scenario": "target",
+    "intensity": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 0.0,
+     "obstacle": 0.0,
+     "target": 1.0
+    },
+    "expected": "advance",
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 48.28125
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0098040103912354
+    },
+    "passed": true
+   },
+   {
+    "scenario": "weak sugar (0.1)",
+    "intensity": {
+     "sugar": 0.1,
+     "bitter": 0.0,
+     "looming": 0.0,
+     "obstacle": 0.0,
+     "target": 0.0
+    },
+    "expected": "idle",
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "passed": true
+   },
+   {
+    "scenario": "sugar + bitter",
+    "intensity": {
+     "sugar": 1.0,
+     "bitter": 1.0,
+     "looming": 0.0,
+     "obstacle": 0.0,
+     "target": 0.0
+    },
+    "expected": "idle",
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 2.34375,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.03393665701150894,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "passed": true
+   },
+   {
+    "scenario": "sugar + looming",
+    "intensity": {
+     "sugar": 1.0,
+     "bitter": 0.0,
+     "looming": 1.0,
+     "obstacle": 0.0,
+     "target": 0.0
+    },
+    "expected": "escape",
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 200.78125,
+     "retreat": 12.96875,
+     "advance": 1.875
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.9976708292961121,
+     "retreat": 0.3608695864677429,
+     "advance": 0.03921568766236305
+    },
+    "passed": true
+   },
+   {
+    "scenario": "target + looming",
+    "intensity": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 1.0,
+     "obstacle": 0.0,
+     "target": 1.0
+    },
+    "expected": "escape",
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 199.53125,
+     "retreat": 2.109375,
+     "advance": 26.71875
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.9914596080780029,
+     "retreat": 0.05869565159082413,
+     "advance": 0.5588235855102539
+    },
+    "passed": true
+   },
+   {
+    "scenario": "obstacle + looming",
+    "intensity": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 1.0,
+     "obstacle": 1.0,
+     "target": 0.0
+    },
+    "expected": "escape",
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 200.46875,
+     "retreat": 26.171875,
+     "advance": 0.78125
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.9961180686950684,
+     "retreat": 0.72826087474823,
+     "advance": 0.016339870169758797
+    },
+    "passed": true
+   },
+   {
+    "scenario": "sugar + target",
+    "intensity": {
+     "sugar": 1.0,
+     "bitter": 0.0,
+     "looming": 0.0,
+     "obstacle": 0.0,
+     "target": 1.0
+    },
+    "expected": null,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 54.6875,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 56.25
+    },
+    "score_mean": {
+     "feed": 0.7918552160263062,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.1764706373214722
+    }
+   },
+   {
+    "scenario": "sugar + obstacle",
+    "intensity": {
+     "sugar": 1.0,
+     "bitter": 0.0,
+     "looming": 0.0,
+     "obstacle": 1.0,
+     "target": 0.0
+    },
+    "expected": null,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.625,
+     "escape": 0.0,
+     "retreat": 0.375,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 51.40625,
+     "escape": 0.0,
+     "retreat": 23.28125,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.7443438768386841,
+     "escape": 0.0,
+     "retreat": 0.647826075553894,
+     "advance": 0.0
+    }
+   },
+   {
+    "scenario": "target + obstacle",
+    "intensity": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 0.0,
+     "obstacle": 1.0,
+     "target": 1.0
+    },
+    "expected": null,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.3125,
+     "escape": 0.15625,
+     "retreat": 3.59375,
+     "advance": 29.0625
+    },
+    "score_mean": {
+     "feed": 0.004524887073785067,
+     "escape": 0.000776397529989481,
+     "retreat": 0.09999999403953552,
+     "advance": 0.6078431606292725
+    }
+   },
+   {
+    "scenario": "half of everything",
+    "intensity": {
+     "sugar": 0.5,
+     "bitter": 0.5,
+     "looming": 0.5,
+     "obstacle": 0.5,
+     "target": 0.5
+    },
+    "expected": null,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 152.8125,
+     "retreat": 0.390625,
+     "advance": 6.5625
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.7593168020248413,
+     "retreat": 0.010869564488530159,
+     "advance": 0.13725490868091583
+    }
+   }
+  ],
+  "all_passed": true,
+  "dose_response": [
+   {
+    "sense": "sugar",
+    "dose": 0.0,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.1,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.2,
+    "action_fraction": {
+     "idle": 0.9375,
+     "feed": 0.0625,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 2.65625,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.03846153989434242,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.3,
+    "action_fraction": {
+     "idle": 0.625,
+     "feed": 0.375,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 11.09375,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.16063350439071655,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.4,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 1.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 36.40625,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.5271493196487427,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.5,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 1.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 45.625,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.6606335043907166,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.6,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 1.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 51.25,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.7420814633369446,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.7,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 1.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 57.8125,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.837104082107544,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.8,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 1.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 60.3125,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.8733031749725342,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 0.9,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 1.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 62.8125,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.9095023274421692,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "sugar",
+    "dose": 1.0,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 1.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "feed",
+    "rate_hz_mean": {
+     "feed": 70.15625,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 1.0158371925354004,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.0,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.1,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.2,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.3,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.4,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.5,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.6,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.7,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.8,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 0.9,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "bitter",
+    "dose": 1.0,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.0,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.1,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 72.8125,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.36180126667022705,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.2,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 111.5625,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.5543478727340698,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.3,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 132.8125,
+     "retreat": 0.3125,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.6599379181861877,
+     "retreat": 0.008695651777088642,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.4,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 149.375,
+     "retreat": 0.9375,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.7422360181808472,
+     "retreat": 0.0260869562625885,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.5,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 161.71875,
+     "retreat": 3.359375,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.8035714626312256,
+     "retreat": 0.0934782549738884,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.6,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 170.78125,
+     "retreat": 6.953125,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.8486024737358093,
+     "retreat": 0.19347825646400452,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.7,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 180.625,
+     "retreat": 9.453125,
+     "advance": 0.15625
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.8975155353546143,
+     "retreat": 0.26304346323013306,
+     "advance": 0.003267973894253373
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.8,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 189.21875,
+     "retreat": 9.921875,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.9402173757553101,
+     "retreat": 0.2760869562625885,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 0.9,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 194.0625,
+     "retreat": 9.6875,
+     "advance": 0.625
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.9642857313156128,
+     "retreat": 0.269565224647522,
+     "advance": 0.013071895577013493
+    }
+   },
+   {
+    "sense": "looming",
+    "dose": 1.0,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 1.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "escape",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 201.5625,
+     "retreat": 12.03125,
+     "advance": 1.875
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 1.0015528202056885,
+     "retreat": 0.33478260040283203,
+     "advance": 0.03921568766236305
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.0,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.1,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.2,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.3,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.4,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.46875,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.013043477199971676,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.5,
+    "action_fraction": {
+     "idle": 0.6875,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.3125,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 7.96875,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.22173912823200226,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.6,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 1.0,
+     "advance": 0.0
+    },
+    "majority": "retreat",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 18.28125,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.5086956024169922,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.7,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 1.0,
+     "advance": 0.0
+    },
+    "majority": "retreat",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 26.71875,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.7434782385826111,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.8,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 1.0,
+     "advance": 0.0
+    },
+    "majority": "retreat",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 30.3125,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.8434782028198242,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 0.9,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 1.0,
+     "advance": 0.0
+    },
+    "majority": "retreat",
+    "rate_hz_mean": {
+     "feed": 0.3125,
+     "escape": 0.0,
+     "retreat": 33.28125,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.004524887073785067,
+     "escape": 0.0,
+     "retreat": 0.9260869026184082,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "obstacle",
+    "dose": 1.0,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 1.0,
+     "advance": 0.0
+    },
+    "majority": "retreat",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 34.84375,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.9695651531219482,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.0,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.1,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.3125
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.006535947788506746
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.2,
+    "action_fraction": {
+     "idle": 1.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "majority": "idle",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 4.21875
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.08823530375957489
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.3,
+    "action_fraction": {
+     "idle": 0.375,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.625
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 12.8125
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.2679738700389862
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.4,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 19.6875
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.4117647409439087
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.5,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 27.65625
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.5784313678741455
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.6,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 35.46875
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.7418301105499268
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.7,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 38.28125
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.8006535768508911
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.8,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.15625,
+     "retreat": 0.0,
+     "advance": 42.34375
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.000776397529989481,
+     "retreat": 0.0,
+     "advance": 0.8856209516525269
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 0.9,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 45.78125
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.9575163722038269
+    }
+   },
+   {
+    "sense": "target",
+    "dose": 1.0,
+    "action_fraction": {
+     "idle": 0.0,
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0
+    },
+    "majority": "advance",
+    "rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 48.4375
+    },
+    "score_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 1.0130720138549805
+    }
+   }
+  ],
+  "wall_seconds": 41.4
+ }
+}

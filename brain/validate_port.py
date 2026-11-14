@@ -41,7 +41,7 @@ def main() -> None:
                                       ).repeat_interleave(R)
     state = sim.new_state(len(conds) * R, seed=args.seed)
     res = sim.run(state, float(ref["t_run_ms"]), monitor=torch.from_numpy(groups.all_outputs()),
-                  inputs=[(groups.sense(s), rate(s)) for s in groups.senses], record_all=True)
+                  inputs=[(groups.sense(s), rate(s)) for s in ("sugar", "bitter", "looming")], record_all=True)
     rates = res.rates_hz.cpu().numpy()
     total = res.total_spikes.cpu().numpy()
     n_active = (res.all_counts > 0).sum(0).cpu().numpy()
