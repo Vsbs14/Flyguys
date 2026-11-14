@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+:root { color-scheme: light; font-family: "DM Sans", sans-serif; color: #26231e; background: #eee7da; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1190px; margin: auto; padding: 36px 22px 56px; }
+header { background: #252821; color: #fff8ea; padding: 34px clamp(24px, 6vw, 76px); border-bottom: 5px solid #b18a51; }
+header span { color: #ecbf83; letter-spacing: .18em; font-size: .74rem; }
+h1, h2, strong { font-family: "Playfair Display", Georgia, serif; }
+h1 { font-size: clamp(3.8rem, 9vw, 7rem); line-height: 1; margin: 8px 0; }
+header p { margin: 14px 0 0; }
+.court { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 18px; margin-top: 18px; }
+.panel { background: #fffaf1; border: 1px solid #d4c7b1; padding: clamp(16px, 3vw, 28px); }
+h2 { margin: 0 0 12px; font-size: 1.8rem; }
+label { display: block; font-weight: 700; }
+textarea, select, button { font: inherit; border: 1px solid #8c7d65; color: inherit; background: #fffaf1; padding: 9px 12px; }
+button, select, summary { cursor: pointer; }
+textarea { display: block; width: 100%; margin-top: 6px; resize: vertical; }
+form { margin-top: 18px; }
+.muted, small, details p { color: #605645; line-height: 1.45; }
+.muted, details { font-size: .9rem; }
+fieldset { padding: 0; border: 0; margin: 16px 0; }
+input[type=range] { width: 100%; accent-color: #72613b; margin: 6px 0; }
+output { float: right; font-variant-numeric: tabular-nums; }
+.primary { background: #303d2d; color: white; width: 100%; font-weight: 700; }
+.swap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+#verdict { background: #efe5d2; padding: 15px; margin: 16px 0; }
+#verdict strong { display: block; font-size: 1.4rem; }
+#verdict p { margin: .5em 0 0; }
+#jury { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+#jury li { border: 1px solid #d4c7b1; padding: 10px; overflow-wrap: anywhere; }
+#jury li[data-vote="clear"] { background: #e4ebdd; }
+#jury li[data-vote="responsible"] { background: #f1dfd6; }
+#jury li.shuffled { outline: 2px solid #966120; outline-offset: -2px; }
+#jury b, #jury small { display: block; }
+@media (max-width: 780px) { .court { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { #jury { grid-template-columns: repeat(2, minmax(0,1fr)); } }

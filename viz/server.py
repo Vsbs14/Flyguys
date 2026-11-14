@@ -120,6 +120,25 @@ async def decide(req: DecideRequest):
             raise HTTPException(400, str(e))
 
 
+class CaseRequest(BaseModel):
+    summary: str = Field(max_length=2000)
+
+
+@app.post("/api/flycourt/analyze")
+def flycourt_analyze(req: CaseRequest):
+    from viz.case_analysis import analyze_case
+
+    summary = req.summary.strip()
+    if not summary:
+        raise HTTPException(422, "Enter a short case summary.")
+    try:
+        return analyze_case(summary)
+    except (OSError, ValueError, KeyError, TypeError):
+        raise HTTPException(
+            502, "Case analysis unavailable. Check that Ollama is running and the configured model is installed."
+        ) from None
+
+
 @app.post("/api/preview")
 def preview(req: DecideRequest):
     """Estimate output rates from the intact or escape-silenced cached trials."""

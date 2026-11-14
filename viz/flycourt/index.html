@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fly Court · Twelve Flies, One Verdict</title>
+<link rel="stylesheet" href="court.css">
+<script defer src="responses.js"></script>
+<script defer src="court.js"></script>
+</head>
+<body>
+<main>
+<header><span>THE COURT OF SIMULATED FLIES</span><h1>Fly Court</h1><p>Twelve Flies, One Verdict</p></header>
+<div class="court">
+<section class="panel case" aria-labelledby="case-title">
+<h2 id="case-title">Case file</h2>
+<button id="demo" type="button">Load fictional demo</button>
+<form id="case-form">
+<label for="case">Case summary</label>
+<textarea id="case" rows="5" maxlength="2000" required placeholder="Describe what happened. Use initials or roles for real people."></textarea>
+<p class="muted">Summarize a fictional or real dispute. Ask the local language model to suggest scores, or set them yourself.</p>
+<button id="analyze" type="button">Analyze case</button>
+<p id="analysis-status" class="muted" role="status"></p>
+<ul id="analysis-notes" hidden></ul>
+<div id="evidence"></div>
+<button class="primary" type="submit">Hear the case</button>
+</form>
+</section>
+<section class="panel" aria-labelledby="jury-title">
+<h2 id="jury-title">Jury box</h2>
+<p class="muted">The same evidence reaches each fly at different intensities. Feeding votes to clear, escape votes to hold responsible, and no response abstains.</p>
+<div class="swap"><label for="swap">Randomized wiring</label><select id="swap"><option value="">All jurors intact</option></select></div>
+<div id="verdict" role="status"></div>
+<ol id="jury"></ol>
+<details><summary>How the simulation votes</summary><p>Feeding and escape rates come from cached Flyguys connectome trials. The app interpolates mean rates across the sensory grid, scales each rate by its intact-grid peak, and picks the larger response. Equal responses abstain. Seven votes are required to reach a verdict.</p><p>The randomized juror uses the project's cached degree-preserving shuffle of interneuron targets. The selected juror keeps the same evidence in both runs. Sensory scores and vote rules are demo conventions. The result is a simulation outcome with no legal standing.</p></details>
+</section>
+</div>
+</main>
+</body>
+</html>

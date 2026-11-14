@@ -154,3 +154,23 @@ One detail differs from the starter notebook's simulator: in Brian2, synaptic in
 ## Secrets
 
 No file in this repo needs a token. If you use `fafbseg` (Phase 4), keep the FlyWire token in your home directory or an environment variable, never in the repo.
+
+## Fly Court
+
+On the `VSLaw` branch, open `viz/flycourt/index.html` directly in a browser
+or visit `/flycourt/` on the demo server. Load the fictional peach-stand case,
+or enter a short real-life case and set the three evidence scores. Your scores drive the jury.
+
+Each juror gets a weighted mix of sugar, bitter, and looming inputs. The page
+uses the mean feeding and escape rates from `tables/responses.npz`, with
+interpolation between grid points. Select a juror under **Randomized wiring**
+to compare that juror's cached shuffled-connectome response with the intact
+jury on the same inputs. The vote and verdict rules are part of the simulation.
+
+To analyze case text, run [Ollama](https://ollama.com/) locally, install a model
+with `ollama pull gemma3:4b`, and start `python -m viz.server`. Open
+`http://localhost:8000/flycourt/` and select **Analyze case**. The case summary
+goes to the local model, which suggests three editable scores and explains
+the details and uncertainty behind them. Set `FLYCOURT_MODEL` before starting
+the server to use another installed model. Use **Hear the case** to submit the
+reviewed scores to the fly jury. Direct file access supports manual scoring.
