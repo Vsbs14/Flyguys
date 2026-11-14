@@ -173,7 +173,29 @@ def frames():
 def experiment():
     path = RESULTS / "galaxy_experiment.json"
     if not path.exists():
-        raise HTTPException(404, "run python -m galaxy.simulate")
+        raise HTTPException(404, "run python -m analysis.export_viewer")
+    return FileResponse(path, media_type="application/json")
+
+
+@app.get("/api/variants")
+def variants():
+    """Every brain variant with a response table, and its sanity checks (endpoint idea from phase-3-5)."""
+    out = []
+    for meta_path in sorted((ROOT / "tables").glob("*.json")):
+        meta = json.loads(meta_path.read_text(encoding="utf8"))
+        if "variant" not in meta:
+            continue
+        out.append({"variant": meta["variant"], "description": meta.get("description"),
+                    "neurons_silenced": meta.get("neurons_silenced"), "sanity": meta.get("sanity")})
+    return {"variants": out}
+
+
+@app.get("/api/lesions")
+def lesions():
+    """The lesion ranking from the partial screen (results/lesion_ranking.json)."""
+    path = RESULTS / "lesion_ranking.json"
+    if not path.exists():
+        raise HTTPException(404, "run python -m analysis.lesion_rank")
     return FileResponse(path, media_type="application/json")
 
 
