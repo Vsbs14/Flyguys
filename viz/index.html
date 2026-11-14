@@ -533,19 +533,8 @@ details > div{margin-top:12px;display:grid;gap:10px}
     <section data-id="hardware">
       <h2>Fly it yourself</h2>
       <p class="lede">Set up a planet and ask the real fly brain what to do. This runs the whole brain live, not a recording.</p>
-      <div class="console" aria-label="Console preview">
-        <div class="leds" id="leds">
-          <div class="led" data-n="MN9" style="--c:var(--sugar)"><i></i>Eat</div>
-          <div class="led" data-n="DNp09" style="--c:var(--fwd)"><i></i>Forward</div>
-          <div class="led" data-n="MDN" style="--c:var(--bitter)"><i></i>Back up</div>
-          <div class="led" data-n="GF" style="--c:var(--loom)"><i></i>Escape</div>
-        </div>
-        <div class="meter" style="--c:var(--loom)"><span>Danger</span><div class="track"><div class="fill" id="loomFill"></div></div><b id="loomVal">0.00</b></div>
-        <div><button class="btn primary" id="waveBtn">Wave a hand at it</button></div>
-        <p style="font-size:12.5px;color:var(--dim);margin:0">Preview. With the Arduino board, a distance sensor turns your real hand into danger.</p>
-      </div>
       <div class="block">
-        <h3>Ask the fly brain</h3>
+        <h3>1. Build a planet</h3>
         <div class="console real-fly offline" id="realFly">
           <p class="small-note" id="realFlyNote">To use this, start the server with <code>python -m viz.server</code> and open this page from it.</p>
           <div class="slider" style="--c:var(--sugar)"><label for="inSugar">Sweet</label><input type="range" id="inSugar" min="0" max="1" step="0.05" value="1"><b id="vSugar">100%</b></div>
@@ -553,13 +542,24 @@ details > div{margin-top:12px;display:grid;gap:10px}
           <div class="slider" style="--c:var(--loom)"><label for="inLoom">Danger</label><input type="range" id="inLoom" min="0" max="1" step="0.05" value="0"><b id="vLoom">0%</b></div>
           <label class="check-row"><input type="checkbox" id="silGF"> Remove the escape neuron</label>
           <div><button class="btn primary" id="runFly">Ask the fly</button> <button class="btn" id="previewFly">Instant guess</button></div>
-          <div class="fly-out" id="flyOut"></div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>2. See what the brain did</h3>
+        <div class="console">
+          <div class="leds" id="leds">
+            <div class="led" data-n="MN9" style="--c:var(--sugar)"><i></i>Eat</div>
+            <div class="led" data-n="DNp09" style="--c:var(--fwd)"><i></i>Forward</div>
+            <div class="led" data-n="MDN" style="--c:var(--bitter)"><i></i>Back up</div>
+            <div class="led" data-n="GF" style="--c:var(--loom)"><i></i>Escape</div>
+          </div>
+          <div class="fly-out" id="flyOut"><p class="small-note">A light turns on for each neuron that fired.</p></div>
         </div>
       </div>
       <ol class="steps">
-        <li>Move your hand toward the board. Its distance sensor feels that as danger.</li>
-        <li>The fly brain runs on the laptop and decides what to do.</li>
-        <li>The lights show which neuron fired. If the escape light flashes, the colonies on screen flee.</li>
+        <li>Slide Sweet, Bitter and Danger to describe a planet.</li>
+        <li>Press Ask the fly. Four copies of the real brain think it over for 0.2 seconds each.</li>
+        <li>The lights show which neurons fired. Try a sweet planet, then add a little danger and watch Escape take over.</li>
       </ol>
     </section>
 
@@ -580,7 +580,6 @@ details > div{margin-top:12px;display:grid;gap:10px}
           <span class="chip">Shiu et al. brain model</span>
           <span class="chip">PyTorch</span>
           <span class="chip">Modal GPUs</span>
-          <span class="chip">Arduino UNO Q</span>
         </div>
       </div>
     </section>
@@ -939,31 +938,14 @@ $('#prevBtn').addEventListener('click', () => { const i = ORDER.indexOf(current.
 $('#nextBtn').addEventListener('click', () => { const i = ORDER.indexOf(current.id); go(ORDER[(i + 1) % ORDER.length]); });
 
 
-/* hardware preview */
+/* neuron lights for the console */
 const hw = (() => {
   const leds = Object.fromEntries([...document.querySelectorAll('.led')].map(l => [l.dataset.n, l]));
-  const fill = $('#loomFill'), val = $('#loomVal');
-  let busy = false;
   const set = (n, on) => leds[n].classList.toggle('on', on);
-  set('MN9', true);
   function showRates(r, gfSpiked){
     set('MN9', r.MN9.mean_hz > 5); set('DNp09', r.DNp09.mean_hz > 5); set('MDN', r.MDN.mean_hz > 5); set('GF', gfSpiked > 0);
   }
-  function wave(peak){
-    if (busy) return; busy = true;
-    const steps = [.15,.3,.5,.72,.9].map(v => v*peak/.9), tick = reduce ? 120 : 160;
-    steps.forEach((v, i) => setTimeout(() => {
-      fill.style.width = v*100 + '%'; val.textContent = v.toFixed(2);
-      set('MN9', v < .5); set('MDN', v >= .3 && v < .72); set('DNp09', false);
-      if (v >= .72) set('GF', true);
-    }, i*tick));
-    setTimeout(() => {
-      fill.style.width = '0%'; val.textContent = '0.00';
-      set('GF', false); set('MDN', false); set('MN9', true); busy = false;
-    }, steps.length*tick + 1100);
-  }
-  $('#waveBtn').addEventListener('click', () => wave(.9));
-  return {wave, showRates};
+  return {showRates};
 })();
 
 /* ---------------- sanity checks (real results from brain.sanity) ---------------- */
@@ -1424,8 +1406,7 @@ const backend = (() => {
     catch(e){ return; }
     ws.onmessage = ev => {
       let m; try { m = JSON.parse(ev.data); } catch(e){ return; }
-      if (m.type === 'loom'){ $('#inLoom').value = m.value; $('#vLoom').textContent = Math.round(+m.value*100) + '%'; hw.wave(Math.max(.2, m.value)); }
-      else if (m.type === 'start'){ demo.startLive(m.meta, m.stars); }
+      if (m.type === 'start'){ demo.startLive(m.meta, m.stars); }
       else if (m.type === 'frame'){ demo.pushFrame(m); }
     };
     ws.onclose = () => setTimeout(socket, 3000);

@@ -12,7 +12,6 @@ Endpoints the page uses (all optional; the page falls back to bundled data when 
   GET  /api/sanity          newest results/sanity_*.json
   GET  /api/frames          galaxy/frames.json, the recorded galaxy run (see viz/frames.py)
   POST /api/decide          run real fly brains on sugar / bitter / looming levels
-  POST /api/loom            push a looming level (e.g. from the UNO Q) to every open page
   WS   /ws                  live messages to the page: {"type": "loom"|"frame"|"start", ...}
 """
 from __future__ import annotations
@@ -222,17 +221,6 @@ async def ws_endpoint(ws: WebSocket):
         pass
     finally:
         clients.discard(ws)
-
-
-class Loom(BaseModel):
-    value: float = Field(..., ge=0, le=1)
-
-
-@app.post("/api/loom")
-async def loom(msg: Loom):
-    """Called by the UNO Q bridge when a hand moves toward the sensor."""
-    await broadcast({"type": "loom", "value": msg.value})
-    return {"sent_to": len(clients)}
 
 
 class FrameMsg(BaseModel):
