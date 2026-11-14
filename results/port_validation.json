@@ -1,0 +1,173 @@
+{
+ "run": {
+  "time_utc": "2026-11-14T18:18:00+00:00",
+  "git_commit": "1af21b75f094c9fb83304875b9d26e821a1b9dfb",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu128",
+  "device": "cuda",
+  "device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "lif_params": {
+   "v_rest": -52.0,
+   "v_reset": -52.0,
+   "v_thresh": -45.0,
+   "tau_m": 20.0,
+   "tau_syn": 5.0,
+   "t_refrac": 2.2,
+   "t_delay": 1.8,
+   "w_syn": 0.275,
+   "dt": 0.1,
+   "poisson_gain": 250.0
+  },
+  "connectome": "Shiu et al. Connectivity_783.parquet (FlyWire v783)",
+  "config": {
+   "seed": 0,
+   "replicates": 8
+  }
+ },
+ "rows": [
+  {
+   "condition": "sugar 200 Hz",
+   "measure": "feed rate (Hz)",
+   "brian2_mean": 75.25,
+   "brian2_sd": 0.25,
+   "torch_mean": 72.1875,
+   "torch_sd": 2.946793794631958
+  },
+  {
+   "condition": "sugar 200 Hz",
+   "measure": "escape rate (Hz)",
+   "brian2_mean": 0.0,
+   "brian2_sd": 0.0,
+   "torch_mean": 0.0,
+   "torch_sd": 0.0
+  },
+  {
+   "condition": "sugar 200 Hz",
+   "measure": "retreat rate (Hz)",
+   "brian2_mean": 0.0,
+   "brian2_sd": 0.0,
+   "torch_mean": 0.0,
+   "torch_sd": 0.0
+  },
+  {
+   "condition": "sugar 200 Hz",
+   "measure": "advance rate (Hz)",
+   "brian2_mean": 0.0,
+   "brian2_sd": 0.0,
+   "torch_mean": 0.0,
+   "torch_sd": 0.0
+  },
+  {
+   "condition": "sugar 200 Hz",
+   "measure": "whole-brain spikes",
+   "brian2_mean": 19957.5,
+   "brian2_sd": 15.5,
+   "torch_mean": 19541.375,
+   "torch_sd": 163.79861450195312
+  },
+  {
+   "condition": "sugar 200 Hz",
+   "measure": "neurons that spiked",
+   "brian2_mean": 445.0,
+   "brian2_sd": 1.0,
+   "torch_mean": 439.375,
+   "torch_sd": 4.02919036532155
+  },
+  {
+   "condition": "sugar 200 Hz + bitter 200 Hz",
+   "measure": "feed rate (Hz)",
+   "brian2_mean": 1.25,
+   "brian2_sd": 0.25,
+   "torch_mean": 3.125,
+   "torch_sd": 1.4306904077529907
+  },
+  {
+   "condition": "sugar 200 Hz + bitter 200 Hz",
+   "measure": "escape rate (Hz)",
+   "brian2_mean": 0.0,
+   "brian2_sd": 0.0,
+   "torch_mean": 0.0,
+   "torch_sd": 0.0
+  },
+  {
+   "condition": "sugar 200 Hz + bitter 200 Hz",
+   "measure": "retreat rate (Hz)",
+   "brian2_mean": 0.0,
+   "brian2_sd": 0.0,
+   "torch_mean": 0.0,
+   "torch_sd": 0.0
+  },
+  {
+   "condition": "sugar 200 Hz + bitter 200 Hz",
+   "measure": "advance rate (Hz)",
+   "brian2_mean": 0.0,
+   "brian2_sd": 0.0,
+   "torch_mean": 0.0,
+   "torch_sd": 0.0
+  },
+  {
+   "condition": "sugar 200 Hz + bitter 200 Hz",
+   "measure": "whole-brain spikes",
+   "brian2_mean": 23163.0,
+   "brian2_sd": 133.0,
+   "torch_mean": 23391.5,
+   "torch_sd": 128.33258056640625
+  },
+  {
+   "condition": "sugar 200 Hz + bitter 200 Hz",
+   "measure": "neurons that spiked",
+   "brian2_mean": 339.0,
+   "brian2_sd": 7.0,
+   "torch_mean": 342.75,
+   "torch_sd": 9.54921462739214
+  },
+  {
+   "condition": "looming 150 Hz",
+   "measure": "feed rate (Hz)",
+   "brian2_mean": 0.0,
+   "brian2_sd": 0.0,
+   "torch_mean": 0.0,
+   "torch_sd": 0.0
+  },
+  {
+   "condition": "looming 150 Hz",
+   "measure": "escape rate (Hz)",
+   "brian2_mean": 185.5,
+   "brian2_sd": 0.5,
+   "torch_mean": 185.0625,
+   "torch_sd": 1.9273929595947266
+  },
+  {
+   "condition": "looming 150 Hz",
+   "measure": "retreat rate (Hz)",
+   "brian2_mean": 12.375,
+   "brian2_sd": 0.125,
+   "torch_mean": 9.59375,
+   "torch_sd": 0.6839396357536316
+  },
+  {
+   "condition": "looming 150 Hz",
+   "measure": "advance rate (Hz)",
+   "brian2_mean": 0.0,
+   "brian2_sd": 0.0,
+   "torch_mean": 0.1875,
+   "torch_sd": 0.24206146597862244
+  },
+  {
+   "condition": "looming 150 Hz",
+   "measure": "whole-brain spikes",
+   "brian2_mean": 85066.0,
+   "brian2_sd": 34.0,
+   "torch_mean": 85392.5,
+   "torch_sd": 379.1015625
+  },
+  {
+   "condition": "looming 150 Hz",
+   "measure": "neurons that spiked",
+   "brian2_mean": 1342.0,
+   "brian2_sd": 6.0,
+   "torch_mean": 1377.875,
+   "torch_sd": 21.345008198639793
+  }
+ ]
+}

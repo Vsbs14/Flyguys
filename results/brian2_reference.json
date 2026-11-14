@@ -1,0 +1,191 @@
+{
+ "t_run_ms": 1000,
+ "conditions": {
+  "sugar 200 Hz": {
+   "input_rates_hz": {
+    "sugar": 200
+   },
+   "trials": [
+    {
+     "total_spikes": 19942,
+     "n_spiking_neurons": 446,
+     "rates_hz": {
+      "feed": [
+       62.0,
+       89.0
+      ],
+      "escape": [
+       0.0,
+       0.0
+      ],
+      "retreat": [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "advance": [
+       0.0,
+       0.0
+      ]
+     },
+     "input_spikes": {
+      "sugar": 6400
+     }
+    },
+    {
+     "total_spikes": 19973,
+     "n_spiking_neurons": 444,
+     "rates_hz": {
+      "feed": [
+       60.0,
+       90.0
+      ],
+      "escape": [
+       0.0,
+       0.0
+      ],
+      "retreat": [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "advance": [
+       0.0,
+       0.0
+      ]
+     },
+     "input_spikes": {
+      "sugar": 6496
+     }
+    }
+   ]
+  },
+  "sugar 200 Hz + bitter 200 Hz": {
+   "input_rates_hz": {
+    "sugar": 200,
+    "bitter": 200
+   },
+   "trials": [
+    {
+     "total_spikes": 23030,
+     "n_spiking_neurons": 346,
+     "rates_hz": {
+      "feed": [
+       1.0,
+       2.0
+      ],
+      "escape": [
+       0.0,
+       0.0
+      ],
+      "retreat": [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "advance": [
+       0.0,
+       0.0
+      ]
+     },
+     "input_spikes": {
+      "sugar": 6226,
+      "bitter": 8293
+     }
+    },
+    {
+     "total_spikes": 23296,
+     "n_spiking_neurons": 332,
+     "rates_hz": {
+      "feed": [
+       1.0,
+       1.0
+      ],
+      "escape": [
+       0.0,
+       0.0
+      ],
+      "retreat": [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "advance": [
+       0.0,
+       0.0
+      ]
+     },
+     "input_spikes": {
+      "sugar": 6336,
+      "bitter": 8256
+     }
+    }
+   ]
+  },
+  "looming 150 Hz": {
+   "input_rates_hz": {
+    "looming": 150
+   },
+   "trials": [
+    {
+     "total_spikes": 85100,
+     "n_spiking_neurons": 1336,
+     "rates_hz": {
+      "feed": [
+       0.0,
+       0.0
+      ],
+      "escape": [
+       175.0,
+       195.0
+      ],
+      "retreat": [
+       4.0,
+       17.0,
+       18.0,
+       11.0
+      ],
+      "advance": [
+       0.0,
+       0.0
+      ]
+     },
+     "input_spikes": {
+      "looming": 46269
+     }
+    },
+    {
+     "total_spikes": 85032,
+     "n_spiking_neurons": 1348,
+     "rates_hz": {
+      "feed": [
+       0.0,
+       0.0
+      ],
+      "escape": [
+       177.0,
+       195.0
+      ],
+      "retreat": [
+       3.0,
+       17.0,
+       19.0,
+       10.0
+      ],
+      "advance": [
+       0.0,
+       0.0
+      ]
+     },
+     "input_spikes": {
+      "looming": 46360
+     }
+    }
+   ]
+  }
+ }
+}
