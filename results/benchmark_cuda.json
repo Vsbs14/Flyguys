@@ -1,0 +1,61 @@
+{
+ "run": {
+  "time_utc": "2026-11-14T18:16:32+00:00",
+  "git_commit": "1af21b75f094c9fb83304875b9d26e821a1b9dfb",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu128",
+  "device": "cuda",
+  "device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "lif_params": {
+   "v_rest": -52.0,
+   "v_reset": -52.0,
+   "v_thresh": -45.0,
+   "tau_m": 20.0,
+   "tau_syn": 5.0,
+   "t_refrac": 2.2,
+   "t_delay": 1.8,
+   "w_syn": 0.275,
+   "dt": 0.1,
+   "poisson_gain": 250.0
+  },
+  "connectome": "Shiu et al. Connectivity_783.parquet (FlyWire v783)",
+  "config": {
+   "seed": 0,
+   "sizes": [
+    64,
+    256,
+    1024
+   ],
+   "decision_ms": 200.0
+  }
+ },
+ "rows": [
+  {
+   "brains": 64,
+   "decision_ms": 200.0,
+   "wall_s": 4.17,
+   "ms_per_step": 2.083,
+   "decisions_per_s": 15.4,
+   "spikes_per_brain": 17809.5,
+   "peak_gpu_gb": 0.19
+  },
+  {
+   "brains": 256,
+   "decision_ms": 200.0,
+   "wall_s": 10.84,
+   "ms_per_step": 5.422,
+   "decisions_per_s": 23.6,
+   "spikes_per_brain": 18619.9,
+   "peak_gpu_gb": 0.42
+  },
+  {
+   "brains": 1024,
+   "decision_ms": 200.0,
+   "wall_s": 37.83,
+   "ms_per_step": 18.914,
+   "decisions_per_s": 27.1,
+   "spikes_per_brain": 18370.2,
+   "peak_gpu_gb": 1.32
+  }
+ ]
+}
