@@ -218,3 +218,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Flyguys project ---
+# Third-party data (Shiu's repo, FlyWire annotations): fetched by scripts/fetch_data.py
+external/
+# Secrets: FlyWire / CAVE tokens and Modal credentials never go in the repo
+.env
+*.token
+cloudvolume-secrets/
+cave-secret*.json
+.modal.toml
