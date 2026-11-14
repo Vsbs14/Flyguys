@@ -102,7 +102,8 @@ def run_sanity(
 
     mn9_sugar = float(out_rate["feed"][ci["sugar"]].mean())
     mn9_mixed = float(out_rate["feed"][ci["sugar+bitter"]].mean())
-    frac = mn9_mixed / mn9_sugar if mn9_sugar > 0 else float("nan")
+    frac = mn9_mixed / mn9_sugar if mn9_sugar > 0 else None
+    suppression = f"{frac:.0%} of sugar-only" if frac is not None else "no sugar-only response"
     n_loom = int(gf_spiked[ci["looming"]].sum())
     loom_measured = f"spiked in {n_loom}/{replicates}"
     if n_loom:
@@ -115,7 +116,7 @@ def run_sanity(
          f"MN9 = {mn9_sugar:.1f} Hz", bool(MN9_BAND_HZ[0] <= mn9_sugar <= MN9_BAND_HZ[1])),
         ("bitter_suppresses", "Sugar + bitter -> MN9 drops a lot",
          f"MN9 below {BITTER_MAX_FRACTION:.0%} of its sugar-only rate",
-         f"MN9 = {mn9_mixed:.1f} Hz ({frac:.0%} of sugar-only)", bool(frac < BITTER_MAX_FRACTION)),
+         f"MN9 = {mn9_mixed:.1f} Hz ({suppression})", frac is not None and frac < BITTER_MAX_FRACTION),
         ("looming_escapes", f"Looming ({LOOM_HZ:.0f} Hz) -> Giant Fibre fires",
          "Giant Fibre spikes in every replicate", loom_measured, bool(n_loom == replicates)),
         ("gf_off_no_escape", "Giant Fibre silenced -> no escape",
@@ -193,12 +194,24 @@ def main() -> None:
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--replicates", type=int, default=4)
+    from galaxy.responses import LESIONS, alive_mask, shuffled
+
+    ap.add_argument("--variant", choices=LESIONS, default="intact")
     args = ap.parse_args()
 
     conn = Connectome.load()
     groups = NeuronGroups(conn)
+    if args.variant == "shuffle":
+        conn = shuffled(conn, groups, args.seed)
     sim = BrainSim(conn, device=args.device)
-    result = run_sanity(sim, groups, replicates=args.replicates, seed=args.seed)
+    expected_fail = {
+        "fearless": ("looming_escapes",),
+        "fearless_no_retreat": ("looming_escapes",),
+        "hungry": ("bitter_suppresses",),
+    }
+    result = run_sanity(sim, groups, alive=alive_mask(conn, groups, LESIONS[args.variant]),
+                        replicates=args.replicates, seed=args.seed, variant=args.variant,
+                        expected_fail=expected_fail.get(args.variant, ()))
     record = run_record(sanity_config(args.seed, args.replicates), device=args.device)
     tag = f"sanity_{result['variant']}_{sim.device.type}"
     save_json(ROOT / "results" / f"{tag}.json", {"run": record, "result": result})

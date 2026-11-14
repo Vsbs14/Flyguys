@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fermi Fly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: a full-bleed spiral galaxy is the home screen; each project section is a world in it; clicking opens a side panel (the demo opens wide). Single dark theme by choice. */
+  --void:#04050d;
+  --ink:#e9edf8;
+  --dim:#8d96b0;
+  --line:rgba(160,176,226,.16);
+  --panel:#0b1018;
+  --nav:#101620;
+  --gold:#f5d48d;
+  --gold-ink:#15100a;
+  --active-gold:#211a10;
+  --active-border:#b7985a;
+  --body-copy:#c4c9d6;
+  --caption:#a8aec0;
+  --signal:#8ff0b4;
+  --sugar:#f4b740;   /* sugar / MN9 / settle */
+  --fwd:#4fd6e8;     /* DNp09 / expand */
+  --bitter:#acbedc;  /* bitter / MDN / retreat */
+  --loom:#ff5a4e;    /* looming / Giant Fiber / flee */
+  --display:"Instrument Sans",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--void);color:var(--ink);font-family:var(--body);overflow-x:clip;overflow-y:hidden;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--fwd);outline-offset:2px}
+
+#sky{position:fixed;inset:0;width:100%;height:100%;display:block}
+
+#sky{opacity:.62}
+.hero{position:fixed;inset:0;display:grid;grid-template-columns:minmax(290px,.8fr) minmax(0,1.2fr);align-items:center;gap:clamp(12px,3vw,64px);padding:clamp(32px,7vw,108px) clamp(24px,8vw,144px) 104px;background:linear-gradient(90deg,rgba(3,4,10,.94),rgba(3,4,10,.57));z-index:1;overflow:auto}
+.panel-open .hero,.star-map-open .hero{display:none}
+.hero-copy{position:relative;z-index:1}
+.hero h1{overflow-wrap:anywhere;min-width:0;font-family:var(--display);font-weight:700;font-size:clamp(54px,8.8vw,126px);letter-spacing:-.057em;line-height:.91;margin:15px 0 22px}
+.hero-copy p{max-width:34ch;color:var(--body-copy);font-size:clamp(17px,2vw,22px);line-height:1.48}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-actions .btn.primary{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.hero-actions .btn:hover{filter:brightness(1.12)}
+.specimen{width:min(100%,720px);justify-self:center;display:grid;gap:14px;min-width:0}
+.specimen-frame{position:relative;overflow:hidden;border-radius:26px;aspect-ratio:1.52;background:#050608;border:1px solid rgba(255,255,255,.12);isolation:isolate}
+.specimen-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.specimen-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(4,5,13,.68) 100%)}
+.brain-flare{position:absolute;left:var(--brain-x,29%);top:var(--brain-y,35%);width:22%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,219,129,.72),rgba(221,141,50,.18) 38%,transparent 68%);mix-blend-mode:screen;opacity:0;pointer-events:none;z-index:1}
+.specimen-frame[data-active="true"] .brain-flare{animation:brain-pulse 1.1s ease-out both}
+@keyframes brain-pulse{0%,100%{opacity:0}30%{opacity:1}60%{opacity:.25}}
+.specimen figcaption{padding:0 4px;display:grid;gap:10px}
+.stimuli{display:flex;gap:7px;flex-wrap:wrap}
+.stimuli .btn{font-size:12px;padding:6px 12px}
+.stimuli .btn[aria-pressed="true"]{color:var(--gold);border-color:var(--active-border);background:var(--active-gold)}
+#heroResponse{color:#d7dbe5;font-family:var(--mono);font-size:12px;min-height:2.8em;line-height:1.55}
+.specimen-note{color:var(--caption);font-size:12px}
+@media(max-width:790px){
+  .hero{grid-template-columns:minmax(0,1fr);align-content:start;gap:26px;padding:56px 24px 100px}
+  .hero h1{margin:8px 0 12px}
+  .hero-actions{margin-top:18px}
+  .specimen{width:min(100%,560px);justify-self:start}
+}
+@media(max-height:660px) and (min-width:791px){.hero{padding-block:44px 90px}}
+@media(prefers-reduced-motion:reduce){.specimen-frame[data-active="true"] .brain-flare{animation:none;opacity:.7}}
+.dock{position:fixed;left:50%;bottom:clamp(12px,2.4vw,26px);transform:translateX(-50%);display:flex;gap:2px;padding:5px;background:var(--nav);border:1px solid var(--line);border-radius:999px;max-width:calc(100% - 32px);overflow-x:auto;scrollbar-width:none;z-index:5}
+.dock button{background:none;border:0;border-radius:999px;padding:8px 14px;font-size:13px;color:var(--dim);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s,color .2s}
+.dock button:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+.dock button[aria-current="true"]{color:var(--void);background:var(--ink)}
+body:not(.star-map-open):not(.panel-open) .dock .secondary-place{display:none}
+.dock .dot{width:7px;height:7px;border-radius:50%;flex:none}
+
+.tip{position:fixed;pointer-events:none;padding:8px 12px;border-radius:10px;background:rgba(8,10,24,.92);border:1px solid var(--line);font-size:13px;line-height:1.35;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;z-index:4;max-width:240px}
+.tip.on{opacity:1;transform:none}
+.tip b{display:block;font-family:var(--display);font-size:15px;font-weight:700;margin-bottom:2px}
+.tip span{color:var(--dim)}
+
+.hint{display:none;position:fixed;right:clamp(16px,3vw,44px);top:clamp(20px,3vw,44px);font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;pointer-events:auto;transition:opacity .4s;z-index:2}
+body.star-map-open .hint{display:block}
+body.panel-open .hint{visibility:hidden}
+
+/* ---------- panel ---------- */
+.panel{position:fixed;top:0;right:0;height:100%;width:min(480px,100%);background:var(--panel);border-left:1px solid var(--line);transform:translateX(102%);transition:transform .5s cubic-bezier(.2,.8,.2,1),width .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;z-index:6;visibility:hidden}
+.panel.open{transform:none;visibility:visible}
+.panel.wide{width:min(1240px,100%);background:var(--panel)}
+.panel-inner{padding:28px clamp(18px,3vw,36px) 120px;display:flex;flex-direction:column;gap:22px}
+.panel-top{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;margin:-28px calc(-1*clamp(18px,3vw,36px)) 0;padding:16px clamp(18px,3vw,36px);background:inherit;z-index:2}
+.crumb{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.crumb i{font-style:normal;color:var(--ink)}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;display:grid;place-items:center;font-size:18px;line-height:1;color:var(--dim)}
+.icon-btn:hover{color:var(--ink);border-color:rgba(255,255,255,.35)}
+
+section[data-id]{display:none;flex-direction:column;gap:20px}
+section[data-id].on{display:flex}
+section h2{font-family:var(--display);font-weight:800;font-size:clamp(28px,3vw,38px);line-height:1;letter-spacing:-.01em;text-wrap:balance}
+section h3{font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+section p{font-size:15px;line-height:1.62;color:#c9cfe0;max-width:62ch}
+section p strong{color:var(--ink);font-weight:600}
+.lede{font-size:17px!important;color:var(--ink)!important}
+.block{display:flex;flex-direction:column;gap:10px}
+
+.pitch{border-left:2px solid var(--sugar);padding:4px 0 4px 16px;font-family:var(--display);font-size:20px;font-weight:700;line-height:1.25;text-wrap:balance}
+
+.qs{display:grid;gap:10px}
+.q{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02)}
+.q .n{font-family:var(--mono);font-size:12px;color:var(--sugar);grid-row:span 2;padding-top:2px}
+.q b{font-weight:600;font-size:15px}
+.q span{color:var(--dim);font-size:14px;line-height:1.5}
+
+.stats{display:flex;flex-wrap:wrap;gap:14px;padding-block:12px;border-block:1px solid var(--line)}
+.stat{flex:1;min-width:95px}
+.stat b{display:block;font-family:var(--display);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--dim);line-height:1.35;display:block;margin-top:4px}
+
+.map{display:grid;gap:8px}
+.map-row{display:grid;grid-template-columns:110px 18px 1fr;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.025)}
+.tag{font-family:var(--mono);font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:8px}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor}
+.arrow{color:var(--dim);font-family:var(--mono)}
+.map-row span:last-child{font-size:14px;color:#c9cfe0;line-height:1.4}
+.c-sugar{color:var(--sugar)}.c-fwd{color:var(--fwd)}.c-bitter{color:var(--bitter)}.c-loom{color:var(--loom)}
+
+.params{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.params div{background:var(--void);padding:9px 12px;display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.params dt,.params span{color:var(--dim)}
+.params b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+
+.checks{display:grid;gap:6px;list-style:none}
+.checks li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px dashed rgba(255,255,255,.25);color:var(--dim);white-space:nowrap}
+.pill.solid{border-style:solid}
+.pill.pass{border-style:solid;border-color:rgba(127,227,165,.55);color:#8ff0b4;background:rgba(127,227,165,.08)}
+.pill.fail{border-style:solid;border-color:rgba(255,90,78,.6);color:#ff8a80;background:rgba(255,90,78,.08)}
+.checks li > div{display:flex;flex-direction:column;gap:2px}
+.checks li small{color:var(--dim);font-family:var(--mono);font-size:11.5px}
+.small-note{font-size:12.5px!important;color:var(--dim)!important;line-height:1.5!important}
+.conn{position:fixed;left:clamp(16px,3vw,44px);bottom:clamp(16px,2.4vw,30px);z-index:7;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px;border-radius:999px;border:1px solid rgba(127,227,165,.45);color:var(--signal);background:var(--nav);display:none;align-items:center;gap:7px}
+.conn::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 8px var(--signal)}
+.conn.on{display:flex}
+.conn{bottom:auto;top:clamp(12px,2vw,24px)}
+.panel-open .conn{display:none}
+.real-fly{display:grid;gap:12px}
+.slider{display:grid;grid-template-columns:76px 1fr 42px;align-items:center;gap:10px;font-size:13px;color:var(--dim)}
+.slider input{width:100%;accent-color:var(--c)}
+.slider b{font-family:var(--mono);font-weight:500;color:var(--ink);text-align:right;font-size:12px}
+.check-row{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#c9cfe0}
+.check-row input{accent-color:var(--loom);width:16px;height:16px}
+.fly-out{display:grid;gap:8px}
+.offline{opacity:.55}
+.offline .btn{pointer-events:none}
+
+.steps{display:grid;gap:8px;padding-left:1.2em;color:var(--body-copy);font-size:14.5px;line-height:1.5}
+.steps li::marker{color:var(--gold)}
+
+.outcomes{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.outcome{padding:14px;border-radius:12px;border:1px dashed var(--line);display:flex;flex-direction:column;gap:6px}
+.outcome b{font-size:14.5px;font-weight:600}
+.outcome span{font-size:13px;color:var(--dim);line-height:1.45}
+.outcome em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-top:auto}
+
+.loop svg{width:100%;height:auto;display:block}
+
+.rank{list-style:none;display:grid;gap:5px}
+.rank li{display:grid;grid-template-columns:26px 1fr 90px;align-items:center;gap:10px;font-size:13px;color:var(--dim)}
+.rank li span:first-child{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.rank .bar{height:8px;border-radius:4px;border:1px dashed rgba(255,255,255,.18)}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+
+.ladder{display:grid;gap:6px}
+.rung{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid var(--line)}
+.rung:first-child{border-color:rgba(244,183,64,.5);background:rgba(244,183,64,.06)}
+.rung .n{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.rung b{font-weight:600;font-size:14.5px;display:block}
+.rung small{color:var(--dim);font-size:13px}
+
+.console{border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:16px;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent)}
+.leds{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.led{display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.led i{width:22px;height:22px;border-radius:50%;background:#1a1d2e;border:1px solid rgba(255,255,255,.12);transition:background .15s,box-shadow .15s}
+.led.on i{background:var(--c);box-shadow:0 0 18px var(--c),0 0 4px var(--c)}
+.meter{display:grid;grid-template-columns:76px 1fr 42px;align-items:center;gap:10px;font-size:13px;color:var(--dim)}
+.meter .track{height:6px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden}
+.meter .fill{height:100%;width:0;border-radius:3px;background:var(--c);transition:width .25s}
+.meter b{font-family:var(--mono);font-weight:500;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums;font-size:12px}
+.btn{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);border-radius:999px;padding:9px 16px;font-size:13.5px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+[hidden]{display:none!important}
+.btn:hover{background:rgba(255,255,255,.1)}
+.btn.primary{background:var(--ink);color:var(--void);border-color:var(--ink);font-weight:600}
+.btn.primary:hover{background:#fff}
+
+.team{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.member{padding:14px;border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;gap:4px}
+.member b{font-family:var(--display);font-size:17px;font-weight:700}
+.member span{font-size:13px;color:var(--dim)}
+
+.tour{display:flex;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid var(--line)}
+
+/* ---------- demo ---------- */
+.demo-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.status{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-radius:12px;border:1px dashed rgba(244,183,64,.45);background:rgba(244,183,64,.05);font-size:13.5px;line-height:1.5;color:#d8dcea;max-width:640px}
+.status.real{border:1px solid rgba(79,214,232,.45);background:rgba(79,214,232,.06)}
+.status b{color:var(--ink);font-weight:600}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.controls select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 12px;font-size:13px}
+.controls select option{background:#0b0d1e}
+.file-btn{position:relative;overflow:hidden}
+.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.timeline{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center}
+.timeline input[type=range]{width:100%;accent-color:var(--sugar)}
+.epoch{font-family:var(--mono);font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+.epoch b{color:var(--ink);font-weight:500}
+.gal-grid{display:grid;grid-template-columns:repeat(var(--cols,3),1fr);gap:12px}
+.gal{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 50%,rgba(40,48,90,.35),rgba(4,5,13,0) 70%),#05060f;display:flex;flex-direction:column}
+.gal canvas{width:100%;aspect-ratio:1;display:block;cursor:crosshair}
+.gal-cap{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:10px 14px;border-top:1px solid var(--line)}
+.gal-cap b{font-family:var(--display);font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.gal-cap b i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.gal-cap small{display:block;color:var(--dim);font-size:12px;margin-top:2px}
+.gal-cap .count{font-family:var(--mono);font-size:20px;font-variant-numeric:tabular-nums;text-align:right;line-height:1}
+.gal-cap .count small{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--dim)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+.legend i.ring{background:none;border:1.5px solid var(--loom);box-shadow:none}
+.demo-bottom{display:grid;grid-template-columns:1.6fr 1fr;gap:12px}
+.card{border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+#popChart{width:100%;height:220px;display:block}
+.readout{display:grid;gap:10px}
+.readout .who{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.readout .who b{font-family:var(--display);font-size:17px;font-weight:700}
+.readout .who small{display:block;color:var(--dim);font-size:12.5px;margin-top:2px}
+.readout .sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:4px}
+.empty{color:var(--dim);font-size:14px;line-height:1.5}
+.act{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;color:var(--void);font-weight:600;background:var(--c)}
+.schema{font-family:var(--mono);font-size:12px;line-height:1.55;background:#03040b;border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;color:#b9c0d6;white-space:pre}
+details summary{cursor:pointer;font-size:14px;color:var(--dim);list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:"+";font-family:var(--mono);width:16px;color:var(--sugar)}
+details[open] summary::before{content:"−"}
+details > div{margin-top:12px;display:grid;gap:10px}
+
+@media (max-width:860px){
+  .gal-grid{grid-template-columns:1fr}
+  .demo-bottom{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .outcomes,.team,.params{grid-template-columns:1fr}
+  .map-row{grid-template-columns:92px 14px 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .panel,.tip{transition:none}
+}
+/* Evacuation scene */
+.hero{display:block;padding:clamp(36px,5vh,68px) max(20px,calc((100vw - 1040px)/2)) 96px}
+.mission h1{font-size:clamp(40px,6vw,78px);margin:8px 0 10px}
+.mission p{color:var(--body-copy);font-size:clamp(15px,2vw,19px)}
+.mission .hero-actions{margin:18px 0 24px}
+.comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.comparison figcaption{font:600 clamp(12px,2vw,17px) var(--display);min-height:2.6em}
+.comparison .evacuation{aspect-ratio:1.8}
+.outcome-text{min-height:3em;padding-top:8px;color:var(--gold);font:600 clamp(11px,1.8vw,15px) var(--body)}
+@media(max-width:550px){.comparison{gap:8px}.comparison .evacuation{aspect-ratio:1.2;border-radius:10px}.fly-pilot{width:51%!important}}
+
+#evacReadout{color:var(--caption)}
+.evacuation{position:relative;isolation:isolate;overflow:hidden;aspect-ratio:1.37;border:1px solid var(--line);border-radius:22px;background:radial-gradient(circle at 37% 44%,#23120d,#080a12 53%,#020407)}
+.orbit{position:absolute;left:10%;top:26%;width:62%;height:37%;border:1px dashed var(--caption);border-radius:50%;transform:rotate(-16deg);opacity:.45}
+.dying-star{position:absolute;left:22%;top:30%;width:29%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 43% 43%,#fff8de,#ffd27b 35%,#da5226 72%,#5f1f12);box-shadow:0 0 42px #ec792b;transition:transform .85s ease,opacity .65s}
+.ship{position:absolute;z-index:2;left:65%;top:35%;width:10%;height:8%;filter:drop-shadow(0 0 8px #99dbff);transition:transform .85s cubic-bezier(.45,.06,.78,.39),opacity .7s}
+.ship i{display:block;width:100%;height:100%;background:linear-gradient(#c8e5f4,#465e72 49%,#e0f3fd 55%,#647e8f);clip-path:polygon(0 34%,32% 34%,25% 0,100% 50%,25% 100%,32% 66%,0 66%)}
+.fly-pilot{position:absolute;z-index:3;bottom:5%;right:5%;width:32%;background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.fly-pilot img{width:100%;display:block;aspect-ratio:1.8;object-fit:cover}
+.fly-pilot span{display:block;padding:6px;color:var(--ink);font:clamp(9px,1.2vw,13px) var(--mono)}
+.evacuation[data-phase=warning] .dying-star{transform:scale(1.45)}
+.evacuation[data-phase=escaped] .ship{transform:translate(430%,-220%) scale(.25);opacity:0}
+.evacuation[data-phase=escaped] .fly-pilot{border-color:var(--gold)}
+.evacuation[data-phase=escaped] .dying-star{animation:star-burst 1.5s .35s both}
+@keyframes star-burst{0%{transform:scale(1.45)}55%{transform:scale(4);opacity:.95}100%{transform:scale(2.7);opacity:.22}}
+@media(prefers-reduced-motion:reduce){.evacuation[data-phase=escaped] .dying-star{animation:none;opacity:.35}}
+.evacuation[data-phase=lost] .dying-star{transform:scale(4);opacity:.85}
+.evacuation[data-phase=lost] .ship{opacity:0}
+@media(prefers-reduced-motion:reduce){.dying-star,.ship{transition:none}}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main class="hero" id="hero">
+  <header class="mission">
+    <div class="eyebrow">Fermi Fly</div>
+    <h1>Can a fly save a spaceship?</h1>
+    <p>Two ships. Same supernova. Only one fly brain can send the order to escape.</p>
+    <div class="hero-actions">
+      <button class="btn primary" id="trigger" disabled>Trigger both supernovae</button>
+      <button class="btn" id="heroDemo">See the galaxy experiment</button>
+    </div>
+  </header>
+  <div class="comparison">
+    <figure>
+      <figcaption>Normal fly brain</figcaption>
+      <div class="evacuation" data-phase="ready">
+        <div class="orbit"></div><div class="dying-star"></div><div class="ship"><i></i></div>
+        <div class="fly-pilot"><img src="fermi-fly.webp" alt="Illustrated fruit fly brain"><span>Escape neuron on</span></div>
+      </div>
+      <p class="outcome-text" role="status">Ship in orbit</p>
+    </figure>
+    <figure>
+      <figcaption>Escape neuron switched off</figcaption>
+      <div class="evacuation" data-phase="ready">
+        <div class="orbit"></div><div class="dying-star"></div><div class="ship"><i></i></div>
+        <div class="fly-pilot"><img src="fermi-fly.webp" alt="Illustrated fruit fly brain"><span>Escape neuron off</span></div>
+      </div>
+      <p class="outcome-text" role="status">Ship in orbit</p>
+    </figure>
+  </div>
+  <p id="evacReadout" class="specimen-note" role="status">Ship movement follows recorded responses from the real fly-brain model.</p>
+</main>
+<div class="hint">Drag to look around · Click a world · <button class="btn" id="mapHome">Home</button></div>
+
+<nav class="dock" id="dock" aria-label="Project sections"></nav>
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+<div class="conn" id="conn" role="status">Live backend</div>
+
+<aside class="panel" id="panel" aria-label="Section details">
+  <div class="panel-inner">
+    <div class="panel-top">
+      <div class="crumb" id="crumb">Galaxy / <i>Section</i></div>
+      <button class="icon-btn" id="closeBtn" aria-label="Close and return to the galaxy">×</button>
+    </div>
+
+    <!-- THE QUESTION -->
+    <section data-id="question">
+      <h2>The galaxy should be full. It's silent.</h2>
+      <p class="lede">The Milky Way is old and big enough that someone should have spread across it by now. We see no one. That gap is the Fermi paradox.</p>
+      <p>We fill a simulated galaxy with colonies and give every one of them the same decision maker: a fruit fly brain from the <strong>FlyWire connectome</strong>. Planets taste good or bad, dying stars loom, and the fly's own wiring decides whether to settle, expand, pull back or flee.</p>
+      <div class="pitch">“We gave a fruit fly the keys to a galaxy.”</div>
+      <div class="block">
+        <h3>What we test</h3>
+        <p>Does a colony spread farther when it cannot flee or sense hostility? Does the intact brain behave differently from a hand-written rule or a degree-preserving shuffle of its wiring?</p>
+      </div>
+    </section>
+
+    <!-- THE BRAIN -->
+    <section data-id="brain">
+      <h2>One fly brain steers every colony</h2>
+      <p class="lede">Shiu's spiking model of the whole adult fly brain, ported to PyTorch so thousands of brains run at once on GPUs.</p>
+      <div class="stats">
+        <div class="stat"><b>~138k</b><span>neurons</span></div>
+        <div class="stat"><b>~15M</b><span>connections, signs from Shiu's file</span></div>
+        <div class="stat"><b>100–200</b><span>ms of brain time per decision</span></div>
+      </div>
+      <div class="block">
+        <h3>What a colony senses</h3>
+        <div class="map">
+          <div class="map-row"><span class="tag c-sugar">Sugar</span><span class="arrow">→</span><span>A habitable world: water, energy, resources</span></div>
+          <div class="map-row"><span class="tag c-bitter">Bitter</span><span class="arrow">→</span><span>Hostile conditions: radiation, cold, long travel</span></div>
+          <div class="map-row"><span class="tag c-loom">Looming</span><span class="arrow">→</span><span>A threat getting closer, driven by 1 / time until the event</span></div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>What it decides</h3>
+        <div class="map">
+          <div class="map-row"><span class="tag c-sugar">MN9</span><span class="arrow">→</span><span>Settle and grow. Firing rate sets the growth rate.</span></div>
+          <div class="map-row"><span class="tag c-fwd">DNp09</span><span class="arrow">→</span><span>Walk forward: send colony ships onward</span></div>
+          <div class="map-row"><span class="tag c-bitter">MDN</span><span class="arrow">→</span><span>Walk backward: pull back and consolidate</span></div>
+          <div class="map-row"><span class="tag c-loom">Giant Fiber</span><span class="arrow">→</span><span>Any spike abandons the system. Overrides everything.</span></div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Model settings (Shiu LIF)</h3>
+        <dl class="params">
+          <div><dt>Resting potential</dt><b>−52 mV</b></div>
+          <div><dt>Threshold</dt><b>−45 mV</b></div>
+          <div><dt>Membrane τ</dt><b>20 ms</b></div>
+          <div><dt>Synapse τ</dt><b>5 ms</b></div>
+          <div><dt>Refractory</dt><b>2.2 ms</b></div>
+          <div><dt>Delay</dt><b>1.8 ms</b></div>
+          <div><dt>Weight per synapse</dt><b>0.275 mV</b></div>
+          <div><dt>Time step</dt><b>0.1 ms</b></div>
+        </dl>
+      </div>
+      <div class="block">
+        <h3>Sanity checks</h3>
+        <ul class="checks" id="checks"></ul>
+        <p class="small-note" id="sanityMeta"></p>
+      </div>
+      <div class="block">
+        <h3>Escape response map</h3>
+        <p>Percent of intact brains that fired Giant Fiber. Rows are sugar, columns are looming, and bitter is held at zero.</p>
+        <div id="escapeMap" style="overflow:auto">Run the backend with a generated experiment to see the map.</div>
+      </div>
+    </section>
+
+    <!-- DEMO -->
+    <section data-id="demo">
+      <div class="demo-head">
+        <div class="block" style="gap:8px">
+          <h2>One galaxy, six decision makers</h2>
+          <p style="margin:0">Same stars, same supernova schedule. Click a colony to inspect its inputs and decision.</p>
+        </div>
+        <div class="controls">
+          <button class="btn primary" id="playBtn" aria-label="Pause playback">❚❚ Pause</button>
+          <button class="btn" id="seedBtn">New mock seed</button>
+          <label class="sr" for="speedSel" style="position:absolute;left:-9999px">Playback speed</label>
+          <select id="speedSel">
+            <option value="8">0.5× speed</option>
+            <option value="16" selected>1× speed</option>
+            <option value="32">2× speed</option>
+            <option value="64">4× speed</option>
+          </select>
+          <span class="btn file-btn">Load sim frames (.json)<input type="file" id="fileIn" accept=".json,application/json" aria-label="Load simulation frames JSON file"></span>
+        </div>
+      </div>
+      <div class="status" id="status"></div>
+      <div class="timeline">
+        <input type="range" id="scrub" min="0" max="0" value="0" aria-label="Epoch">
+        <div class="epoch">Epoch <b id="epochNow">0</b> / <span id="epochMax">0</span></div>
+      </div>
+      <div class="gal-grid" id="galGrid"></div>
+      <div class="legend">
+        <span><i style="--c:var(--sugar)"></i>Settling (MN9)</span>
+        <span><i style="--c:var(--fwd)"></i>Expanding (DNp09)</span>
+        <span><i style="--c:var(--bitter)"></i>Pulling back (MDN)</span>
+        <span><i style="--c:var(--loom)"></i>Fleeing (Giant Fiber)</span>
+        <span><i class="ring"></i>Supernova</span>
+        <span><i style="--c:#e9edf8;width:4px;height:4px"></i>Colony ship</span>
+      </div>
+      <div class="demo-bottom">
+        <div class="card">
+          <div class="card-head"><h3>Living colonies over time</h3><span class="epoch" id="chartNote"></span></div>
+          <canvas id="popChart" aria-label="Line chart of living colonies per galaxy over time"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Selected colony's brain</h3></div>
+          <div class="readout" id="readout"></div>
+        </div>
+      </div>
+      <details>
+        <summary>Frame file format for the sim team</summary>
+        <div>
+          <p>The viewer plays any JSON file in this shape. One entry in <code>galaxies</code> per brain variant; <code>inputs</code>, <code>rates</code> and <code>events</code> are optional.</p>
+          <pre class="schema" id="schemaText"></pre>
+          <div><button class="btn" id="copySchema">Copy format</button></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- FIRST CONTACT -->
+    <section data-id="contact">
+      <h2>First contact: two fly brains meet</h2>
+      <p class="lede">A proposed extension would let colonies send each other signals through the same circuits. The recorded experiment uses environmental hazards.</p>
+      <div class="loop">
+        <svg viewBox="0 0 420 190" role="img" aria-label="Encounter loop: colony A's DNp09 rate becomes looming for colony B, A's MN9 becomes mild sugar for B, and B's response feeds back to A.">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8d96b0"/></marker>
+          </defs>
+          <circle cx="70" cy="95" r="42" fill="rgba(79,214,232,.08)" stroke="#4fd6e8"/>
+          <text x="70" y="91" text-anchor="middle" fill="#e9edf8" style="font-family:var(--display)" font-weight="700" font-size="22">A</text>
+          <text x="70" y="112" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="10">fly brain</text>
+          <circle cx="350" cy="95" r="42" fill="rgba(165,133,255,.08)" stroke="#a585ff"/>
+          <text x="350" y="91" text-anchor="middle" fill="#e9edf8" style="font-family:var(--display)" font-weight="700" font-size="22">B</text>
+          <text x="350" y="112" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="10">fly brain</text>
+          <path d="M112,72 C180,30 240,30 308,72" fill="none" stroke="#8d96b0" marker-end="url(#ah)"/>
+          <text x="210" y="30" text-anchor="middle" fill="#ff5a4e" style="font-family:var(--mono)" font-size="11">A's DNp09 → looming for B</text>
+          <text x="210" y="46" text-anchor="middle" fill="#f4b740" style="font-family:var(--mono)" font-size="11">A's MN9 → mild sugar for B</text>
+          <path d="M308,118 C240,160 180,160 112,118" fill="none" stroke="#8d96b0" marker-end="url(#ah)"/>
+          <text x="210" y="178" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="11">B responds the same way · up to 3 rounds</text>
+        </svg>
+      </div>
+      <ol class="steps">
+        <li>Colonies come within range and the encounter starts.</li>
+        <li>A advancing looks like something looming to B. A settling nearby tastes like a trade opportunity.</li>
+        <li>B's brain answers, and that answer becomes A's input. Each round resets to rest and carries “they advanced last round” as memory.</li>
+      </ol>
+      <div class="block">
+        <h3>Possible outcomes</h3>
+        <div class="outcomes">
+          <div class="outcome"><b>Coexist</b><span>Both keep settling. Neighbors as trade partners.</span><em>Awaiting run</em></div>
+          <div class="outcome"><b>One side retreats</b><span>MDN wins on one side and it pulls back.</span><em>Awaiting run</em></div>
+          <div class="outcome"><b>Mutual flight</b><span>Both Giant Fibers fire. The dark forest, from wiring alone.</span><em>Awaiting run</em></div>
+          <div class="outcome"><b>Escalation</b><span>Both keep advancing into each other.</span><em>Awaiting run</em></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LESIONS -->
+    <section data-id="lesions">
+      <h2>Which neurons decide whether a galaxy goes quiet?</h2>
+      <p class="lede">Compare the intact brain with Giant Fiber silenced, Giant Fiber and MDN silenced, or bitter-sensing neurons silenced.</p>
+      <p>The results panel reports survival for each variant under the same sequence of hazards.</p>
+    </section>
+
+    <!-- BASELINES -->
+    <section data-id="baselines">
+      <h2>Does the fly actually matter?</h2>
+      <p class="lede">Each policy sees the same stars and hazards as the intact fly.</p>
+      <label>Signal gain <select id="gain"><option>0.5</option><option selected>1.0</option><option>1.5</option></select></label>
+      <canvas id="experimentChart" width="640" height="220" style="width:100%;height:auto" aria-label="Mean surviving colonies with standard error bars"></canvas>
+      <div class="block" id="experiment">Run the backend with a generated experiment to see measured results.</div>
+    </section>
+
+    <!-- HARDWARE -->
+    <section data-id="hardware">
+      <h2>Try a colony scenario</h2>
+      <p class="lede">Adjust sugar, bitter and looming to see how the intact or escape-silenced brain responds.</p>
+      <div class="console" aria-label="Console preview">
+        <div class="leds" id="leds">
+          <div class="led" data-n="MN9" style="--c:var(--sugar)"><i></i>MN9</div>
+          <div class="led" data-n="DNp09" style="--c:var(--fwd)"><i></i>DNp09</div>
+          <div class="led" data-n="MDN" style="--c:var(--bitter)"><i></i>MDN</div>
+          <div class="led" data-n="GF" style="--c:var(--loom)"><i></i>Giant Fiber</div>
+        </div>
+        <div class="meter" style="--c:var(--loom)"><span>Looming</span><div class="track"><div class="fill" id="loomFill"></div></div><b id="loomVal">0.00</b></div>
+        <div><button class="btn primary" id="waveBtn">Simulate a hand wave</button></div>
+        <p style="font-size:12.5px;color:var(--dim);margin:0">Preview only. On the real board, a distance sensor provides the looming signal.</p>
+      </div>
+      <div class="block">
+        <h3>Ask the real fly</h3>
+        <div class="console real-fly offline" id="realFly">
+          <p class="small-note" id="realFlyNote">Runs the actual connectome. Start the backend on a laptop with <code>python -m viz.server</code> and open the page from it to use this.</p>
+          <div class="slider" style="--c:var(--sugar)"><label for="inSugar">Sugar</label><input type="range" id="inSugar" min="0" max="1" step="0.05" value="1"><b id="vSugar">1.00</b></div>
+          <div class="slider" style="--c:var(--bitter)"><label for="inBitter">Bitter</label><input type="range" id="inBitter" min="0" max="1" step="0.05" value="0"><b id="vBitter">0.00</b></div>
+          <div class="slider" style="--c:var(--loom)"><label for="inLoom">Looming</label><input type="range" id="inLoom" min="0" max="1" step="0.05" value="0"><b id="vLoom">0.00</b></div>
+          <label class="check-row"><input type="checkbox" id="silGF"> Silence the Giant Fiber</label>
+          <div><button class="btn primary" id="runFly">Run the fly brain</button> <button class="btn" id="previewFly">Look up cached response</button></div>
+          <div class="fly-out" id="flyOut"></div>
+        </div>
+      </div>
+      <ol class="steps">
+        <li>A distance sensor on the Qwiic port reads a hand moving toward it as looming.</li>
+        <li>The fly runs on a laptop or server, or as a pruned brain on the board itself.</li>
+        <li>LEDs show MN9, DNp09, MDN and the Giant Fiber. A spike flashes, and the colonies on screen flee.</li>
+      </ol>
+    </section>
+
+    <!-- TEAM -->
+    <section data-id="team">
+      <h2>The crew</h2>
+      <p class="lede">Built in one day at Hack Day.</p>
+      <div class="team">
+        <div class="member"><b>Srajan</b></div>
+        <div class="member"><b>Vihan</b></div>
+        <div class="member"><b>Sampath</b></div>
+        <div class="member"><b>Ady</b></div>
+      </div>
+      <div class="block">
+        <h3>Built on</h3>
+        <div class="chips">
+          <span class="chip">FlyWire connectome</span>
+          <span class="chip">Shiu et al. LIF model</span>
+          <span class="chip">PyTorch</span>
+          <span class="chip">Modal GPUs</span>
+          <span class="chip">Arduino UNO Q</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="tour">
+      <button class="btn" id="prevBtn">← Prev</button>
+      <button class="btn" id="nextBtn">Next →</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hexA = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`; };
+
+/* ---------------- places ---------------- */
+const PLACES = [
+  {id:'question', label:'The Question',  blurb:'Why is the galaxy so quiet?',      r:.62, a:2.4,  size:13, kind:'star',   c:['#fff6dc','#f4b740']},
+  {id:'brain',    label:'The Fly Brain', blurb:'138k neurons behind every choice', r:.47, a:4.15, size:12, kind:'ring',   c:['#ffd6ea','#c4508a']},
+  {id:'demo',     label:'Live Demo',     blurb:'One map, six policies',         r:0,   a:0,    size:20, kind:'core',   c:['#ffffff','#9fd8ff']},
+  {id:'contact',  label:'First Contact', blurb:'Two fly brains meet',              r:.75, a:5.42, size:9,  kind:'binary', c:['#dcfbff','#4fd6e8']},
+  {id:'lesions',  label:'Lesion Screen', blurb:'Which neurons decide it',          r:.36, a:1.0,  size:11, kind:'planet', c:['#ffd3c8','#ff5a4e']},
+  {id:'baselines',label:'Baselines',     blurb:'Does the fly matter?',             r:.84, a:3.75, size:10, kind:'planet', c:['#eef3ff','#7d93c9']},
+  {id:'hardware', label:'Fly Console',   blurb:'Try a colony scenario',       r:.70, a:.22,  size:10, kind:'moon',   c:['#f0eadf','#a39582']},
+  {id:'team',     label:'The Crew',      blurb:'Who built this',                   r:.86, a:4.85, size:8,  kind:'planet', c:['#dcffe6','#3fae74']}
+];
+const HOME_SECTIONS = ['brain', 'demo', 'baselines', 'hardware'];
+const ORDER = ['question','brain','demo','contact','lesions','baselines','hardware','team'];
+const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
+
+/* dock */
+const dock = $('#dock');
+ORDER.forEach(id => {
+  const p = byId[id], b = document.createElement('button');
+  b.innerHTML = `<span class="dot" style="background:${p.c[1]}"></span>${p.label}`;
+  b.dataset.id = id;
+  if (!HOME_SECTIONS.includes(id)) b.classList.add('secondary-place');
+  b.addEventListener('click', () => go(id));
+  dock.appendChild(b);
+});
+
+/* ---------------- sky ---------------- */
+const sky = $('#sky'), g = sky.getContext('2d');
+let W = 0, H = 0, DPR = 1, S = 1;
+const TILT = .5;
+const cam = {x:-.1, y:.02, z:1, tx:-.1, ty:.02, tz:1};
+const par = {x:0, y:0, tx:0, ty:0};
+let rot = .6, drag = null;
+
+function resize(){
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  sky.width = W * DPR; sky.height = H * DPR;
+  g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  S = Math.min(W * .98, H * 1.75) * .48;
+  const home = W < 700 ? 0 : -.12;
+  if (!current) { cam.tx = home; }
+}
+addEventListener('resize', resize);
+
+/* particles in buckets for fast drawing */
+const BUCKET_COLORS = [[255,214,160],[244,236,255],[160,188,255],[255,150,200]];
+const SIN_T = Math.sqrt(1 - TILT*TILT);
+const mk = fill => ({fill, x:[], y:[], z:[], s:[]});
+const buckets = BUCKET_COLORS.flatMap(c => [.32,.85].map(a => mk(`rgba(${c},${a})`)));
+/* diffuse disc (dim), halo (old, warm, very dim), globular clusters, dust (drawn dark) */
+const discB = [mk('rgba(200,210,255,.3)'), mk('rgba(255,225,190,.34)'), mk('rgba(170,190,255,.5)')];
+const haloB = [mk('rgba(255,214,170,.26)'), mk('rgba(230,225,255,.36)'), mk('rgba(255,236,200,.6)')];
+const dustB = [mk('rgba(6,6,16,.13)')];
+(function makeHaloAndDisc(){
+  const rnd = Math.random, gauss = () => (rnd()+rnd()+rnd()-1.5)/1.5;
+  /* exponential disc between the arms, thin in z */
+  for (let i = 0; i < 6500; i++){
+    const r = Math.min(1.25, -Math.log(1 - rnd()*.985)*.3 + .02), a = rnd()*Math.PI*2;
+    const b = discB[r < .35 ? 1 : rnd() < .12 ? 2 : 0];
+    b.x.push(r*Math.cos(a)); b.y.push(r*Math.sin(a)); b.z.push(gauss()*.025*(1.2 - r*.6)); b.s.push(rnd() < .1 ? 1.2 : .8);
+  }
+  /* dust lanes trailing the inner edge of each arm */
+  for (let i = 0; i < 2600; i++){
+    const arm = i % 3, t = Math.pow(rnd(), .7), r = .12 + t*.85;
+    const a = arm*2*Math.PI/3 + r*3.3 - .2 + gauss()*.06;
+    const b = dustB[0];
+    b.x.push(r*Math.cos(a) + gauss()*.012); b.y.push(r*Math.sin(a) + gauss()*.012); b.z.push(0); b.s.push(1.4 + rnd()*1.6);
+  }
+  /* spherical stellar halo, denser toward the center */
+  for (let i = 0; i < 3200; i++){
+    const r = Math.min(1.7, .08 + Math.pow(rnd(), 1.8)*1.7);
+    const u = rnd()*2 - 1, ph = rnd()*Math.PI*2, q = Math.sqrt(1 - u*u);
+    const b = haloB[rnd() < .75 ? 0 : 1];
+    b.x.push(r*q*Math.cos(ph)); b.y.push(r*q*Math.sin(ph)); b.z.push(r*u*.85); b.s.push(rnd() < .12 ? 1.3 : .9);
+  }
+  /* globular clusters orbiting in the halo */
+  for (let k = 0; k < 16; k++){
+    const r = .35 + rnd()*1.05, u = rnd()*2 - 1, ph = rnd()*Math.PI*2, q = Math.sqrt(1 - u*u);
+    const cx = r*q*Math.cos(ph), cy = r*q*Math.sin(ph), cz = r*u*.85;
+    for (let j = 0; j < 45; j++){
+      const sp = .011*Math.abs(gauss()) + .002, uu = rnd()*2 - 1, pp = rnd()*Math.PI*2, qq = Math.sqrt(1 - uu*uu);
+      const b = haloB[j < 12 ? 2 : 1];
+      b.x.push(cx + sp*qq*Math.cos(pp)); b.y.push(cy + sp*qq*Math.sin(pp)); b.z.push(cz + sp*uu); b.s.push(j < 5 ? 1.4 : .9);
+    }
+  }
+})();
+(function makeGalaxy(){
+  const rnd = Math.random, gauss = () => (rnd()+rnd()+rnd()-1.5)/1.5;
+  const ARMS = 3;
+  for (let i = 0; i < 5600; i++){
+    const t = Math.pow(rnd(), .62), r = .04 + t * 1.02;
+    const arm = i % ARMS;
+    const a = arm * 2*Math.PI/ARMS + r * 3.3 + gauss() * (.42 - .22*t);
+    const x = r*Math.cos(a) + gauss()*.025, y = r*Math.sin(a) + gauss()*.025;
+    let ci = r < .3 ? 0 : r < .62 ? 1 : 2;
+    if (rnd() < .035 && r > .25) ci = 3;
+    const ai = rnd() < .22 ? 1 : 0;
+    const b = buckets[ci*2+ai];
+    b.x.push(x); b.y.push(y); b.z.push(gauss()*.012); b.s.push(rnd() < .08 ? 1.8 : rnd() < .5 ? 1.1 : .8);
+  }
+  /* bulge: a squashed sphere, so it rises above the disc */
+  for (let i = 0; i < 2200; i++){
+    const r = Math.abs(gauss()) * .22, u = rnd()*2 - 1, ph = rnd()*Math.PI*2, q = Math.sqrt(1 - u*u);
+    const b = buckets[rnd() < .3 ? 1 : 0];
+    b.x.push(r*q*Math.cos(ph)); b.y.push(r*q*Math.sin(ph)); b.z.push(r*u*.6); b.s.push(rnd() < .1 ? 1.6 : .9);
+  }
+})();
+const bg = Array.from({length:260}, () => ({x:Math.random(), y:Math.random(), s:Math.random()*1.2+.3, p:Math.random()*6.28}));
+
+function proj(x, y){
+  const c = Math.cos(rot), s = Math.sin(rot);
+  const X = x*c - y*s, Y = (x*s + y*c) * TILT;
+  return [W/2 + (X - cam.x)*cam.z*S + par.x, H/2 + (Y - cam.y)*cam.z*S + par.y, X, Y];
+}
+
+function body(x, y, r, c, luminous){
+  const gr = g.createRadialGradient(x - r*.35, y - r*.4, r*.08, x, y, r);
+  gr.addColorStop(0, c[0]); gr.addColorStop(.55, c[1]);
+  gr.addColorStop(1, luminous ? hexA(c[1], .9) : '#0b0b1a');
+  g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.2832); g.fill();
+}
+function spikes(x, y, len, col){
+  g.strokeStyle = col; g.lineWidth = 1;
+  g.beginPath(); g.moveTo(x-len, y); g.lineTo(x+len, y); g.moveTo(x, y-len*.8); g.lineTo(x, y+len*.8); g.stroke();
+}
+
+let hover = null, current = null, last = performance.now(), T = 0;
+
+function drawSky(now){
+  const dt = Math.min(.05, (now - last)/1000); last = now; T += dt;
+  if (!reduce && !drag) rot += dt * .016;
+
+  if (current && current.id !== 'demo'){
+    const [, , X, Y] = proj(Math.cos(current.a)*current.r, Math.sin(current.a)*current.r);
+    const panelW = Math.min(480, W);
+    cam.tz = W < 700 ? 1.6 : 2.1;
+    cam.tx = X + (W < 700 ? 0 : panelW/2/(cam.tz*S));
+    cam.ty = Y + (W < 700 ? .18/cam.tz : 0);
+  }
+  const k = reduce ? 1 : 1 - Math.pow(.02, dt);
+  cam.x += (cam.tx - cam.x)*k; cam.y += (cam.ty - cam.y)*k; cam.z += (cam.tz - cam.z)*k;
+  par.x += (par.tx - par.x)*k*.6; par.y += (par.ty - par.y)*k*.6;
+
+  g.globalCompositeOperation = 'source-over';
+  g.fillStyle = '#04050d'; g.fillRect(0, 0, W, H);
+
+  /* background stars */
+  for (const s of bg){
+    const tw = reduce ? .6 : .45 + .35*Math.sin(T*1.3 + s.p);
+    g.fillStyle = `rgba(220,228,255,${tw*.7})`;
+    g.fillRect(s.x*W + par.x*.2, s.y*H + par.y*.2, s.s, s.s);
+  }
+
+  g.globalCompositeOperation = 'lighter';
+  /* core glow */
+  const [cx, cy] = proj(0, 0);
+  const cr = S*cam.z*.42;
+  g.save(); g.translate(cx, cy); g.scale(1, TILT*1.15);
+  let gr = g.createRadialGradient(0, 0, 0, 0, 0, cr);
+  gr.addColorStop(0, 'rgba(255,226,190,.42)'); gr.addColorStop(.35, 'rgba(255,190,150,.12)'); gr.addColorStop(1, 'rgba(120,120,255,0)');
+  g.fillStyle = gr; g.beginPath(); g.arc(0, 0, cr, 0, 6.2832); g.fill(); g.restore();
+
+  /* galaxy particles */
+  const c = Math.cos(rot), s = Math.sin(rot), sc = cam.z*S, ox = W/2 - cam.x*sc + par.x, oy = H/2 - cam.y*sc + par.y;
+  const zs = Math.min(1.8, Math.pow(cam.z, .5));
+  const drawSet = (set, sizeK) => {
+    for (const b of set){
+      g.fillStyle = b.fill;
+      const xs = b.x, ys = b.y, zz = b.z, ss = b.s;
+      for (let i = 0; i < xs.length; i++){
+        const X = xs[i]*c - ys[i]*s, Y = (xs[i]*s + ys[i]*c)*TILT - zz[i]*SIN_T;
+        const px = ox + X*sc, py = oy + Y*sc;
+        if (px < -6 || py < -6 || px > W+6 || py > H+6) continue;
+        const z = ss[i]*sizeK; g.fillRect(px, py, z, z);
+      }
+    }
+  };
+
+  /* faint halo glow, round because the halo is a sphere */
+  gr = g.createRadialGradient(cx, cy, 0, cx, cy, sc*1.55);
+  gr.addColorStop(0, 'rgba(150,140,210,.07)'); gr.addColorStop(.5, 'rgba(110,110,190,.035)'); gr.addColorStop(1, 'rgba(80,80,160,0)');
+  g.fillStyle = gr; g.beginPath(); g.arc(cx, cy, sc*1.55, 0, 6.2832); g.fill();
+  drawSet(haloB, zs);
+
+  /* disc glow, flattened by the tilt */
+  g.save(); g.translate(cx, cy); g.scale(1, TILT);
+  gr = g.createRadialGradient(0, 0, 0, 0, 0, sc*1.15);
+  gr.addColorStop(0, 'rgba(210,200,255,.14)'); gr.addColorStop(.45, 'rgba(150,165,240,.07)'); gr.addColorStop(1, 'rgba(120,140,230,0)');
+  g.fillStyle = gr; g.beginPath(); g.arc(0, 0, sc*1.15, 0, 6.2832); g.fill(); g.restore();
+  drawSet(discB, zs);
+
+  /* dust lanes darken the disc, then the arms and bulge go on top */
+  g.globalCompositeOperation = 'source-over';
+  drawSet(dustB, Math.min(1.8, cam.z));
+  g.globalCompositeOperation = 'lighter';
+  drawSet(buckets, zs);
+
+  if (!current && !document.body.classList.contains('star-map-open')) return;
+
+  /* orbits */
+  g.globalCompositeOperation = 'source-over';
+  g.setLineDash([2, 6]); g.lineWidth = 1;
+  for (const p of PLACES){
+    if (!p.r) continue;
+    const on = hover === p || current === p;
+    g.strokeStyle = on ? hexA(p.c[1], .5) : 'rgba(170,185,235,.08)';
+    g.beginPath(); g.ellipse(cx, cy, p.r*sc, p.r*sc*TILT, 0, 0, 6.2832); g.stroke();
+  }
+  g.setLineDash([]);
+
+  /* places */
+  const ks = Math.pow(cam.z, .65);
+  for (const p of PLACES){
+    const [x, y] = proj(Math.cos(p.a)*p.r, Math.sin(p.a)*p.r);
+    const on = hover === p || current === p;
+    const r = p.size*ks*(on ? 1.18 : 1);
+    p.sx = x; p.sy = y; p.sr = r;
+
+    g.globalCompositeOperation = 'lighter';
+    const halo = r*(p.kind === 'core' ? 5 : 3.6)*(on ? 1.25 : 1);
+    gr = g.createRadialGradient(x, y, 0, x, y, halo);
+    gr.addColorStop(0, hexA(p.c[1], p.kind === 'core' || p.kind === 'star' ? .55 : .35)); gr.addColorStop(1, hexA(p.c[1], 0));
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y, halo, 0, 6.2832); g.fill();
+    g.globalCompositeOperation = 'source-over';
+
+    if (p.kind === 'binary'){
+      const ph = reduce ? .8 : T*.9, d = r*1.05;
+      const ax = x + Math.cos(ph)*d, ay = y + Math.sin(ph)*d*.5, bx = x - Math.cos(ph)*d, by = y - Math.sin(ph)*d*.5;
+      body(ax, ay, r*.75, p.c, true); body(bx, by, r*.6, ['#efe6ff','#a585ff'], true);
+    } else if (p.kind === 'ring'){
+      g.strokeStyle = hexA(p.c[0], .55); g.lineWidth = 1.4;
+      g.beginPath(); g.ellipse(x, y, r*2, r*.55, -.32, Math.PI, 2*Math.PI); g.stroke();
+      body(x, y, r, p.c, false);
+      g.beginPath(); g.ellipse(x, y, r*2, r*.55, -.32, 0, Math.PI); g.stroke();
+    } else if (p.kind === 'core'){
+      body(x, y, r*.7, p.c, true);
+      g.globalCompositeOperation = 'lighter';
+      spikes(x, y, r*2.6, 'rgba(220,240,255,.45)');
+      g.globalCompositeOperation = 'source-over';
+    } else if (p.kind === 'star'){
+      body(x, y, r*.85, p.c, true);
+      g.globalCompositeOperation = 'lighter';
+      spikes(x, y, r*2, 'rgba(255,230,180,.4)');
+      g.globalCompositeOperation = 'source-over';
+    } else {
+      body(x, y, r, p.c, false);
+      if (p.kind === 'moon'){
+        g.fillStyle = 'rgba(0,0,0,.18)';
+        g.beginPath(); g.arc(x + r*.3, y + r*.1, r*.22, 0, 6.28); g.arc(x - r*.35, y - r*.25, r*.14, 0, 6.28); g.fill();
+      }
+    }
+
+    if (on){
+      g.save(); g.translate(x, y); g.rotate(reduce ? 0 : T*.5);
+      g.strokeStyle = hexA(p.c[0], .8); g.lineWidth = 1; g.setLineDash([3, 5]);
+      g.beginPath(); g.arc(0, 0, r*2.1 + 6, 0, 6.2832); g.stroke(); g.restore(); g.setLineDash([]);
+    }
+
+    g.font = '600 10.5px "IBM Plex Mono", monospace';
+    if ('letterSpacing' in g) g.letterSpacing = '1.5px';
+    g.textAlign = 'center';
+    g.fillStyle = on ? '#ffffff' : 'rgba(233,237,248,.72)';
+    g.fillText(p.label.toUpperCase(), x, y + Math.max(r*1.3, 10) + 16);
+    if ('letterSpacing' in g) g.letterSpacing = '0px';
+  }
+}
+
+function loop(now){
+  if (!(current && current.id === 'demo')) drawSky(now); else last = now;
+  requestAnimationFrame(loop);
+}
+
+/* pointer: hover, click, drag-to-rotate */
+const tip = $('#tip');
+function hit(mx, my){
+  let best = null, bd = 1e9;
+  for (const p of PLACES){
+    const d = Math.hypot(mx - p.sx, my - p.sy), lim = Math.max(p.sr*1.8, 20);
+    if (d < lim && d < bd){ bd = d; best = p; }
+  }
+  return best;
+}
+sky.addEventListener('pointermove', e => {
+  par.tx = (e.clientX/W - .5) * -18; par.ty = (e.clientY/H - .5) * -12;
+  if (drag){
+    rot += (e.clientX - drag.x) * .004; drag.x = e.clientX; drag.moved = true;
+    return;
+  }
+  hover = hit(e.clientX, e.clientY);
+  sky.style.cursor = hover ? 'pointer' : 'grab';
+  if (hover && !current){
+    tip.innerHTML = `<b>${hover.label}</b><span>${hover.blurb}</span>`;
+    tip.style.left = Math.min(e.clientX + 16, W - 250) + 'px'; tip.style.top = (e.clientY + 14) + 'px';
+    tip.classList.add('on');
+  } else tip.classList.remove('on');
+});
+sky.addEventListener('pointerleave', () => { hover = null; tip.classList.remove('on'); });
+sky.addEventListener('pointerdown', e => { drag = {x:e.clientX, moved:false}; sky.setPointerCapture(e.pointerId); });
+sky.addEventListener('pointerup', e => {
+  const moved = drag && drag.moved; drag = null;
+  if (moved) return;
+  const p = hit(e.clientX, e.clientY);
+  if (p) go(p.id); else if (current) close();
+});
+
+/* ---------------- panel + routing ---------------- */
+const panel = $('#panel');
+function go(id){ if (location.hash !== '#' + id) location.hash = id; else open(id); }
+function open(id){
+  const p = byId[id]; if (!p) return;
+  current = p; tip.classList.remove('on');
+  document.body.classList.add('panel-open');
+  panel.classList.add('open'); panel.classList.toggle('wide', id === 'demo');
+  document.querySelectorAll('section[data-id]').forEach(s => s.classList.toggle('on', s.dataset.id === id));
+  dock.querySelectorAll('button').forEach(b => b.setAttribute('aria-current', b.dataset.id === id));
+  $('#crumb').innerHTML = `Galaxy / <i>${p.label}</i>`;
+  const i = ORDER.indexOf(id);
+  $('#prevBtn').textContent = '← ' + byId[ORDER[(i + ORDER.length - 1) % ORDER.length]].label;
+  $('#nextBtn').textContent = byId[ORDER[(i + 1) % ORDER.length]].label + ' →';
+  panel.scrollTop = 0;
+  if (id === 'demo') demo.start(); else demo.stop();
+}
+function close(){
+  current = null;
+  document.body.classList.remove('star-map-open');
+  document.body.classList.remove('panel-open');
+  panel.classList.remove('open', 'wide');
+  dock.querySelectorAll('button').forEach(b => b.setAttribute('aria-current', false));
+  cam.tz = 1; cam.tx = W < 700 ? 0 : -.12; cam.ty = .02;
+  demo.stop();
+  try { history.replaceState(null, '', location.pathname + location.search); } catch(e) { location.hash = ''; }
+}
+addEventListener('hashchange', () => { const id = location.hash.slice(1); id && byId[id] ? open(id) : close(); });
+$('#closeBtn').addEventListener('click', close);
+addEventListener('keydown', e => { if (e.key === 'Escape' && (current || document.body.classList.contains('star-map-open'))) close(); });
+$('#prevBtn').addEventListener('click', () => { const i = ORDER.indexOf(current.id); go(ORDER[(i + ORDER.length - 1) % ORDER.length]); });
+$('#nextBtn').addEventListener('click', () => { const i = ORDER.indexOf(current.id); go(ORDER[(i + 1) % ORDER.length]); });
+
+
+/* hardware preview */
+const hw = (() => {
+  const leds = Object.fromEntries([...document.querySelectorAll('.led')].map(l => [l.dataset.n, l]));
+  const fill = $('#loomFill'), val = $('#loomVal');
+  let busy = false;
+  const set = (n, on) => leds[n].classList.toggle('on', on);
+  set('MN9', true);
+  function showRates(r, gfSpiked){
+    set('MN9', r.MN9.mean_hz > 5); set('DNp09', r.DNp09.mean_hz > 5); set('MDN', r.MDN.mean_hz > 5); set('GF', gfSpiked > 0);
+  }
+  function wave(peak){
+    if (busy) return; busy = true;
+    const steps = [.15,.3,.5,.72,.9].map(v => v*peak/.9), tick = reduce ? 120 : 160;
+    steps.forEach((v, i) => setTimeout(() => {
+      fill.style.width = v*100 + '%'; val.textContent = v.toFixed(2);
+      set('MN9', v < .5); set('MDN', v >= .3 && v < .72); set('DNp09', false);
+      if (v >= .72) set('GF', true);
+    }, i*tick));
+    setTimeout(() => {
+      fill.style.width = '0%'; val.textContent = '0.00';
+      set('GF', false); set('MDN', false); set('MN9', true); busy = false;
+    }, steps.length*tick + 1100);
+  }
+  $('#waveBtn').addEventListener('click', () => wave(.9));
+  return {wave, showRates};
+})();
+
+/* ---------------- sanity checks (real results from brain.sanity) ---------------- */
+/* Bundled copy of results/sanity_intact_cpu.json, so the hosted page shows real numbers.
+   When the backend is running, the newest results/sanity_*.json replaces it. */
+const BUNDLED_SANITY = {time:'2026-11-14T17:43:35+00:00', device:'cpu', commit:'8749f3f', replicates:6, checks:[
+  {name:'No input -> silence', criterion:'0 spikes in the whole brain', measured:'0 spikes', passed:true, as_expected:true},
+  {name:'Sugar (200 Hz) -> MN9 fires at about 50 Hz', criterion:'MN9 rate within 25-125 Hz', measured:'MN9 = 66.7 Hz', passed:true, as_expected:true},
+  {name:'Sugar + bitter -> MN9 drops a lot', criterion:'MN9 below 50% of its sugar-only rate', measured:'MN9 = 0.4 Hz (1% of sugar-only)', passed:true, as_expected:true},
+  {name:'Looming (150 Hz) -> Giant Fibre fires', criterion:'Giant Fibre spikes in every replicate', measured:'spiked in 6/6, first spike at 4.8 ms', passed:true, as_expected:true},
+  {name:'Giant Fibre silenced -> no escape', criterion:'0 Giant Fibre spikes under the same looming input', measured:'spiked in 0/6', passed:true, as_expected:true},
+  {name:'Input stopped -> activity dies out', criterion:'0 spikes in the whole brain 200-300 ms after input ends', measured:'0 spikes', passed:true, as_expected:true}
+]};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+function renderSanity(s, source){
+  $('#checks').innerHTML = s.checks.map(c => {
+    const ok = c.as_expected ?? c.passed;
+    return `<li><div>${esc(c.name.replace('->', '→'))}<small>${esc(c.measured)}</small></div><span class="pill ${ok ? 'pass' : 'fail'}">${c.passed ? 'Pass' : 'Fail'}</span></li>`;
+  }).join('');
+  const d = new Date(s.time);
+  $('#sanityMeta').textContent = `Intact brain on ${s.device.toUpperCase()}, ${s.replicates} replicate brains, seed 0, commit ${s.commit}. ${source}, run ${isNaN(d) ? s.time : d.toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'})}.`;
+}
+renderSanity(BUNDLED_SANITY, 'From results/sanity_intact_cpu.json');
+
+/* ---------------- demo viewer ---------------- */
+const VARIANT_INFO = {
+  intact:   {label:'Intact fly',    note:'Real wiring',              color:'#f2f4ff'},
+  fearless: {label:'Fearless',      note:'Giant Fiber silenced',     color:'#ff9f5a'},
+  hungry:   {label:'Always hungry', note:'Bitter neurons silenced',  color:'#acbedc'},
+  fearless_no_retreat: {label:'Fearless, no retreat', note:'Giant Fiber and MDN silenced', color:'#ffcf85'},
+  shuffle: {label:'Degree-preserving shuffle', note:'Interneuron targets rewired', color:'#78d9ae'},
+  threshold: {label:'Threshold rule', note:'Hand-written decisions', color:'#e7eaf0'},
+  neural_net: {label:'Neural net', note:'Small network fitted to the fly', color:'#c9b8ff'}
+};
+const EXTRA_COLORS = ['#7fe3c1','#ffd36e','#8fb8ff','#ff8fb1'];
+const tokens = getComputedStyle(document.documentElement);
+const ACTION_COLOR = Object.fromEntries(Object.entries({settle:'--sugar', expand:'--fwd', retreat:'--bitter', flee:'--loom'})
+  .map(([action, token]) => [action, tokens.getPropertyValue(token).trim()]));
+
+function mulberry32(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* Stand-in sim so the viewer has something to play. Simple rules, NOT the fly brain. */
+function mockRun(seed){
+  const R = mulberry32(seed), N = 300, E = 360;
+  const stars = [];
+  for (let i = 0; i < N; i++){
+    const t = Math.pow(R(), .8), r = .07 + .93*t, arm = i % 2;
+    const a = arm*Math.PI + r*4.2 + (R() - .5)*1.1;
+    stars.push({id:i, x:+(r*Math.cos(a)).toFixed(4), y:+(r*Math.sin(a)).toFixed(4), hab:+R().toFixed(3), host:+Math.min(1, R()*.75 + r*.25).toFixed(3)});
+  }
+  const near = (rad) => stars.map(s => stars.filter(o => o !== s && Math.hypot(o.x - s.x, o.y - s.y) < rad).map(o => o.id));
+  const nbr = near(.26), blast = near(.15);
+  const sn = [];
+  for (let e = 20; e < E; e++) if (R() < .15) sn.push({t:e, star:Math.floor(R()*N)});
+  const loom = Array.from({length:E}, () => new Float32Array(N));
+  for (const ev of sn){
+    for (let dt = 1; dt <= 30; dt++){
+      const e = ev.t - dt; if (e < 0) continue;
+      const v = Math.min(1, 1/(dt/5 + 1));
+      for (const k of [ev.star, ...blast[ev.star]]) if (loom[e][k] < v) loom[e][k] = v;
+    }
+  }
+  const starts = stars.filter(s => Math.hypot(s.x, s.y) > .35 && Math.hypot(s.x, s.y) < .75).sort((a, b) => b.hab - a.hab).slice(0, 4).map(s => s.id);
+  const variants = ['intact', 'fearless', 'hungry'];
+  const frames = Array.from({length:E}, (_, t) => ({t, galaxies:{}}));
+
+  variants.forEach((v, vi) => {
+    const rr = mulberry32(seed*7 + vi*101 + 3);
+    const col = new Map(starts.map(s => [s, {pop:.4, mem:0}]));
+    let ships = [];
+    for (let e = 0; e < E; e++){
+      const out = [], events = [];
+      const target = new Set(ships.map(s => s.to));
+      for (const [s, c] of [...col]){
+        const st = stars[s];
+        const sug = st.hab, bit = st.host, lm = Math.min(1, loom[e][s] + c.mem);
+        const bIn = v === 'hungry' ? 0 : bit;
+        const MN9 = 58*sug*(1 - .7*bIn)*(1 - .45*lm);
+        const DNp09 = 40*sug*(1 - .8*lm)*(c.pop > .5 ? 1 : .35);
+        const MDN = 26*bIn + 20*lm*(1 - .3*sug);
+        const gfp = v === 'fearless' ? 0 : 1/(1 + Math.exp(-(lm - .55)*14));
+        const GF = rr() < gfp*.55 ? 1 : 0;
+        const rates = {MN9:+MN9.toFixed(1), DNp09:+DNp09.toFixed(1), MDN:+MDN.toFixed(1), GF};
+        const inputs = {sugar:+sug.toFixed(2), bitter:+bit.toFixed(2), looming:+lm.toFixed(2)};
+        let action;
+        if (GF){
+          const opts = nbr[s].filter(k => !col.has(k) && !target.has(k) && loom[e][k] < .15);
+          if (opts.length){ const to = opts[Math.floor(rr()*opts.length)]; ships.push({from:s, to, progress:0, pop:Math.max(.12, c.pop*.5)}); target.add(to); }
+          col.delete(s);
+          out.push({id:s, star:s, pop:+c.pop.toFixed(3), action:'flee', inputs, rates});
+          continue;
+        }
+        const attr = .035*bit*(1 - .7*Math.min(1, MDN/26));
+        c.pop += .06*(MN9/58)*(1 - c.pop) - attr*c.pop - .01*(MDN/40)*c.pop;
+        action = MN9 >= MDN ? 'settle' : 'retreat';
+        if (DNp09 > 13 && c.pop > .42 && rr() < DNp09/90){
+          const opts = nbr[s].filter(k => !col.has(k) && !target.has(k));
+          if (opts.length){
+            let best = opts[0], bs = -9;
+            for (const k of opts){ const sc = stars[k].hab - (v === 'hungry' ? 0 : stars[k].host) + rr()*.35; if (sc > bs){ bs = sc; best = k; } }
+            ships.push({from:s, to:best, progress:0, pop:.14}); target.add(best); c.pop -= .08; action = 'expand';
+          }
+        }
+        c.mem *= .85;
+        if (c.pop < .04){ col.delete(s); events.push({type:'extinct', star:s}); continue; }
+        out.push({id:s, star:s, pop:+Math.min(1, c.pop).toFixed(3), action, inputs, rates});
+      }
+      ships = ships.filter(sh => {
+        const a = stars[sh.from], b = stars[sh.to];
+        sh.progress += .02/Math.max(.03, Math.hypot(a.x - b.x, a.y - b.y));
+        if (sh.progress >= 1){
+          const ex = col.get(sh.to);
+          if (ex) ex.pop = Math.min(1, ex.pop + sh.pop); else col.set(sh.to, {pop:sh.pop, mem:0});
+          return false;
+        }
+        return true;
+      });
+      for (const ev of sn) if (ev.t === e){
+        events.push({type:'supernova', star:ev.star});
+        for (const k of [ev.star, ...blast[ev.star]]) col.delete(k);
+        for (const k of nbr[ev.star]){ const c = col.get(k); if (c) c.mem = Math.min(.5, c.mem + .25); }
+      }
+      frames[e].galaxies[v] = {colonies:out, ships:ships.map(s => ({from:s.from, to:s.to, progress:+s.progress.toFixed(3)})), events};
+    }
+  });
+  return {meta:{variants, seed, epochs:E, source:'mock'}, stars, frames};
+}
+
+const SCHEMA = `{
+  "meta":   { "variants": ["intact", "fearless", "hungry"], "seed": 42, "epochs": 360 },
+  "stars":  [ { "id": 0, "x": 0.41, "y": -0.22 } ],
+  "frames": [
+    {
+      "t": 0,
+      "galaxies": {
+        "intact": {
+          "colonies": [
+            { "id": 7, "star": 0, "pop": 0.6, "action": "settle",
+              "inputs": { "sugar": 0.8, "bitter": 0.2, "looming": 0.1 },
+              "rates":  { "MN9": 48, "DNp09": 12, "MDN": 3, "GF": 0 } }
+          ],
+          "ships":  [ { "from": 0, "to": 5, "progress": 0.3 } ],
+          "events": [ { "type": "supernova", "star": 12 },
+                      { "type": "encounter", "a": 7, "b": 9, "outcome": "mutual_flight" } ]
+        }
+      }
+    }
+  ]
+}`;
+$('#schemaText').textContent = SCHEMA;
+$('#copySchema').addEventListener('click', async e => {
+  try { await navigator.clipboard.writeText(SCHEMA); e.target.textContent = 'Copied'; }
+  catch(err){ e.target.textContent = 'Copy blocked: select the text above'; }
+  setTimeout(() => e.target.textContent = 'Copy format', 1800);
+});
+
+const demo = (() => {
+  let run = null, series = {}, frame = 0, playing = !reduce, fpsE = 16, acc = 0, raf = 0, lastT = 0, active = false, sel = null, seed = 42;
+  let cards = [], starMap = new Map(), scale = 1;
+  const grid = $('#galGrid'), scrub = $('#scrub'), chart = $('#popChart'), cg = chart.getContext('2d');
+  const playBtn = $('#playBtn');
+
+  function colorOf(key, i){ return (VARIANT_INFO[key] || {}).color || EXTRA_COLORS[i % EXTRA_COLORS.length]; }
+
+  function load(data, sourceName){
+    if (!data || !Array.isArray(data.stars) || !Array.isArray(data.frames) || !data.frames.length) throw new Error('The file needs "stars" and a non-empty "frames" array.');
+    const variants = (data.meta && data.meta.variants) || Object.keys(data.frames[0].galaxies || {});
+    if (!variants.length) throw new Error('No galaxies found. Add meta.variants or frames[0].galaxies.');
+    run = data; run.meta = Object.assign({}, data.meta, {variants});
+    starMap = new Map(run.stars.map(s => [s.id, s]));
+    scale = Math.max(...run.stars.map(s => Math.max(Math.abs(s.x), Math.abs(s.y)))) || 1;
+    series = {};
+    for (const v of variants) series[v] = run.frames.map(f => ((f.galaxies[v] || {}).colonies || []).filter(c => c.action !== 'flee').length);
+    buildCards();
+    $('#seedBtn').hidden = Boolean(sourceName);
+    frame = 0; scrub.max = run.frames.length - 1; scrub.value = 0;
+    $('#epochMax').textContent = run.frames.length - 1;
+    const first = (run.frames[0].galaxies[variants[0]] || {}).colonies || [];
+    sel = first.length ? {v:variants[0], star:first[0].star} : null;
+    const st = $('#status');
+    if (sourceName === 'live'){
+      st.className = 'status real';
+      st.innerHTML = `<span><b>Live from the galaxy sim.</b> Epochs appear as the backend sends them.</span>`;
+    } else if (sourceName){
+      st.className = 'status real';
+      st.innerHTML = `<span><b>Real sim frames:</b> ${sourceName.replace(/[<>&]/g, '')} · ${variants.length} galaxies · ${run.frames.length} epochs.</span>`;
+    } else {
+      st.className = 'status';
+      st.innerHTML = `<span><b>Mock data.</b> These colonies follow simple stand-in rules so the viewer has something to play. They are not fly decisions. Load the sim's frame file to replace them.</span>`;
+    }
+    draw();
+  }
+
+  function buildCards(){
+    grid.innerHTML = '';
+    grid.style.setProperty('--cols', Math.min(2, run.meta.variants.length));
+    cards = run.meta.variants.map((v, i) => {
+      const info = VARIANT_INFO[v] || {label:v, note:''};
+      const el = document.createElement('div');
+      el.className = 'gal';
+      el.innerHTML = `<canvas aria-label="${info.label} galaxy"></canvas><div class="gal-cap"><div><b><i style="background:${colorOf(v, i)}"></i>${info.label}</b><small>${info.note}</small></div><div class="count"><span>0</span><small>colonies</small></div></div>`;
+      grid.appendChild(el);
+      const cv = el.querySelector('canvas');
+      const card = {v, cv, ctx:cv.getContext('2d'), count:el.querySelector('.count span'), size:0};
+      cv.addEventListener('click', e => pick(card, e));
+      return card;
+    });
+    sizeCards();
+  }
+  function sizeCards(){
+    const d = Math.min(devicePixelRatio || 1, 2);
+    for (const c of cards){
+      const w = c.cv.clientWidth || 300;
+      c.size = w; c.cv.width = w*d; c.cv.height = w*d; c.ctx.setTransform(d, 0, 0, d, 0, 0);
+    }
+    const cw = chart.clientWidth || 600;
+    chart.width = cw*d; chart.height = 220*d; cg.setTransform(d, 0, 0, d, 0, 0);
+  }
+  new ResizeObserver(() => { if (run && active){ sizeCards(); draw(); } }).observe(grid);
+
+  const toPx = (c, s) => { const h = c.size/2, k = (h - 12)/scale; return [h + s.x*k, h + s.y*k]; };
+
+  function pick(card, e){
+    const r = card.cv.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+    const cols = ((run.frames[frame].galaxies[card.v] || {}).colonies) || [];
+    let best = null, bd = 16;
+    for (const c of cols){ const s = starMap.get(c.star); if (!s) continue; const [x, y] = toPx(card, s); const d = Math.hypot(x - mx, y - my); if (d < bd){ bd = d; best = c; } }
+    sel = best ? {v:card.v, star:best.star} : null;
+    draw();
+  }
+
+  function drawGal(card){
+    const ctx = card.ctx, n = card.size, f = run.frames[frame].galaxies[card.v] || {};
+    ctx.clearRect(0, 0, n, n);
+    ctx.fillStyle = 'rgba(200,210,245,.22)';
+    for (const s of run.stars){ const [x, y] = toPx(card, s); ctx.fillRect(x - .6, y - .6, 1.2, 1.2); }
+    /* supernova rings from recent frames */
+    for (let b = 0; b < 10 && frame - b >= 0; b++){
+      const ev = (run.frames[frame - b].galaxies[card.v] || {}).events || [];
+      for (const e of ev){
+        if (e.type !== 'supernova' && e.type !== 'encounter') continue;
+        const s = starMap.get(e.type === 'supernova' ? e.star : (e.star ?? e.a));
+        if (!s) continue;
+        const [x, y] = toPx(card, s), a = 1 - b/10;
+        ctx.strokeStyle = e.type === 'supernova' ? `rgba(255,90,78,${a*.9})` : `rgba(255,255,255,${a*.8})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(x, y, 4 + b*3.2*(n/360), 0, 6.2832); ctx.stroke();
+        if (b < 2 && e.type === 'supernova'){ ctx.fillStyle = `rgba(255,220,200,${.8 - b*.3})`; ctx.beginPath(); ctx.arc(x, y, 3, 0, 6.2832); ctx.fill(); }
+      }
+    }
+    /* ships */
+    ctx.strokeStyle = 'rgba(233,237,248,.18)'; ctx.lineWidth = 1;
+    for (const sh of f.ships || []){
+      const a = starMap.get(sh.from), b = starMap.get(sh.to); if (!a || !b) continue;
+      const [ax, ay] = toPx(card, a), [bx, by] = toPx(card, b);
+      const px = ax + (bx - ax)*sh.progress, py = ay + (by - ay)*sh.progress;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(px, py); ctx.stroke();
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(px - 1, py - 1, 2, 2);
+    }
+    /* colonies */
+    ctx.globalCompositeOperation = 'lighter';
+    let alive = 0;
+    for (const c of f.colonies || []){
+      const s = starMap.get(c.star); if (!s) continue;
+      if (c.action !== 'flee') alive++;
+      const [x, y] = toPx(card, s), col = ACTION_COLOR[c.action] || '#e9edf8';
+      const r = 2 + (c.pop ?? .5)*5*(n/380);
+      const gr = ctx.createRadialGradient(x, y, 0, x, y, r*3);
+      gr.addColorStop(0, hexA(col, c.action === 'flee' ? .9 : .7)); gr.addColorStop(1, hexA(col, 0));
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, r*3, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, Math.max(1.4, r*.55), 0, 6.2832); ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    if (sel && sel.v === card.v){
+      const s = starMap.get(sel.star);
+      if (s){ const [x, y] = toPx(card, s); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.2; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.arc(x, y, 11, 0, 6.2832); ctx.stroke(); ctx.setLineDash([]); }
+    }
+    card.count.textContent = alive;
+  }
+
+  function niceMax(v){ if (v <= 5) return 5; const p = Math.pow(10, Math.floor(Math.log10(v))); for (const m of [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (m*p >= v) return m*p; return 10*p; }
+  function drawChart(){
+    const w = chart.clientWidth, h = 220, L = 38, Rr = 44, T = 10, B = 24;
+    cg.clearRect(0, 0, w, h);
+    const n = run.frames.length, vs = run.meta.variants;
+    const ymax = niceMax(Math.max(1, ...vs.flatMap(v => series[v])));
+    const X = i => L + (w - L - Rr)*(i/Math.max(1, n - 1)), Y = v => T + (h - T - B)*(1 - v/ymax);
+    cg.font = '11px "IBM Plex Mono", monospace'; cg.fillStyle = '#8d96b0'; cg.textAlign = 'right'; cg.textBaseline = 'middle';
+    for (let k = 0; k <= 4; k++){
+      const v = ymax*k/4, y = Y(v);
+      cg.strokeStyle = 'rgba(160,176,226,.1)'; cg.lineWidth = 1; cg.beginPath(); cg.moveTo(L, y); cg.lineTo(w - Rr, y); cg.stroke();
+      cg.fillText(Math.round(v), L - 8, y);
+    }
+    cg.textAlign = 'center'; cg.textBaseline = 'top';
+    for (let k = 0; k <= 4; k++){ const i = Math.round((n - 1)*k/4); cg.fillText(i, X(i), h - B + 7); }
+    vs.forEach((v, vi) => {
+      const col = colorOf(v, vi), d = series[v];
+      cg.strokeStyle = hexA(col, .25); cg.lineWidth = 1.5; cg.beginPath();
+      d.forEach((y, i) => i ? cg.lineTo(X(i), Y(y)) : cg.moveTo(X(i), Y(y))); cg.stroke();
+      cg.strokeStyle = col; cg.lineWidth = 2; cg.beginPath();
+      for (let i = 0; i <= frame; i++) i ? cg.lineTo(X(i), Y(d[i])) : cg.moveTo(X(i), Y(d[i]));
+      cg.stroke();
+      cg.fillStyle = col; cg.beginPath(); cg.arc(X(frame), Y(d[frame]), 3.5, 0, 6.2832); cg.fill();
+      cg.textAlign = 'left'; cg.textBaseline = 'middle'; cg.fillText(d[frame], X(frame) + 7, Y(d[frame]) + (vi - 1)*2);
+    });
+    cg.strokeStyle = 'rgba(233,237,248,.25)'; cg.setLineDash([2, 4]); cg.beginPath(); cg.moveTo(X(frame), T); cg.lineTo(X(frame), h - B); cg.stroke(); cg.setLineDash([]);
+  }
+
+  function meter(label, v, max, col, unit){
+    const pct = Math.max(0, Math.min(1, v/max))*100;
+    return `<div class="meter" style="--c:${col}"><span>${label}</span><div class="track"><div class="fill" style="width:${pct}%;transition:none"></div></div><b>${unit === 'hz' ? Math.round(v) + ' Hz' : v.toFixed(2)}</b></div>`;
+  }
+  function drawReadout(){
+    const el = $('#readout');
+    if (!sel){ el.innerHTML = '<p class="empty">Click a colony in any galaxy to see what its fly sensed and decided at this epoch.</p>'; return; }
+    const info = VARIANT_INFO[sel.v] || {label:sel.v};
+    const c = (((run.frames[frame].galaxies[sel.v] || {}).colonies) || []).find(c => c.star === sel.star);
+    if (!c){ el.innerHTML = `<div class="who"><div><b>Star ${sel.star}</b><small>${info.label} galaxy</small></div></div><p class="empty">No colony here at epoch ${frame}. Scrub back to see what happened, or pick another colony.</p>`; return; }
+    const i = c.inputs, r = c.rates;
+    el.innerHTML = `<div class="who"><div><b>Colony at star ${c.star}</b><small>${info.label} galaxy · population ${Math.round((c.pop ?? 0)*100)}%</small></div><span class="act" style="--c:${ACTION_COLOR[c.action] || '#e9edf8'}">${c.action || 'n/a'}</span></div>
+      ${i ? `<div class="sub">Senses</div>${meter('Sugar', i.sugar, 1, 'var(--sugar)')}${meter('Bitter', i.bitter, 1, 'var(--bitter)')}${meter('Looming', i.looming, 1, 'var(--loom)')}` : ''}
+      ${r ? `<div class="sub">Neurons</div>${meter('MN9', r.MN9, 60, 'var(--sugar)', 'hz')}${meter('DNp09', r.DNp09, 60, 'var(--fwd)', 'hz')}${meter('MDN', r.MDN, 60, 'var(--bitter)', 'hz')}
+        <div class="meter" style="--c:var(--loom)"><span>Giant Fiber</span><div class="track"><div class="fill" style="width:${r.GF ? 100 : 0}%;transition:none"></div></div><b>${r.GF ? 'spike' : 'quiet'}</b></div>` : ''}`;
+  }
+
+  function draw(){
+    if (!run) return;
+    for (const c of cards) drawGal(c);
+    drawChart(); drawReadout();
+    $('#epochNow').textContent = frame; scrub.value = frame;
+  }
+
+  function tick(now){
+    if (!active) return;
+    const dt = Math.min(.1, (now - lastT)/1000); lastT = now;
+    if (playing){
+      acc += dt*fpsE;
+      if (acc >= 1){
+        frame += Math.floor(acc); acc %= 1;
+        if (frame >= run.frames.length - 1){ frame = run.frames.length - 1; setPlaying(false); }
+        draw();
+      }
+    }
+    raf = requestAnimationFrame(tick);
+  }
+  function setPlaying(p){
+    playing = p;
+    playBtn.textContent = p ? '❚❚ Pause' : '▶ Play';
+    playBtn.setAttribute('aria-label', p ? 'Pause playback' : 'Play');
+  }
+  playBtn.addEventListener('click', () => { if (!playing && frame >= run.frames.length - 1) frame = 0; setPlaying(!playing); });
+  scrub.addEventListener('input', () => { frame = +scrub.value; setPlaying(false); draw(); });
+  $('#speedSel').addEventListener('change', e => fpsE = +e.target.value);
+  $('#seedBtn').addEventListener('click', () => { seed = Math.floor(Math.random()*1e6); load(mockRun(seed)); setPlaying(true); });
+  $('#fileIn').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => {
+      try { load(JSON.parse(rd.result), f.name); setPlaying(true); }
+      catch(err){ const st = $('#status'); st.className = 'status'; st.innerHTML = `<span><b>Couldn't read ${f.name.replace(/[<>&]/g, '')}.</b> ${String(err.message).replace(/[<>&]/g, '')} Check it against the frame format below.</span>`; }
+    };
+    rd.readAsText(f); e.target.value = '';
+  });
+
+  return {
+    loadData(data, name){ load(data, name); setPlaying(!reduce); },
+    startLive(meta, stars){ load({meta, stars, frames:[{t:0, galaxies:{}}]}, 'live'); setPlaying(false); },
+    pushFrame(f){
+      if (!run || !f || !f.galaxies) return;
+      const follow = frame >= run.frames.length - 1;
+      run.frames.push(f);
+      for (const v of run.meta.variants) series[v].push(((f.galaxies[v] || {}).colonies || []).filter(c => c.action !== 'flee').length);
+      scrub.max = run.frames.length - 1; $('#epochMax').textContent = run.frames.length - 1;
+      if (follow) frame = run.frames.length - 1;
+      if (active) draw();
+    },
+    start(){ if (!run) load(mockRun(seed)); active = true; requestAnimationFrame(() => { sizeCards(); draw(); lastT = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }); },
+    stop(){ active = false; cancelAnimationFrame(raf); }
+  };
+})();
+
+/* ---------------- backend (viz/server.py) ---------------- */
+/* The hosted page has no backend and every call below fails quietly.
+   Opened from `python -m viz.server`, the same page gets real data. */
+const backend = (() => {
+  let up = false;
+  const get = async (path, ms = 2500) => {
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms);
+    try { const r = await fetch(path, {signal:ctl.signal}); if (!r.ok) throw new Error(r.status); return await r.json(); }
+    finally { clearTimeout(t); }
+  };
+
+  /* real-fly console */
+  const box = $('#realFly'), out = $('#flyOut'), runBtn = $('#runFly');
+  [['inSugar','vSugar'],['inBitter','vBitter'],['inLoom','vLoom']].forEach(([i, o]) => {
+    const el = $('#' + i); el.addEventListener('input', () => $('#' + o).textContent = (+el.value).toFixed(2));
+  });
+  function meterHz(label, v, col){
+    const pct = Math.max(0, Math.min(1, v/200))*100;
+    return `<div class="meter" style="--c:${col}"><span>${label}</span><div class="track"><div class="fill" style="width:${pct}%"></div></div><b>${Math.round(v)} Hz</b></div>`;
+  }
+  $('#previewFly').addEventListener('click', async () => {
+    const body = {sugar:+$('#inSugar').value, bitter:+$('#inBitter').value, looming:+$('#inLoom').value,
+                  silence:$('#silGF').checked ? ['escape'] : []};
+    try {
+      const r = await fetch('api/preview', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || r.status);
+      out.textContent = 'Cached estimate · escape probability ' + Math.round(100 * d.escape_probability) + '% · ' +
+        Object.entries(d.rates).map(([name,hz]) => name + ' ' + hz.toFixed(1) + ' Hz').join(' · ');
+    } catch (error) {
+      out.textContent = error.message;
+    }
+  });
+  async function runFly(){
+    if (!up) return;
+    const body = {sugar:+$('#inSugar').value, bitter:+$('#inBitter').value, looming:+$('#inLoom').value, brains:4,
+                  silence:$('#silGF').checked ? ['escape'] : []};
+    runBtn.disabled = true; runBtn.textContent = 'Running 4 fly brains…';
+    out.innerHTML = '<p class="small-note">The whole brain is running 200 ms of activity. On a laptop CPU this takes a few seconds.</p>';
+    try {
+      const r = await fetch('api/decide', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || r.status);
+      const R = d.rates;
+      out.innerHTML = meterHz('MN9', R.MN9.mean_hz, 'var(--sugar)') + meterHz('DNp09', R.DNp09.mean_hz, 'var(--fwd)') +
+        meterHz('MDN', R.MDN.mean_hz, 'var(--bitter)') + meterHz('Giant Fiber', R.GF.mean_hz, 'var(--loom)') +
+        `<p class="small-note">Giant Fiber spiked in ${d.gf_spiked} of ${d.brains} brains. ${d.wall_seconds} s on ${esc(d.device)}.</p>`;
+      hw.showRates(R, d.gf_spiked);
+    } catch (e){
+      out.innerHTML = `<p class="small-note">The brain run failed: ${esc(e.message)}. Check the server window for details. A common cause is missing connectome data: run <code>python scripts/fetch_data.py</code>.</p>`;
+    } finally {
+      runBtn.disabled = false; runBtn.textContent = 'Run the fly brain';
+    }
+  }
+  runBtn.addEventListener('click', runFly);
+
+  function socket(){
+    let ws;
+    try { ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws'); }
+    catch(e){ return; }
+    ws.onmessage = ev => {
+      let m; try { m = JSON.parse(ev.data); } catch(e){ return; }
+      if (m.type === 'loom'){ $('#inLoom').value = m.value; $('#vLoom').textContent = (+m.value).toFixed(2); hw.wave(Math.max(.2, m.value)); }
+      else if (m.type === 'start'){ demo.startLive(m.meta, m.stars); }
+      else if (m.type === 'frame'){ demo.pushFrame(m); }
+    };
+    ws.onclose = () => setTimeout(socket, 3000);
+  }
+
+  async function connect(){
+    if (!/^https?:$/.test(location.protocol)) return;
+    let h;
+    try { h = await get('api/health'); } catch(e){ return; }
+    if (!h || !h.ok) return;
+    up = true;
+    $('#conn').classList.add('on'); $('#conn').textContent = `Live backend · ${h.device}`;
+    box.classList.remove('offline');
+    $('#realFlyNote').textContent = 'Runs the actual connectome on this backend: 4 brains, 200 ms each, inputs scaled to 0–200 Hz.';
+    try {
+      const s = await get('api/sanity');
+      renderSanity({time:s.run.time_utc, device:s.run.device, commit:(s.run.git_commit || '').slice(0, 7), replicates:s.result.replicates, checks:s.result.checks}, `From results/${s.file}`);
+    } catch(e){}
+    if (h.has_frames){
+      try { demo.loadData(await get('api/frames', 30000), 'galaxy/frames.json'); } catch(e){}
+    }
+    try { renderExperiment(await get('api/experiment')); } catch(e){}
+    socket();
+  }
+  return {connect};
+})();
+
+function renderExperiment(data){
+  const pct = n => (100 * n).toFixed(1) + '%';
+  const map = data.escape_response_at_zero_bitter;
+  const axes = data.escape_axes || {};
+  const even = n => Array.from({length:n}, (_, i) => 200 * i / (n - 1));
+  const loomAxis = axes.looming_hz || even(map[0].length), sugarAxis = axes.sugar_hz || even(map.length);
+  const hz = v => (v < 10 && v % 1 ? v.toFixed(1) : Math.round(v)) + ' Hz';
+  const headings = loomAxis.map(v => '<th>' + hz(v) + '</th>');
+  $('#escapeMap').innerHTML = '<table><thead><tr><th>Sugar / looming</th>' + headings.join('') +
+    '</tr></thead><tbody>' + map.map((row, i) => '<tr><th>' + hz(sugarAxis[i]) + '</th>' + row.map(p =>
+      '<td style="padding:6px;background:rgba(255,90,78,' + (p * .45) + ')">' + pct(p) + '</td>').join('') +
+    '</tr>').join('') + '</tbody></table>';
+
+  const gainSelect = $('#gain'), gainKeys = Object.keys(data.gains);
+  if ([...gainSelect.options].map(o => o.text).join() !== gainKeys.join()){
+    gainSelect.innerHTML = gainKeys.map(g => '<option' + (g === '1.0' ? ' selected' : '') + '>' + g + '</option>').join('');
+  }
+  function update(){
+    const gain = $('#gain').value;
+    const policies = Object.entries(data.gains[gain]);
+    const chart = $('#experimentChart'), ctx = chart.getContext('2d');
+    chart.height = Math.max(220, 30 + policies.length * 34);
+    ctx.clearRect(0, 0, chart.width, chart.height);
+    ctx.font = '14px system-ui';
+    const max = Math.max(1, ...Object.values(data.gains).flatMap(policies =>
+      Object.values(policies).map(r => r.survivors.mean + (r.survivors.se || 0))));
+    const x = n => 200 + 405 * n / max;
+    policies.forEach(([name,r], i) => {
+      const y = 23 + i * 34, {mean,se} = r.survivors, error = se || 0;
+      ctx.fillStyle = '#e9edf8';
+      const info = VARIANT_INFO[name] || {label:name, color:'#e7eaf0'};
+      ctx.fillText(info.label, 0, y + 5, 190);
+      ctx.fillStyle = info.color;
+      ctx.fillRect(x(0), y - 7, x(mean) - x(0), 14);
+      ctx.strokeStyle = '#fff';
+      ctx.beginPath();
+      ctx.moveTo(x(mean - error), y);
+      ctx.lineTo(x(mean + error), y);
+      for (const bound of [mean - error, mean + error]){
+        ctx.moveTo(x(bound), y - 5);
+        ctx.lineTo(x(bound), y + 5);
+      }
+      ctx.stroke();
+    });
+    const stat = ({mean,se}) => mean.toFixed(1) + (se === null ? '' : ' ± ' + se.toFixed(1));
+    $('#experiment').innerHTML = '<p>Mean ± standard error across ' + data.config.seeds +
+      ' matched galaxy seeds. ' + (data.config.detector_note ||
+      'The detector counts nearby colonies at 50% population or higher.') + '</p>' +
+      '<div style="overflow:auto"><table style="width:100%;text-align:left"><thead><tr>' +
+      '<th>Policy</th><th>Survivors</th><th>Detected</th><th>Extinct</th><th>Change vs. intact</th>' +
+      '</tr></thead><tbody>' + policies.map(([name,r]) => {
+        const delta = data.paired_survivor_difference_from_intact[gain][name];
+        return '<tr><th scope="row">' + (VARIANT_INFO[name] || {label:name}).label + '</th><td>' + stat(r.survivors) +
+          '</td><td>' + stat(r.detectable_colonies) + '</td><td>' + pct(r.extinction_fraction.mean) +
+          '</td><td>' + (delta ? stat(delta) : 'Reference') + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  $('#gain').addEventListener('change', update);
+  update();
+}
+
+$('#heroDemo').addEventListener('click', () => go('demo'));
+$('#mapHome').addEventListener('click', close);
+/* boot */
+backend.connect();
+resize();
+requestAnimationFrame(loop);
+const startId = location.hash.slice(1);
+if (byId[startId]) open(startId);
+})();
+</script>
+<script src="evacuation.js"></script>
+</body>
+</html>

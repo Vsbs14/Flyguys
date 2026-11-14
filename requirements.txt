@@ -3,3 +3,5 @@ numpy
 pandas
 pyarrow
 modal
+fastapi
+uvicorn[standard]

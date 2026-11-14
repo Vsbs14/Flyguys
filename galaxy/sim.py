@@ -339,7 +339,7 @@ class GalaxySim:
                 outcome = "coexist"
             self.counts["encounters"][outcome] += 1
             events.append({"type": "encounter", "a": ida, "b": idb, "outcome": outcome,
-                           "star_a": sa, "star_b": sb})
+                           "star": sa, "star_a": sa, "star_b": sb})
             for i, star in ((ia, sa), (ib, sb)):
                 if fled[i]:
                     self._flee(star, t, threat)

@@ -2,6 +2,16 @@
 
 Real fruit fly connectomes, coupled across a simulated galaxy. Each colony decides what to do with a fly brain: its world tastes good, tastes bad, or something looms, and the fly's wiring answers eat, back off, or flee.
 
+## Run the demo
+
+From this directory, install `requirements.txt` in a Python virtual environment, then start the server.
+
+```bash
+python -m viz.server
+```
+
+Open http://localhost:8000. **Live Demo** plays `galaxy/frames.json`: the same 1,500-star galaxy run three times, by intact, fearless (Giant Fibre silenced) and always-hungry (bitter silenced) flies. **The Fly Brain** shows the escape response map from the intact response table. **Baselines** compares the brains across the sense-mapping gains of the sensitivity sweep. The live console also needs the connectome download.
+
 ## Status
 
 | Phase | What | State |
@@ -9,11 +19,11 @@ Real fruit fly connectomes, coupled across a simulated galaxy. Each colony decid
 | 0 | Data, neuron IDs, repo layout | Done |
 | 1 | Batched, maskable fly-brain engine | Done. Matches Brian2 spike for spike; six sanity checks pass on CPU and on a T4 (`results/`) |
 | 2 | Galaxy → senses, neurons → decisions | Done (`galaxy/mapping.py`, `results/mapping_examples.md`) |
-| 3 | Brain variants and response tables | Done except the no-MDN variants and the shuffled control (still building). Table vs live brain: `results/table_validation_intact.md` |
+| 3 | Brain variants and response tables | Done except the no-MDN variants and the shuffled control in `tables/`. Table vs live brain: `results/table_validation_intact.md` |
 | 4 | Lesion screen | Partial: 913 candidate cell types found, 20 most active screened (`results/lesion_ranking.md`). 3D renders need a FlyWire token (`analysis/render_top10.py`) |
-| 5 | Galaxy simulation | Done (`galaxy/`); three-galaxy recording in `galaxy/frames.json` |
+| 5 | Galaxy simulation | Done (`galaxy/world.py`, `galaxy/sim.py`) |
 | 6 | Experiments and baselines | Done at 20 seeds, not 100. Sensitivity sweep at 8 seeds (`results/experiments/`) |
-| 7 | Visuals and pitch | Figures in `analysis/figures/`, pitch in `PITCH.md`; viewer is on the `UI` branch |
+| 7 | Visuals and pitch | Viewer in `viz/`, figures in `analysis/figures/`, pitch in `PITCH.md` |
 
 ## Results so far (20 galaxy seeds, mean ± standard error)
 
@@ -31,6 +41,27 @@ Real fruit fly connectomes, coupled across a simulated galaxy. Each colony decid
 * **Fear costs territory.** Silencing the Giant Fibre stops all flight and nearly doubles final colonies.
 * **Shrinking the brain kills feeding.** With half the interneurons removed, MN9 never fires, so colonies never grow and every civilization dies.
 
+## Reproduce
+
+```bash
+python scripts/fetch_data.py
+python -m brain.test_equivalence                # port vs Brian2, spike for spike
+python -m brain.sanity                          # six checks; --variant for a lesioned brain
+python -m brain.build_tables                    # response tables for every variant (tables/)
+python -m galaxy.run three --seed 42 --every 3  # three-galaxy recording -> galaxy/frames.json
+python -m galaxy.run ladder --seeds 20          # fly vs hand rule vs neural net
+python -m galaxy.run variants --seeds 20
+python -m galaxy.run sensitivity --seeds 8
+python -m analysis.export_viewer                # results -> results/galaxy_experiment.json for the viewer
+python -m analysis.figures
+```
+
+On a GPU, `fly_brain_gpu.ipynb` runs the sanity checks and benchmark, and its last section rebuilds the tables and the lesion screen on the full brain.
+
+### The earlier quick model
+
+`galaxy/responses.py` and `galaxy/simulate.py` are a smaller first version: one civilization, 64 stars, 48 epochs, and a 6 x 6 x 6 response table on evenly spaced inputs (`tables/responses.npz`). They still run (`python -m galaxy.responses`, then `python -m galaxy.simulate --results results/galaxy_experiment_quick.json --output galaxy/frames_quick.json`). The main model replaced them for two reasons. The Giant Fibre goes from never firing to always firing between about 1 and 3 Hz of looming input, so a looming axis in 40 Hz steps cannot show a graded response; the main table puts most of its looming levels below 10 Hz. And the main model maps the galaxy to the senses with the 2 SD clip the plan calls for.
+
 ## Layout
 
 | Folder | Contents |
@@ -39,9 +70,9 @@ Real fruit fly connectomes, coupled across a simulated galaxy. Each colony decid
 | `data/` | Small committed inputs: neuron groups, the Brian2 equivalence case |
 | `scripts/` | Data download, neuron-group builder, Brian2 reference runs |
 | `results/` | Result tables, each saved with the configuration and seed that produced it |
-| `tables/` | Cached brain response tables (Phase 3) |
-| `galaxy/` | Galaxy simulation (Phase 5) |
-| `viz/` | three.js playback (Phase 7) |
+| `tables/` | Cached whole-brain responses |
+| `galaxy/` | Response-table generator, paired galaxy experiments and recorded playback |
+| `viz/` | Browser playback and local API |
 | `analysis/` | Figures |
 | `external/` | Downloaded third-party data. Not committed |
 
