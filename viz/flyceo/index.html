@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FlyCEO | The emergency board meeting</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f3e8;color:#1c241a;font:16px Inter,system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:36px 22px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid;padding-bottom:14px;font-weight:900}header span:last-child{font:12px monospace}h1{font-size:clamp(52px,10vw,116px);line-height:.88;letter-spacing:-.085em;margin:26px 0 16px}p{line-height:1.5}.hero{display:flex;align-items:center;justify-content:space-between;gap:16px}.fly{font-size:clamp(60px,14vw,160px);transform:rotate(-12deg);filter:drop-shadow(8px 10px 0 #b5e54a)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}.panel{border:2px solid;border-radius:16px;padding:22px;background:#fffdf5;min-width:0}.answer{background:#d1f678;display:flex;flex-direction:column}.answer h2{font-size:clamp(30px,5vw,57px);letter-spacing:-.065em;line-height:1;margin:22px 0 0}.answer p{margin:12px 0}.compare{border-top:1px solid;padding-top:12px;font-size:14px;margin-top:auto}button,select{font:inherit;border:2px solid #1c241a;border-radius:9px;padding:10px 12px;background:white;color:inherit}select{width:100%}button{background:#20291e;color:white;font-weight:800;cursor:pointer;width:100%;margin-top:14px}button:hover{background:#3a502a}input{width:100%;accent-color:#354b21}label{display:flex;justify-content:space-between;font-weight:700;margin-top:10px}.eyebrow,output,footer,.rates{font:13px monospace}.eyebrow{text-transform:uppercase;letter-spacing:.06em}.rates{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 18px}footer{line-height:1.6;color:#444e3f}@media(max-width:650px){.grid{grid-template-columns:1fr}.fly{font-size:62px}main{padding-top:22px}.panel{padding:17px}}
+.hint{display:block;font-size:12px;color:#475043;margin-bottom:5px}.circuit{display:grid;grid-template-columns:1fr .9fr 1fr;gap:10px;align-items:center;margin:18px 0}.node{display:block;margin:6px 0;padding:5px;border-radius:6px;background:#e6ebdf;font:11px monospace}.node.active{background:#b5e54a;box-shadow:0 0 8px #8ab519}.core{text-align:center;font-size:12px;font-weight:800}.core b{display:block;font-size:36px}.firing .core b{animation:spike .7s alternate infinite}@keyframes spike{to{transform:scale(1.18);filter:drop-shadow(0 0 8px #8ab519)}}@media(prefers-reduced-motion:reduce){.firing .core b{animation:none}}details{margin:18px 0}summary{cursor:pointer;font-weight:800}
+</style>
+<script defer src="responses.js"></script>
+<script defer src="demo.js"></script>
+</head>
+<body>
+<main>
+<header><span>FLYCEO</span><span>ALDER COMPONENTS · FICTIONAL COMPANY</span></header>
+<div class="hero"><div><h1>The board<br>hired a fly.</h1><p>Alder Components makes industrial sensors. Its new CEO has 139,000 neurons and zero experience in procurement.</p></div><div class="fly" aria-hidden="true">🪰</div></div>
+<div class="grid">
+<section class="panel">
+<label for="scenario">Board agenda</label>
+<select id="scenario">
+<option value="product">Launch a new sensor</option>
+<option value="demand">Cut the production forecast</option>
+<option value="supplier">Qualify a second supplier</option>
+<option value="warehouse">Renew the warehouse lease</option>
+<option value="custom">Judge’s scenario</option>
+</select>
+<p id="brief"></p>
+<label for="sugar">Opportunity / sugar <output id="sugar-value"></output></label><input type="range" id="sugar" min="0" max="100" aria-describedby="sugar-hint"><small class="hint" id="sugar-hint">How much upside does the proposed move offer? Drives sugar-sensitive taste neurons.</small>
+<label for="bitter">Downside / bitter <output id="bitter-value"></output></label><input type="range" id="bitter" min="0" max="100" aria-describedby="bitter-hint"><small class="hint" id="bitter-hint">How costly is the downside? Drives bitter-sensitive taste neurons, which can suppress feeding.</small>
+<label for="looming">Urgency / looming <output id="looming-value"></output></label><input type="range" id="looming" min="0" max="100" aria-describedby="looming-hint"><small class="hint" id="looming-hint">How soon does this need a response? Drives visual neurons that respond to approaching objects.</small>
+<button id="vote">Call the board vote</button>
+<button id="live" hidden>Run a fresh simulation</button>
+</section>
+<section class="panel answer" aria-live="polite">
+<div class="eyebrow">Decision from the chair</div>
+<h2 id="verdict">The chair is buzzing.</h2>
+<p id="quote">Give the chair an agenda item and call the vote.</p>
+<div id="rates" class="rates"></div>
+<div class="compare">Shuffled wiring, same rules <strong id="shuffle">—</strong></div>
+</section>
+</div>
+<section class="panel">
+<div class="eyebrow">How the board vote travels</div>
+<div class="circuit" id="circuit" aria-label="Schematic from sensory inputs through the fly brain to measured output groups">
+<div><span class="node" id="path-sugar">Sugar</span><span class="node" id="path-bitter">Bitter</span><span class="node" id="path-looming">Looming</span></div>
+<div class="core"><b aria-hidden="true">→ 🧠 →</b>FlyWire wiring</div>
+<div><span class="node" id="path-MN9">MN9 · Feed</span><span class="node" id="path-GF">GF · Escape</span><span class="node" id="path-MDN">MDN · Retreat</span><span class="node" id="path-DNp09">DNp09 · Advance</span></div>
+</div>
+<p id="source" role="status">Call a vote to see which output groups fired.</p>
+<details><summary>What is the fly actually computing?</summary>
+<p>The sliders scale simulated sensory stimulation from 0 to 200 Hz. In the model, each neuron integrates incoming spikes and fires when its voltage crosses a threshold. FlyWire connectivity determines where those spikes travel. This animation shows the sensory groups and measured outputs. It is a circuit schematic.</p>
+<p>The offline vote interpolates between stored simulation trials. The fresh simulation runs 200 ms of model time from rest. A handwritten decoder maps escape activity to urgency, feeding to approval, retreat to pulling back, and forward walking to a pilot. The shuffled comparison uses the same decoder and cached responses from a degree-preserving rewiring. There is no trained readout.</p>
+</details>
+</section>
+<footer>FlyWire wiring · Cached spiking simulations · Handwritten decision rules<br>The company and its business cases are fictional.</footer>
+</main>
+</body>
+</html>
