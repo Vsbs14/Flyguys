@@ -21,7 +21,17 @@ class NeuronGroups:
         doc = json.loads(Path(path).read_text(encoding="utf8"))
         self.roles = doc["roles"]
         self.ids = {name: g["ids"] for name, g in doc["groups"].items()}
-        self.idx = {name: conn.index_of(ids) for name, ids in self.ids.items()}
+        # Groups the core pipeline needs must be in the network. The extra senses may be absent from a
+        # reduced network (brain.reduce keeps only the neurons that matter for the core senses).
+        required = {g for s in CORE_SENSES for g in self.roles["inputs"][s]} | set(self.roles["outputs"].values())
+        self.idx = {}
+        for name, ids in self.ids.items():
+            try:
+                self.idx[name] = conn.index_of(ids)
+            except KeyError:
+                if name in required:
+                    raise
+                self.idx[name] = np.zeros(0, dtype=np.int64)
 
     def __getitem__(self, name: str) -> np.ndarray:
         return self.idx[name]

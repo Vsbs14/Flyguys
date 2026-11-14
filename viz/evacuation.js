@@ -19,16 +19,16 @@
       trials.forEach((_, index) => show(index, 'ready', 'Ship in orbit'));
       setTimeout(() => {
         trials.forEach(({ spike_ms }, index) => {
-          show(index, 'warning', 'Star swelling…');
+          show(index, 'warning', 'Star about to blow…');
           setTimeout(() => {
-            if (spike_ms !== null) show(index, 'escaped', 'Neuron fired → ship escaped');
+            if (spike_ms !== null) show(index, 'escaped', 'Escape neuron fired. Ship escaped!');
           }, reduced.matches ? 30 : 650 + (spike_ms ?? 0) * 20);
         });
         setTimeout(() => {
           trials.forEach(({ spike_ms }, index) => {
-            if (spike_ms === null) show(index, 'lost', 'Neuron silent → ship destroyed');
+            if (spike_ms === null) show(index, 'lost', 'No escape signal. Ship lost.');
           });
-          trigger.textContent = 'Replay both ships';
+          trigger.textContent = 'Blow it up again';
           trigger.disabled = false;
         }, reduced.matches ? 150 : 1900);
       }, reduced.matches ? 20 : 300);

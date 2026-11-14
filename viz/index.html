@@ -125,6 +125,8 @@ section p strong{color:var(--ink);font-weight:600}
 .tag::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor}
 .arrow{color:var(--dim);font-family:var(--mono)}
 .map-row span:last-child{font-size:14px;color:#c9cfe0;line-height:1.4}
+.sci{display:block;margin-top:3px;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.outcome em{font-style:normal}
 .c-sugar{color:var(--sugar)}.c-fwd{color:var(--fwd)}.c-bitter{color:var(--bitter)}.c-loom{color:var(--loom)}
 
 .params{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -144,10 +146,9 @@ section p strong{color:var(--ink);font-weight:600}
 .conn{position:fixed;left:clamp(16px,3vw,44px);bottom:clamp(16px,2.4vw,30px);z-index:7;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px;border-radius:999px;border:1px solid rgba(127,227,165,.45);color:var(--signal);background:var(--nav);display:none;align-items:center;gap:7px}
 .conn::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 8px var(--signal)}
 .conn.on{display:flex}
-.conn{bottom:auto;top:clamp(12px,2vw,24px)}
 .panel-open .conn{display:none}
 .real-fly{display:grid;gap:12px}
-.slider{display:grid;grid-template-columns:76px 1fr 42px;align-items:center;gap:10px;font-size:13px;color:var(--dim)}
+.slider{display:grid;grid-template-columns:76px 1fr 46px;align-items:center;gap:10px;font-size:13px;color:var(--dim)}
 .slider input{width:100%;accent-color:var(--c)}
 .slider b{font-family:var(--mono);font-weight:500;color:var(--ink);text-align:right;font-size:12px}
 .check-row{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#c9cfe0}
@@ -297,37 +298,37 @@ details > div{margin-top:12px;display:grid;gap:10px}
   <header class="mission">
     <div class="eyebrow">Fermi Fly</div>
     <h1>Can a fly save a spaceship?</h1>
-    <p>Two ships. Same supernova. Only one fly brain can send the order to escape.</p>
+    <p>Two ships, one exploding star. Both are flown by a real fruit fly brain, but one brain is missing its escape neuron.</p>
     <div class="hero-actions">
-      <button class="btn primary" id="trigger" disabled>Trigger both supernovae</button>
-      <button class="btn" id="heroDemo">See the galaxy experiment</button>
+      <button class="btn primary" id="trigger" disabled>Blow up the star</button>
+      <button class="btn" id="heroDemo">Explore the galaxy</button>
     </div>
   </header>
   <div class="comparison">
     <figure>
-      <figcaption>Normal fly brain</figcaption>
+      <figcaption>Normal fly</figcaption>
       <div class="evacuation" data-phase="ready">
         <div class="orbit"></div><div class="dying-star"></div><div class="ship"><i></i></div>
-        <div class="fly-pilot"><img src="fermi-fly.webp" alt="Illustrated fruit fly brain"><span>Escape neuron on</span></div>
+        <div class="fly-pilot"><img src="fermi-fly.webp" alt="Illustrated fruit fly brain"><span>Escape neuron: on</span></div>
       </div>
       <p class="outcome-text" role="status">Ship in orbit</p>
     </figure>
     <figure>
-      <figcaption>Escape neuron switched off</figcaption>
+      <figcaption>Fly without its escape neuron</figcaption>
       <div class="evacuation" data-phase="ready">
         <div class="orbit"></div><div class="dying-star"></div><div class="ship"><i></i></div>
-        <div class="fly-pilot"><img src="fermi-fly.webp" alt="Illustrated fruit fly brain"><span>Escape neuron off</span></div>
+        <div class="fly-pilot"><img src="fermi-fly.webp" alt="Illustrated fruit fly brain"><span>Escape neuron: off</span></div>
       </div>
       <p class="outcome-text" role="status">Ship in orbit</p>
     </figure>
   </div>
-  <p id="evacReadout" class="specimen-note" role="status">Ship movement follows recorded responses from the real fly-brain model.</p>
+  <p id="evacReadout" class="specimen-note" role="status">Each ship does exactly what its simulated fly brain decided.</p>
 </main>
-<div class="hint">Drag to look around · Click a world · <button class="btn" id="mapHome">Home</button></div>
+<div class="hint">Drag to look around · Click a world to visit it · <button class="btn" id="mapHome">Home</button></div>
 
 <nav class="dock" id="dock" aria-label="Project sections"></nav>
 <div class="tip" id="tip" role="status" aria-live="polite"></div>
-<div class="conn" id="conn" role="status">Live backend</div>
+<div class="conn" id="conn" role="status">Live brain connected</div>
 
 <aside class="panel" id="panel" aria-label="Section details">
   <div class="panel-inner">
@@ -338,44 +339,46 @@ details > div{margin-top:12px;display:grid;gap:10px}
 
     <!-- THE QUESTION -->
     <section data-id="question">
-      <h2>The galaxy should be full. It's silent.</h2>
-      <p class="lede">The Milky Way is old and big enough that someone should have spread across it by now. We see no one. That gap is the Fermi paradox.</p>
-      <p>We fill a simulated galaxy with colonies and give every one of them the same decision maker: a fruit fly brain from the <strong>FlyWire connectome</strong>. Planets taste good or bad, dying stars loom, and the fly's own wiring decides whether to settle, expand, pull back or flee.</p>
-      <div class="pitch">“We gave a fruit fly the keys to a galaxy.”</div>
+      <h2>The galaxy should be crowded. It's silent.</h2>
+      <p class="lede">The Milky Way is old and enormous. Aliens should have spread everywhere by now, yet we hear nothing. This puzzle is called the Fermi paradox.</p>
+      <p>Our twist: every alien colony is flown by the same pilot, the <strong>real brain of a fruit fly</strong>, rebuilt neuron by neuron from a complete map of its wiring. A good planet tastes sweet. A harsh planet tastes bitter. A dying star looks like a shadow rushing in. The fly decides what to do, exactly as it would on your kitchen table.</p>
+      <div class="pitch">“We handed a fruit fly the keys to the galaxy.”</div>
       <div class="block">
-        <h3>What we test</h3>
-        <p>Does a colony spread farther when it cannot flee or sense hostility? Does the intact brain behave differently from a hand-written rule or a degree-preserving shuffle of its wiring?</p>
+        <h3>What we're testing</h3>
+        <p>Does a galaxy fill up or go quiet depending on how its pilots are wired? What happens if the fly can't feel fear, or can't taste anything bad? And is a real fly brain any better than a few lines of code?</p>
       </div>
     </section>
 
     <!-- THE BRAIN -->
     <section data-id="brain">
-      <h2>One fly brain steers every colony</h2>
-      <p class="lede">Shiu's spiking model of the whole adult fly brain, ported to PyTorch so thousands of brains run at once on GPUs.</p>
+      <h2>Meet the pilot</h2>
+      <p class="lede">A complete fruit fly brain: every neuron and every connection, mapped by scientists and simulated here one spark at a time. We can run a thousand of them at once.</p>
       <div class="stats">
-        <div class="stat"><b>~138k</b><span>neurons</span></div>
-        <div class="stat"><b>~15M</b><span>connections, signs from Shiu's file</span></div>
-        <div class="stat"><b>100–200</b><span>ms of brain time per decision</span></div>
+        <div class="stat"><b>139,000</b><span>neurons</span></div>
+        <div class="stat"><b>15 million</b><span>connections between them</span></div>
+        <div class="stat"><b>0.2 s</b><span>of thinking per decision</span></div>
       </div>
       <div class="block">
-        <h3>What a colony senses</h3>
+        <h3>What the fly senses</h3>
         <div class="map">
-          <div class="map-row"><span class="tag c-sugar">Sugar</span><span class="arrow">→</span><span>A habitable world: water, energy, resources</span></div>
-          <div class="map-row"><span class="tag c-bitter">Bitter</span><span class="arrow">→</span><span>Hostile conditions: radiation, cold, long travel</span></div>
-          <div class="map-row"><span class="tag c-loom">Looming</span><span class="arrow">→</span><span>A threat getting closer, driven by 1 / time until the event</span></div>
+          <div class="map-row"><span class="tag c-sugar">Sweet</span><span class="arrow">→</span><span>A great planet: water, energy, resources</span></div>
+          <div class="map-row"><span class="tag c-bitter">Bitter</span><span class="arrow">→</span><span>A nasty planet: radiation, cold, far from home</span></div>
+          <div class="map-row"><span class="tag c-loom">Danger</span><span class="arrow">→</span><span>Something rushing in, like a star about to explode. The sooner it hits, the stronger the signal.</span></div>
         </div>
       </div>
       <div class="block">
-        <h3>What it decides</h3>
+        <h3>What the fly can do</h3>
         <div class="map">
-          <div class="map-row"><span class="tag c-sugar">MN9</span><span class="arrow">→</span><span>Settle and grow. Firing rate sets the growth rate.</span></div>
-          <div class="map-row"><span class="tag c-fwd">DNp09</span><span class="arrow">→</span><span>Walk forward: send colony ships onward</span></div>
-          <div class="map-row"><span class="tag c-bitter">MDN</span><span class="arrow">→</span><span>Walk backward: pull back and consolidate</span></div>
-          <div class="map-row"><span class="tag c-loom">Giant Fiber</span><span class="arrow">→</span><span>Any spike abandons the system. Overrides everything.</span></div>
+          <div class="map-row"><span class="tag c-sugar">Eat</span><span class="arrow">→</span><span>Settle in and grow. The harder this neuron fires, the faster the colony grows.<span class="sci">MN9</span></span></div>
+          <div class="map-row"><span class="tag c-fwd">Forward</span><span class="arrow">→</span><span>Push on: send colony ships to new stars.<span class="sci">DNp09</span></span></div>
+          <div class="map-row"><span class="tag c-bitter">Back up</span><span class="arrow">→</span><span>Back off: pull people home to safer worlds.<span class="sci">MDN</span></span></div>
+          <div class="map-row"><span class="tag c-loom">Escape</span><span class="arrow">→</span><span>Jump! One spark and the whole colony abandons ship. Beats everything else.<span class="sci">Giant Fibre</span></span></div>
         </div>
       </div>
-      <div class="block">
-        <h3>Model settings (Shiu LIF)</h3>
+      <details>
+        <summary>For the scientists: model settings</summary>
+        <div>
+        <p class="small-note">Leaky integrate-and-fire model of Shiu et al. 2024, settings unchanged. Wiring from the FlyWire connectome (v783).</p>
         <dl class="params">
           <div><dt>Resting potential</dt><b>−52 mV</b></div>
           <div><dt>Threshold</dt><b>−45 mV</b></div>
@@ -386,16 +389,17 @@ details > div{margin-top:12px;display:grid;gap:10px}
           <div><dt>Weight per synapse</dt><b>0.275 mV</b></div>
           <div><dt>Time step</dt><b>0.1 ms</b></div>
         </dl>
-      </div>
+        </div>
+      </details>
       <div class="block">
-        <h3>Sanity checks</h3>
+        <h3>Fly test: does it act like a real fly?</h3>
         <ul class="checks" id="checks"></ul>
         <p class="small-note" id="sanityMeta"></p>
       </div>
       <div class="block">
-        <h3>Escape response map</h3>
-        <p>Percent of intact brains that fired Giant Fiber. Rows are sugar, columns are looming, and bitter is held at zero.</p>
-        <div id="escapeMap" style="overflow:auto">Run the backend with a generated experiment to see the map.</div>
+        <h3>When does the fly bail?</h3>
+        <p>How often the escape neuron fired. Going down, the planet gets sweeter. Going right, the danger gets stronger. Even a tiny bit of danger makes the fly leave, however good the planet is.</p>
+        <div id="escapeMap" style="overflow:auto">Start the server to see the map.</div>
       </div>
     </section>
 
@@ -403,12 +407,12 @@ details > div{margin-top:12px;display:grid;gap:10px}
     <section data-id="demo">
       <div class="demo-head">
         <div class="block" style="gap:8px">
-          <h2>One galaxy, six decision makers</h2>
-          <p style="margin:0">Same stars, same supernova schedule. Click a colony to inspect its inputs and decision.</p>
+          <h2>Three galaxies, three pilots</h2>
+          <p style="margin:0">Same stars, same exploding suns. Only the fly brain changes. Click any colony to peek inside its head.</p>
         </div>
         <div class="controls">
           <button class="btn primary" id="playBtn" aria-label="Pause playback">❚❚ Pause</button>
-          <button class="btn" id="seedBtn">New mock seed</button>
+          <button class="btn" id="seedBtn">Shuffle practice galaxy</button>
           <label class="sr" for="speedSel" style="position:absolute;left:-9999px">Playback speed</label>
           <select id="speedSel">
             <option value="8">0.5× speed</option>
@@ -416,35 +420,36 @@ details > div{margin-top:12px;display:grid;gap:10px}
             <option value="32">2× speed</option>
             <option value="64">4× speed</option>
           </select>
-          <span class="btn file-btn">Load sim frames (.json)<input type="file" id="fileIn" accept=".json,application/json" aria-label="Load simulation frames JSON file"></span>
+          <span class="btn file-btn">Load a recording<input type="file" id="fileIn" accept=".json,application/json" aria-label="Load simulation frames JSON file"></span>
         </div>
       </div>
       <div class="status" id="status"></div>
       <div class="timeline">
-        <input type="range" id="scrub" min="0" max="0" value="0" aria-label="Epoch">
-        <div class="epoch">Epoch <b id="epochNow">0</b> / <span id="epochMax">0</span></div>
+        <input type="range" id="scrub" min="0" max="0" value="0" aria-label="Turn">
+        <div class="epoch">Turn <b id="epochNow">0</b> / <span id="epochMax">0</span></div>
       </div>
       <div class="gal-grid" id="galGrid"></div>
       <div class="legend">
-        <span><i style="--c:var(--sugar)"></i>Settling (MN9)</span>
-        <span><i style="--c:var(--fwd)"></i>Expanding (DNp09)</span>
-        <span><i style="--c:var(--bitter)"></i>Pulling back (MDN)</span>
-        <span><i style="--c:var(--loom)"></i>Fleeing (Giant Fiber)</span>
-        <span><i class="ring"></i>Supernova</span>
+        <span><i style="--c:var(--sugar)"></i>Growing</span>
+        <span><i style="--c:var(--fwd)"></i>Sending ships</span>
+        <span><i style="--c:var(--bitter)"></i>Backing off</span>
+        <span><i style="--c:var(--loom)"></i>Fleeing</span>
+        <span><i class="ring"></i>Exploding star</span>
+        <span><i class="ring" style="border-color:#fff"></i>First contact</span>
         <span><i style="--c:#e9edf8;width:4px;height:4px"></i>Colony ship</span>
       </div>
       <div class="demo-bottom">
         <div class="card">
-          <div class="card-head"><h3>Living colonies over time</h3><span class="epoch" id="chartNote"></span></div>
+          <div class="card-head"><h3>Colonies alive</h3><span class="epoch" id="chartNote"></span></div>
           <canvas id="popChart" aria-label="Line chart of living colonies per galaxy over time"></canvas>
         </div>
         <div class="card">
-          <div class="card-head"><h3>Selected colony's brain</h3></div>
+          <div class="card-head"><h3>Inside this colony's head</h3></div>
           <div class="readout" id="readout"></div>
         </div>
       </div>
       <details>
-        <summary>Frame file format for the sim team</summary>
+        <summary>For developers: recording format</summary>
         <div>
           <p>The viewer plays any JSON file in this shape. One entry in <code>galaxies</code> per brain variant; <code>inputs</code>, <code>rates</code> and <code>events</code> are optional.</p>
           <pre class="schema" id="schemaText"></pre>
@@ -456,9 +461,9 @@ details > div{margin-top:12px;display:grid;gap:10px}
     <!-- FIRST CONTACT -->
     <section data-id="contact">
       <h2>First contact: two fly brains meet</h2>
-      <p class="lede">A proposed extension would let colonies send each other signals through the same circuits. The recorded experiment uses environmental hazards.</p>
+      <p class="lede">When colonies from two civilizations bump into each other, their fly brains react to each other for up to three rounds. One side pushing forward looks like danger to the other.</p>
       <div class="loop">
-        <svg viewBox="0 0 420 190" role="img" aria-label="Encounter loop: colony A's DNp09 rate becomes looming for colony B, A's MN9 becomes mild sugar for B, and B's response feeds back to A.">
+        <svg viewBox="0 0 420 190" role="img" aria-label="Encounter loop: colony A pushing forward is danger for colony B, A settling is a trade chance for B, and B's reaction feeds back to A.">
           <defs>
             <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8d96b0"/></marker>
           </defs>
@@ -469,75 +474,92 @@ details > div{margin-top:12px;display:grid;gap:10px}
           <text x="350" y="91" text-anchor="middle" fill="#e9edf8" style="font-family:var(--display)" font-weight="700" font-size="22">B</text>
           <text x="350" y="112" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="10">fly brain</text>
           <path d="M112,72 C180,30 240,30 308,72" fill="none" stroke="#8d96b0" marker-end="url(#ah)"/>
-          <text x="210" y="30" text-anchor="middle" fill="#ff5a4e" style="font-family:var(--mono)" font-size="11">A's DNp09 → looming for B</text>
-          <text x="210" y="46" text-anchor="middle" fill="#f4b740" style="font-family:var(--mono)" font-size="11">A's MN9 → mild sugar for B</text>
+          <text x="210" y="14" text-anchor="middle" fill="#ff5a4e" style="font-family:var(--mono)" font-size="11">A pushes forward → danger for B</text>
+          <text x="210" y="29" text-anchor="middle" fill="#f4b740" style="font-family:var(--mono)" font-size="11">A settles down → a trade chance for B</text>
           <path d="M308,118 C240,160 180,160 112,118" fill="none" stroke="#8d96b0" marker-end="url(#ah)"/>
-          <text x="210" y="178" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="11">B responds the same way · up to 3 rounds</text>
+          <text x="210" y="178" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="11">B reacts the same way · up to 3 rounds</text>
         </svg>
       </div>
       <ol class="steps">
-        <li>Colonies come within range and the encounter starts.</li>
-        <li>A advancing looks like something looming to B. A settling nearby tastes like a trade opportunity.</li>
-        <li>B's brain answers, and that answer becomes A's input. Each round resets to rest and carries “they advanced last round” as memory.</li>
+        <li>Two colonies come within range.</li>
+        <li>If A is sending ships, B's fly sees danger. If A is just settling, B's fly tastes a trade chance.</li>
+        <li>B's answer becomes what A sees next round. Each brain remembers what the other did last time.</li>
       </ol>
       <div class="block">
-        <h3>Possible outcomes</h3>
+        <h3>How meetings ended in the three galaxies</h3>
         <div class="outcomes">
-          <div class="outcome"><b>Coexist</b><span>Both keep settling. Neighbors as trade partners.</span><em>Awaiting run</em></div>
-          <div class="outcome"><b>One side retreats</b><span>MDN wins on one side and it pulls back.</span><em>Awaiting run</em></div>
-          <div class="outcome"><b>Mutual flight</b><span>Both Giant Fibers fire. The dark forest, from wiring alone.</span><em>Awaiting run</em></div>
-          <div class="outcome"><b>Escalation</b><span>Both keep advancing into each other.</span><em>Awaiting run</em></div>
+          <div class="outcome"><b>Friends</b><span>Both keep growing side by side.</span><em>Normal 1 · Fearless 14 · Hungry 27</em></div>
+          <div class="outcome"><b>One backs off</b><span>One side gets scared and pulls back.</span><em>Normal 0 · Fearless 0 · Hungry 1,927</em></div>
+          <div class="outcome"><b>Both run</b><span>Each scares the other away. Everyone hides: the “dark forest”.</span><em>Normal 0 · Fearless 0 · Hungry 650</em></div>
+          <div class="outcome"><b>Fight</b><span>Both keep pushing and both get hurt.</span><em>Normal 0 · Fearless 0 · Hungry 101</em></div>
         </div>
+        <p class="small-note">One recorded galaxy (seed 42). Hungry flies can't tell a bad neighbour from a good one, so they keep crowding each other.</p>
       </div>
     </section>
 
     <!-- LESIONS -->
     <section data-id="lesions">
-      <h2>Which neurons decide whether a galaxy goes quiet?</h2>
-      <p class="lede">Compare the intact brain with Giant Fiber silenced, Giant Fiber and MDN silenced, or bitter-sensing neurons silenced.</p>
-      <p>The results panel reports survival for each variant under the same sequence of hazards.</p>
+      <h2>Switch off a neuron, change the galaxy</h2>
+      <p class="lede">We switched off one type of neuron at a time and replayed the galaxy. Some tiny parts of the brain change how far a civilization spreads.</p>
+      <div class="block">
+        <h3>Whole parts switched off</h3>
+        <div class="map">
+          <div class="map-row"><span class="tag c-loom">Escape</span><span class="arrow">→</span><span>Nobody ever flees, and colonies end up with nearly twice the territory (129 vs 71).</span></div>
+          <div class="map-row"><span class="tag c-bitter">Bitter taste</span><span class="arrow">→</span><span>Colonies can't tell a bad world from a good one. They spread to 507, then run into each other.</span></div>
+          <div class="map-row"><span class="tag c-sugar">Half the brain</span><span class="arrow">→</span><span>The eat neuron never fires, colonies never grow, and every civilization dies out.</span></div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Single neuron types (early results)</h3>
+        <div class="map">
+          <div class="map-row"><span class="tag c-loom">DNp04</span><span class="arrow">→</span><span>A danger-response neuron. Switching it off costs about 50 colonies.</span></div>
+          <div class="map-row"><span class="tag c-loom">DNp103</span><span class="arrow">→</span><span>Another danger-response neuron. About 47 colonies fewer.</span></div>
+          <div class="map-row"><span class="tag c-bitter">PVLP130</span><span class="arrow">→</span><span>A visual brake (it calms other neurons). About 52 colonies fewer.</span></div>
+        </div>
+        <p class="small-note">We screened 20 of the 913 neuron types that could matter, 6 galaxies each, so treat these as leads, not proof.</p>
+      </div>
     </section>
 
     <!-- BASELINES -->
     <section data-id="baselines">
-      <h2>Does the fly actually matter?</h2>
-      <p class="lede">Each policy sees the same stars and hazards as the intact fly.</p>
-      <label>Signal gain <select id="gain"><option>0.5</option><option selected>1.0</option><option>1.5</option></select></label>
+      <h2>Fly vs code</h2>
+      <p class="lede">Is a real fly brain any smarter? We pitted it against a few lines of hand-written code and a small AI trained to copy it. Same galaxies, same disasters.</p>
+      <label>How strongly colonies feel the galaxy <select id="gain"><option>0.5</option><option selected>1.0</option><option>1.5</option></select></label>
       <canvas id="experimentChart" width="640" height="220" style="width:100%;height:auto" aria-label="Mean surviving colonies with standard error bars"></canvas>
-      <div class="block" id="experiment">Run the backend with a generated experiment to see measured results.</div>
+      <div class="block" id="experiment">Start the server to see the results.</div>
     </section>
 
     <!-- HARDWARE -->
     <section data-id="hardware">
-      <h2>Try a colony scenario</h2>
-      <p class="lede">Adjust sugar, bitter and looming to see how the intact or escape-silenced brain responds.</p>
+      <h2>Fly it yourself</h2>
+      <p class="lede">Set up a planet and ask the real fly brain what to do. This runs the whole brain live, not a recording.</p>
       <div class="console" aria-label="Console preview">
         <div class="leds" id="leds">
-          <div class="led" data-n="MN9" style="--c:var(--sugar)"><i></i>MN9</div>
-          <div class="led" data-n="DNp09" style="--c:var(--fwd)"><i></i>DNp09</div>
-          <div class="led" data-n="MDN" style="--c:var(--bitter)"><i></i>MDN</div>
-          <div class="led" data-n="GF" style="--c:var(--loom)"><i></i>Giant Fiber</div>
+          <div class="led" data-n="MN9" style="--c:var(--sugar)"><i></i>Eat</div>
+          <div class="led" data-n="DNp09" style="--c:var(--fwd)"><i></i>Forward</div>
+          <div class="led" data-n="MDN" style="--c:var(--bitter)"><i></i>Back up</div>
+          <div class="led" data-n="GF" style="--c:var(--loom)"><i></i>Escape</div>
         </div>
-        <div class="meter" style="--c:var(--loom)"><span>Looming</span><div class="track"><div class="fill" id="loomFill"></div></div><b id="loomVal">0.00</b></div>
-        <div><button class="btn primary" id="waveBtn">Simulate a hand wave</button></div>
-        <p style="font-size:12.5px;color:var(--dim);margin:0">Preview only. On the real board, a distance sensor provides the looming signal.</p>
+        <div class="meter" style="--c:var(--loom)"><span>Danger</span><div class="track"><div class="fill" id="loomFill"></div></div><b id="loomVal">0.00</b></div>
+        <div><button class="btn primary" id="waveBtn">Wave a hand at it</button></div>
+        <p style="font-size:12.5px;color:var(--dim);margin:0">Preview. With the Arduino board, a distance sensor turns your real hand into danger.</p>
       </div>
       <div class="block">
-        <h3>Ask the real fly</h3>
+        <h3>Ask the fly brain</h3>
         <div class="console real-fly offline" id="realFly">
-          <p class="small-note" id="realFlyNote">Runs the actual connectome. Start the backend on a laptop with <code>python -m viz.server</code> and open the page from it to use this.</p>
-          <div class="slider" style="--c:var(--sugar)"><label for="inSugar">Sugar</label><input type="range" id="inSugar" min="0" max="1" step="0.05" value="1"><b id="vSugar">1.00</b></div>
-          <div class="slider" style="--c:var(--bitter)"><label for="inBitter">Bitter</label><input type="range" id="inBitter" min="0" max="1" step="0.05" value="0"><b id="vBitter">0.00</b></div>
-          <div class="slider" style="--c:var(--loom)"><label for="inLoom">Looming</label><input type="range" id="inLoom" min="0" max="1" step="0.05" value="0"><b id="vLoom">0.00</b></div>
-          <label class="check-row"><input type="checkbox" id="silGF"> Silence the Giant Fiber</label>
-          <div><button class="btn primary" id="runFly">Run the fly brain</button> <button class="btn" id="previewFly">Look up cached response</button></div>
+          <p class="small-note" id="realFlyNote">To use this, start the server with <code>python -m viz.server</code> and open this page from it.</p>
+          <div class="slider" style="--c:var(--sugar)"><label for="inSugar">Sweet</label><input type="range" id="inSugar" min="0" max="1" step="0.05" value="1"><b id="vSugar">100%</b></div>
+          <div class="slider" style="--c:var(--bitter)"><label for="inBitter">Bitter</label><input type="range" id="inBitter" min="0" max="1" step="0.05" value="0"><b id="vBitter">0%</b></div>
+          <div class="slider" style="--c:var(--loom)"><label for="inLoom">Danger</label><input type="range" id="inLoom" min="0" max="1" step="0.05" value="0"><b id="vLoom">0%</b></div>
+          <label class="check-row"><input type="checkbox" id="silGF"> Remove the escape neuron</label>
+          <div><button class="btn primary" id="runFly">Ask the fly</button> <button class="btn" id="previewFly">Instant guess</button></div>
           <div class="fly-out" id="flyOut"></div>
         </div>
       </div>
       <ol class="steps">
-        <li>A distance sensor on the Qwiic port reads a hand moving toward it as looming.</li>
-        <li>The fly runs on a laptop or server, or as a pruned brain on the board itself.</li>
-        <li>LEDs show MN9, DNp09, MDN and the Giant Fiber. A spike flashes, and the colonies on screen flee.</li>
+        <li>Move your hand toward the board. Its distance sensor feels that as danger.</li>
+        <li>The fly brain runs on the laptop and decides what to do.</li>
+        <li>The lights show which neuron fired. If the escape light flashes, the colonies on screen flee.</li>
       </ol>
     </section>
 
@@ -554,8 +576,8 @@ details > div{margin-top:12px;display:grid;gap:10px}
       <div class="block">
         <h3>Built on</h3>
         <div class="chips">
-          <span class="chip">FlyWire connectome</span>
-          <span class="chip">Shiu et al. LIF model</span>
+          <span class="chip">FlyWire brain map</span>
+          <span class="chip">Shiu et al. brain model</span>
           <span class="chip">PyTorch</span>
           <span class="chip">Modal GPUs</span>
           <span class="chip">Arduino UNO Q</span>
@@ -579,14 +601,14 @@ const hexA = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n>>1
 
 /* ---------------- places ---------------- */
 const PLACES = [
-  {id:'question', label:'The Question',  blurb:'Why is the galaxy so quiet?',      r:.62, a:2.4,  size:13, kind:'star',   c:['#fff6dc','#f4b740']},
-  {id:'brain',    label:'The Fly Brain', blurb:'138k neurons behind every choice', r:.47, a:4.15, size:12, kind:'ring',   c:['#ffd6ea','#c4508a']},
-  {id:'demo',     label:'Live Demo',     blurb:'One map, six policies',         r:0,   a:0,    size:20, kind:'core',   c:['#ffffff','#9fd8ff']},
-  {id:'contact',  label:'First Contact', blurb:'Two fly brains meet',              r:.75, a:5.42, size:9,  kind:'binary', c:['#dcfbff','#4fd6e8']},
-  {id:'lesions',  label:'Lesion Screen', blurb:'Which neurons decide it',          r:.36, a:1.0,  size:11, kind:'planet', c:['#ffd3c8','#ff5a4e']},
-  {id:'baselines',label:'Baselines',     blurb:'Does the fly matter?',             r:.84, a:3.75, size:10, kind:'planet', c:['#eef3ff','#7d93c9']},
-  {id:'hardware', label:'Fly Console',   blurb:'Try a colony scenario',       r:.70, a:.22,  size:10, kind:'moon',   c:['#f0eadf','#a39582']},
-  {id:'team',     label:'The Crew',      blurb:'Who built this',                   r:.86, a:4.85, size:8,  kind:'planet', c:['#dcffe6','#3fae74']}
+  {id:'question', label:'Where is everybody?', blurb:'Why the galaxy is so quiet',      r:.62, a:2.4,  size:13, kind:'star',   c:['#fff6dc','#f4b740']},
+  {id:'brain',    label:'Meet the pilot', blurb:'A real fruit fly brain', r:.47, a:4.15, size:12, kind:'ring',   c:['#ffd6ea','#c4508a']},
+  {id:'demo',     label:'Three galaxies', blurb:'Watch the fly brains play',         r:0,   a:0,    size:20, kind:'core',   c:['#ffffff','#9fd8ff']},
+  {id:'contact',  label:'First contact', blurb:'When two colonies meet',              r:.75, a:5.42, size:9,  kind:'binary', c:['#dcfbff','#4fd6e8']},
+  {id:'lesions',  label:'Switch off a neuron', blurb:'Which neurons matter',          r:.36, a:1.0,  size:11, kind:'planet', c:['#ffd3c8','#ff5a4e']},
+  {id:'baselines',label:'Fly vs code', blurb:'Is the fly any smarter?',             r:.84, a:3.75, size:10, kind:'planet', c:['#eef3ff','#7d93c9']},
+  {id:'hardware', label:'Fly it yourself', blurb:'Ask the brain live',       r:.70, a:.22,  size:10, kind:'moon',   c:['#f0eadf','#a39582']},
+  {id:'team',     label:'The crew', blurb:'Who built this',                   r:.86, a:4.85, size:8,  kind:'planet', c:['#dcffe6','#3fae74']}
 ];
 const HOME_SECTIONS = ['brain', 'demo', 'baselines', 'hardware'];
 const ORDER = ['question','brain','demo','contact','lesions','baselines','hardware','team'];
@@ -956,25 +978,36 @@ const BUNDLED_SANITY = {time:'2026-11-14T17:43:35+00:00', device:'cpu', commit:'
   {name:'Input stopped -> activity dies out', criterion:'0 spikes in the whole brain 200-300 ms after input ends', measured:'0 spikes', passed:true, as_expected:true}
 ]};
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+const PLAIN_CHECKS = [
+  [/^No input/, 'Nothing happening → brain stays quiet'],
+  [/^Sugar \+ bitter/, 'Sweet + bitter → stops eating'],
+  [/^Sugar/, 'Sweet → wants to eat'],
+  [/silenced/, 'Escape neuron removed → no escape'],
+  [/^Looming/, 'Shadow rushing in → escape neuron fires'],
+  [/^Input stopped/, 'Danger gone → brain calms down']
+];
+const plainCheck = name => (PLAIN_CHECKS.find(([re]) => re.test(name)) || [, name.replace('->', '→')])[1];
+const plainMeasure = m => m.replace(/MN9/g, 'eat neuron').replace(/Giant Fib(re|er)/g, 'escape neuron')
+  .replace(/spiked in (\d+)\/(\d+)/, 'fired in $1 of $2 brains').replace(/sugar-only/g, 'sweet only');
 function renderSanity(s, source){
   $('#checks').innerHTML = s.checks.map(c => {
     const ok = c.as_expected ?? c.passed;
-    return `<li><div>${esc(c.name.replace('->', '→'))}<small>${esc(c.measured)}</small></div><span class="pill ${ok ? 'pass' : 'fail'}">${c.passed ? 'Pass' : 'Fail'}</span></li>`;
+    return `<li><div>${esc(plainCheck(c.name))}<small>${esc(plainMeasure(c.measured))}</small></div><span class="pill ${ok ? 'pass' : 'fail'}">${c.passed ? 'Pass' : 'Fail'}</span></li>`;
   }).join('');
-  const d = new Date(s.time);
-  $('#sanityMeta').textContent = `Intact brain on ${s.device.toUpperCase()}, ${s.replicates} replicate brains, seed 0, commit ${s.commit}. ${source}, run ${isNaN(d) ? s.time : d.toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'})}.`;
+  const where = s.device === 'cuda' ? 'a GPU' : 'a laptop';
+  $('#sanityMeta').textContent = `All six run on ${where}, ${s.replicates} test brains each.`;
 }
 renderSanity(BUNDLED_SANITY, 'From results/sanity_intact_cpu.json');
 
 /* ---------------- demo viewer ---------------- */
 const VARIANT_INFO = {
-  intact:   {label:'Intact fly',    note:'Real wiring',              color:'#f2f4ff'},
-  fearless: {label:'Fearless',      note:'Giant Fiber silenced',     color:'#ff9f5a'},
-  hungry:   {label:'Always hungry', note:'Bitter neurons silenced',  color:'#acbedc'},
-  fearless_no_retreat: {label:'Fearless, no retreat', note:'Giant Fiber and MDN silenced', color:'#ffcf85'},
-  shuffle: {label:'Degree-preserving shuffle', note:'Interneuron targets rewired', color:'#78d9ae'},
-  threshold: {label:'Threshold rule', note:'Hand-written decisions', color:'#e7eaf0'},
-  neural_net: {label:'Neural net', note:'Small network fitted to the fly', color:'#c9b8ff'}
+  intact:   {label:'Normal fly',    note:'The real wiring',          color:'#f2f4ff'},
+  fearless: {label:'Fearless fly',  note:'Escape neuron removed',    color:'#ff9f5a'},
+  hungry:   {label:'Always-hungry fly', note:"Can't taste bitter",   color:'#acbedc'},
+  fearless_no_retreat: {label:'Reckless fly', note:'No escape, no backing off', color:'#ffcf85'},
+  shuffle: {label:'Scrambled fly', note:'Same parts, wires shuffled', color:'#78d9ae'},
+  threshold: {label:'Simple rule', note:'A few lines of code', color:'#e7eaf0'},
+  neural_net: {label:'Copycat AI', note:'Small network trained to copy the fly', color:'#c9b8ff'}
 };
 const EXTRA_COLORS = ['#7fe3c1','#ffd36e','#8fb8ff','#ff8fb1'];
 const tokens = getComputedStyle(document.documentElement);
@@ -1124,13 +1157,13 @@ const demo = (() => {
     const st = $('#status');
     if (sourceName === 'live'){
       st.className = 'status real';
-      st.innerHTML = `<span><b>Live from the galaxy sim.</b> Epochs appear as the backend sends them.</span>`;
+      st.innerHTML = `<span><b>Live from the galaxy simulation.</b> Turns appear as they're played.</span>`;
     } else if (sourceName){
       st.className = 'status real';
-      st.innerHTML = `<span><b>Real sim frames:</b> ${sourceName.replace(/[<>&]/g, '')} · ${variants.length} galaxies · ${run.frames.length} epochs.</span>`;
+      st.innerHTML = `<span><b>Real recording.</b> ${variants.length} galaxies, ${run.frames.length} turns, every colony steered by a fly brain.</span>`;
     } else {
       st.className = 'status';
-      st.innerHTML = `<span><b>Mock data.</b> These colonies follow simple stand-in rules so the viewer has something to play. They are not fly decisions. Load the sim's frame file to replace them.</span>`;
+      st.innerHTML = `<span><b>Practice galaxy.</b> These dots follow simple stand-in rules, not a fly brain. Start the server to play the real recording.</span>`;
     }
     draw();
   }
@@ -1252,19 +1285,20 @@ const demo = (() => {
 
   function meter(label, v, max, col, unit){
     const pct = Math.max(0, Math.min(1, v/max))*100;
-    return `<div class="meter" style="--c:${col}"><span>${label}</span><div class="track"><div class="fill" style="width:${pct}%;transition:none"></div></div><b>${unit === 'hz' ? Math.round(v) + ' Hz' : v.toFixed(2)}</b></div>`;
+    return `<div class="meter" style="--c:${col}"><span>${label}</span><div class="track"><div class="fill" style="width:${pct}%;transition:none"></div></div><b>${unit === 'hz' ? Math.round(v) + ' /s' : Math.round(v*100) + '%'}</b></div>`;
   }
+  const ACTION_LABEL = {settle:'Growing', expand:'Sending ships', retreat:'Backing off', flee:'Fleeing!'};
   function drawReadout(){
     const el = $('#readout');
-    if (!sel){ el.innerHTML = '<p class="empty">Click a colony in any galaxy to see what its fly sensed and decided at this epoch.</p>'; return; }
+    if (!sel){ el.innerHTML = '<p class="empty">Click any colony to see what its fly sensed and what it decided.</p>'; return; }
     const info = VARIANT_INFO[sel.v] || {label:sel.v};
     const c = (((run.frames[frame].galaxies[sel.v] || {}).colonies) || []).find(c => c.star === sel.star);
-    if (!c){ el.innerHTML = `<div class="who"><div><b>Star ${sel.star}</b><small>${info.label} galaxy</small></div></div><p class="empty">No colony here at epoch ${frame}. Scrub back to see what happened, or pick another colony.</p>`; return; }
+    if (!c){ el.innerHTML = `<div class="who"><div><b>Star ${sel.star}</b><small>${info.label} galaxy</small></div></div><p class="empty">Nobody lives here on turn ${frame}. Drag the timeline back to see what happened.</p>`; return; }
     const i = c.inputs, r = c.rates;
-    el.innerHTML = `<div class="who"><div><b>Colony at star ${c.star}</b><small>${info.label} galaxy · population ${Math.round((c.pop ?? 0)*100)}%</small></div><span class="act" style="--c:${ACTION_COLOR[c.action] || '#e9edf8'}">${c.action || 'n/a'}</span></div>
-      ${i ? `<div class="sub">Senses</div>${meter('Sugar', i.sugar, 1, 'var(--sugar)')}${meter('Bitter', i.bitter, 1, 'var(--bitter)')}${meter('Looming', i.looming, 1, 'var(--loom)')}` : ''}
-      ${r ? `<div class="sub">Neurons</div>${meter('MN9', r.MN9, 60, 'var(--sugar)', 'hz')}${meter('DNp09', r.DNp09, 60, 'var(--fwd)', 'hz')}${meter('MDN', r.MDN, 60, 'var(--bitter)', 'hz')}
-        <div class="meter" style="--c:var(--loom)"><span>Giant Fiber</span><div class="track"><div class="fill" style="width:${r.GF ? 100 : 0}%;transition:none"></div></div><b>${r.GF ? 'spike' : 'quiet'}</b></div>` : ''}`;
+    el.innerHTML = `<div class="who"><div><b>Colony at star ${c.star}</b><small>${info.label} · ${Math.round((c.pop ?? 0)*100)}% full</small></div><span class="act" style="--c:${ACTION_COLOR[c.action] || '#e9edf8'}">${ACTION_LABEL[c.action] || c.action || 'n/a'}</span></div>
+      ${i ? `<div class="sub">What it senses</div>${meter('Sweet', i.sugar, 1, 'var(--sugar)')}${meter('Bitter', i.bitter, 1, 'var(--bitter)')}${meter('Danger', i.looming, 1, 'var(--loom)')}` : ''}
+      ${r ? `<div class="sub">What its brain did</div>${meter('Eat', r.MN9, 60, 'var(--sugar)', 'hz')}${meter('Forward', r.DNp09, 60, 'var(--fwd)', 'hz')}${meter('Back up', r.MDN, 60, 'var(--bitter)', 'hz')}
+        <div class="meter" style="--c:var(--loom)"><span>Escape</span><div class="track"><div class="fill" style="width:${r.GF ? 100 : 0}%;transition:none"></div></div><b>${r.GF ? 'FIRED' : 'calm'}</b></div>` : ''}`;
   }
 
   function draw(){
@@ -1337,11 +1371,11 @@ const backend = (() => {
   /* real-fly console */
   const box = $('#realFly'), out = $('#flyOut'), runBtn = $('#runFly');
   [['inSugar','vSugar'],['inBitter','vBitter'],['inLoom','vLoom']].forEach(([i, o]) => {
-    const el = $('#' + i); el.addEventListener('input', () => $('#' + o).textContent = (+el.value).toFixed(2));
+    const el = $('#' + i); el.addEventListener('input', () => $('#' + o).textContent = Math.round(+el.value*100) + '%');
   });
   function meterHz(label, v, col){
     const pct = Math.max(0, Math.min(1, v/200))*100;
-    return `<div class="meter" style="--c:${col}"><span>${label}</span><div class="track"><div class="fill" style="width:${pct}%"></div></div><b>${Math.round(v)} Hz</b></div>`;
+    return `<div class="meter" style="--c:${col}"><span>${label}</span><div class="track"><div class="fill" style="width:${pct}%"></div></div><b>${Math.round(v)} /s</b></div>`;
   }
   $('#previewFly').addEventListener('click', async () => {
     const body = {sugar:+$('#inSugar').value, bitter:+$('#inBitter').value, looming:+$('#inLoom').value,
@@ -1350,8 +1384,9 @@ const backend = (() => {
       const r = await fetch('api/preview', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
       const d = await r.json();
       if (!r.ok) throw new Error(d.detail || r.status);
-      out.textContent = 'Cached estimate · escape probability ' + Math.round(100 * d.escape_probability) + '% · ' +
-        Object.entries(d.rates).map(([name,hz]) => name + ' ' + hz.toFixed(1) + ' Hz').join(' · ');
+      const PLAIN = {MN9:'eat', DNp09:'forward', MDN:'back up', GF:'escape'};
+      out.textContent = 'Instant guess from saved answers: ' + Math.round(100 * d.escape_probability) + '% chance it escapes · ' +
+        Object.entries(d.rates).filter(([name]) => name !== 'GF').map(([name,hz]) => (PLAIN[name] || name) + ' ' + Math.round(hz) + '/s').join(' · ');
     } catch (error) {
       out.textContent = error.message;
     }
@@ -1360,21 +1395,25 @@ const backend = (() => {
     if (!up) return;
     const body = {sugar:+$('#inSugar').value, bitter:+$('#inBitter').value, looming:+$('#inLoom').value, brains:4,
                   silence:$('#silGF').checked ? ['escape'] : []};
-    runBtn.disabled = true; runBtn.textContent = 'Running 4 fly brains…';
-    out.innerHTML = '<p class="small-note">The whole brain is running 200 ms of activity. On a laptop CPU this takes a few seconds.</p>';
+    runBtn.disabled = true; runBtn.textContent = 'Thinking…';
+    out.innerHTML = '<p class="small-note">Four fly brains are thinking it over. Takes a few seconds on a laptop.</p>';
     try {
       const r = await fetch('api/decide', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
       const d = await r.json();
       if (!r.ok) throw new Error(d.detail || r.status);
       const R = d.rates;
-      out.innerHTML = meterHz('MN9', R.MN9.mean_hz, 'var(--sugar)') + meterHz('DNp09', R.DNp09.mean_hz, 'var(--fwd)') +
-        meterHz('MDN', R.MDN.mean_hz, 'var(--bitter)') + meterHz('Giant Fiber', R.GF.mean_hz, 'var(--loom)') +
-        `<p class="small-note">Giant Fiber spiked in ${d.gf_spiked} of ${d.brains} brains. ${d.wall_seconds} s on ${esc(d.device)}.</p>`;
+      const verdict = d.gf_spiked > d.brains / 2 ? 'Escape! The fly abandons ship.'
+        : R.MN9.mean_hz > 20 ? 'Yum. The fly settles in and grows.'
+        : R.MDN.mean_hz > 5 ? 'Nope. The fly backs off.'
+        : 'Meh. The fly does nothing much.';
+      out.innerHTML = `<p><b>${verdict}</b></p>` + meterHz('Eat', R.MN9.mean_hz, 'var(--sugar)') + meterHz('Forward', R.DNp09.mean_hz, 'var(--fwd)') +
+        meterHz('Back up', R.MDN.mean_hz, 'var(--bitter)') + meterHz('Escape', R.GF.mean_hz, 'var(--loom)') +
+        `<p class="small-note">Sparks per second. The escape neuron fired in ${d.gf_spiked} of ${d.brains} brains. Took ${d.wall_seconds} s.</p>`;
       hw.showRates(R, d.gf_spiked);
     } catch (e){
-      out.innerHTML = `<p class="small-note">The brain run failed: ${esc(e.message)}. Check the server window for details. A common cause is missing connectome data: run <code>python scripts/fetch_data.py</code>.</p>`;
+      out.innerHTML = `<p class="small-note">The fly brain didn't answer: ${esc(e.message)}. If the brain data is missing, run <code>python scripts/fetch_data.py</code>.</p>`;
     } finally {
-      runBtn.disabled = false; runBtn.textContent = 'Run the fly brain';
+      runBtn.disabled = false; runBtn.textContent = 'Ask the fly';
     }
   }
   runBtn.addEventListener('click', runFly);
@@ -1385,7 +1424,7 @@ const backend = (() => {
     catch(e){ return; }
     ws.onmessage = ev => {
       let m; try { m = JSON.parse(ev.data); } catch(e){ return; }
-      if (m.type === 'loom'){ $('#inLoom').value = m.value; $('#vLoom').textContent = (+m.value).toFixed(2); hw.wave(Math.max(.2, m.value)); }
+      if (m.type === 'loom'){ $('#inLoom').value = m.value; $('#vLoom').textContent = Math.round(+m.value*100) + '%'; hw.wave(Math.max(.2, m.value)); }
       else if (m.type === 'start'){ demo.startLive(m.meta, m.stars); }
       else if (m.type === 'frame'){ demo.pushFrame(m); }
     };
@@ -1398,9 +1437,9 @@ const backend = (() => {
     try { h = await get('api/health'); } catch(e){ return; }
     if (!h || !h.ok) return;
     up = true;
-    $('#conn').classList.add('on'); $('#conn').textContent = `Live backend · ${h.device}`;
+    $('#conn').classList.add('on'); $('#conn').textContent = 'Live brain connected';
     box.classList.remove('offline');
-    $('#realFlyNote').textContent = 'Runs the actual connectome on this backend: 4 brains, 200 ms each, inputs scaled to 0–200 Hz.';
+    $('#realFlyNote').textContent = 'Runs the full fly brain live: four brains, each thinking for 0.2 seconds.';
     try {
       const s = await get('api/sanity');
       renderSanity({time:s.run.time_utc, device:s.run.device, commit:(s.run.git_commit || '').slice(0, 7), replicates:s.result.replicates, checks:s.result.checks}, `From results/${s.file}`);
@@ -1420,9 +1459,9 @@ function renderExperiment(data){
   const axes = data.escape_axes || {};
   const even = n => Array.from({length:n}, (_, i) => 200 * i / (n - 1));
   const loomAxis = axes.looming_hz || even(map[0].length), sugarAxis = axes.sugar_hz || even(map.length);
-  const hz = v => (v < 10 && v % 1 ? v.toFixed(1) : Math.round(v)) + ' Hz';
+  const hz = v => String(v < 10 && v % 1 ? v.toFixed(1) : Math.round(v));
   const headings = loomAxis.map(v => '<th>' + hz(v) + '</th>');
-  $('#escapeMap').innerHTML = '<table><thead><tr><th>Sugar / looming</th>' + headings.join('') +
+  $('#escapeMap').innerHTML = '<table><thead><tr><th>Sweet ↓ · Danger →</th>' + headings.join('') +
     '</tr></thead><tbody>' + map.map((row, i) => '<tr><th>' + hz(sugarAxis[i]) + '</th>' + row.map(p =>
       '<td style="padding:6px;background:rgba(255,90,78,' + (p * .45) + ')">' + pct(p) + '</td>').join('') +
     '</tr>').join('') + '</tbody></table>';
@@ -1435,40 +1474,42 @@ function renderExperiment(data){
     const gain = $('#gain').value;
     const policies = Object.entries(data.gains[gain]);
     const chart = $('#experimentChart'), ctx = chart.getContext('2d');
-    chart.height = Math.max(220, 30 + policies.length * 34);
+    chart.height = 24 + policies.length * 48;
     ctx.clearRect(0, 0, chart.width, chart.height);
-    ctx.font = '14px system-ui';
+    ctx.font = '600 21px system-ui';
     const max = Math.max(1, ...Object.values(data.gains).flatMap(policies =>
       Object.values(policies).map(r => r.survivors.mean + (r.survivors.se || 0))));
-    const x = n => 200 + 405 * n / max;
+    const x = n => 230 + 330 * n / max;
     policies.forEach(([name,r], i) => {
-      const y = 23 + i * 34, {mean,se} = r.survivors, error = se || 0;
+      const y = 30 + i * 48, {mean,se} = r.survivors, error = se || 0;
       ctx.fillStyle = '#e9edf8';
       const info = VARIANT_INFO[name] || {label:name, color:'#e7eaf0'};
-      ctx.fillText(info.label, 0, y + 5, 190);
+      ctx.textBaseline = 'middle';
+      ctx.fillText(info.label, 0, y, 220);
       ctx.fillStyle = info.color;
-      ctx.fillRect(x(0), y - 7, x(mean) - x(0), 14);
+      ctx.fillRect(x(0), y - 10, x(mean) - x(0), 20);
       ctx.strokeStyle = '#fff';
       ctx.beginPath();
       ctx.moveTo(x(mean - error), y);
       ctx.lineTo(x(mean + error), y);
       for (const bound of [mean - error, mean + error]){
-        ctx.moveTo(x(bound), y - 5);
-        ctx.lineTo(x(bound), y + 5);
+        ctx.moveTo(x(bound), y - 6);
+        ctx.lineTo(x(bound), y + 6);
       }
       ctx.stroke();
+      ctx.fillStyle = '#e9edf8';
+      ctx.fillText(Math.round(mean), x(mean + error) + 10, y);
     });
-    const stat = ({mean,se}) => mean.toFixed(1) + (se === null ? '' : ' ± ' + se.toFixed(1));
-    $('#experiment').innerHTML = '<p>Mean ± standard error across ' + data.config.seeds +
-      ' matched galaxy seeds. ' + (data.config.detector_note ||
-      'The detector counts nearby colonies at 50% population or higher.') + '</p>' +
+    const stat = ({mean,se}) => { const d = Math.abs(mean) >= 10 ? 0 : 1; return mean.toFixed(d) + (se == null ? '' : ' ± ' + se.toFixed(d)); };
+    $('#experiment').innerHTML = '<p>Average over ' + data.config.seeds +
+      ' galaxies; ± shows how much runs wobble. “Seen from Earth” counts civilizations an observer where the Sun sits could spot.</p>' +
       '<div style="overflow:auto"><table style="width:100%;text-align:left"><thead><tr>' +
-      '<th>Policy</th><th>Survivors</th><th>Detected</th><th>Extinct</th><th>Change vs. intact</th>' +
+      '<th>Pilot</th><th>Colonies left</th><th>Seen from Earth</th><th>vs normal fly</th>' +
       '</tr></thead><tbody>' + policies.map(([name,r]) => {
         const delta = data.paired_survivor_difference_from_intact[gain][name];
         return '<tr><th scope="row">' + (VARIANT_INFO[name] || {label:name}).label + '</th><td>' + stat(r.survivors) +
-          '</td><td>' + stat(r.detectable_colonies) + '</td><td>' + pct(r.extinction_fraction.mean) +
-          '</td><td>' + (delta ? stat(delta) : 'Reference') + '</td></tr>';
+          '</td><td>' + stat(r.detectable_colonies) +
+          '</td><td>' + (delta ? stat(delta) : '—') + '</td></tr>';
       }).join('') + '</tbody></table></div>';
   }
   $('#gain').addEventListener('change', update);

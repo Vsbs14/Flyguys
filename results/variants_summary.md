@@ -9,6 +9,7 @@ PASS* and FAIL* mark results the lesion is designed to produce. For the size and
 | Intact brain (reference) | PASS | PASS | PASS | PASS | PASS | PASS |
 | Giant Fibre silenced (no panic) | PASS | PASS | PASS | FAIL* | PASS | PASS |
 | MDN silenced (no caution) | PASS | PASS | PASS | PASS | PASS | PASS |
+| Giant Fibre and MDN silenced | PASS | PASS | PASS | FAIL* | PASS | PASS |
 | Bitter neurons silenced (always hungry) | PASS | PASS | FAIL* | PASS | PASS | PASS |
 | 50% of interneurons kept | PASS | FAIL | FAIL | PASS | PASS | PASS |
 | 20% of interneurons kept | PASS | FAIL | FAIL | PASS | PASS | PASS |
@@ -24,6 +25,7 @@ Largest mean response anywhere on the 10 x 10 x 10 input grid. Tables are built 
 | Intact brain (reference) | 0 | 6,377 | 0.0022% | 63/64 | 76 | 1.00 | 18.2 | 4.0 |
 | Giant Fibre silenced (no panic) | 2 | 6,335 | 0.0022% | 63/64 | 74 | 0.00 | 17.5 | 3.0 |
 | MDN silenced (no caution) | 4 | 6,489 | 0.0022% | 63/64 | 76 | 1.00 | 0.0 | 4.0 |
+| Giant Fibre and MDN silenced | 6 | 6,413 | 0.0032% | 64/64 | 74 | 0.00 | 0.0 | 3.0 |
 | Bitter neurons silenced (always hungry) | 42 | 6,169 | 0.0024% | 63/64 | 78 | 1.00 | 17.2 | 3.5 |
 | 50% of interneurons kept | 69,121 | 2,355 | 0.0000% | 64/64 | 0 | 1.00 | 0.0 | 15.0 |
 | 20% of interneurons kept | 110,593 | 939 | 0.0000% | 64/64 | 0 | 1.00 | 0.0 | 21.5 |
