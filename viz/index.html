@@ -259,36 +259,69 @@ details > div{margin-top:12px;display:grid;gap:10px}
 @media (prefers-reduced-motion:reduce){
   .panel,.tip{transition:none}
 }
+/* Evacuation scene */
+.hero{display:block;padding:clamp(36px,5vh,68px) max(20px,calc((100vw - 1040px)/2)) 96px}
+.mission h1{font-size:clamp(40px,6vw,78px);margin:8px 0 10px}
+.mission p{color:var(--body-copy);font-size:clamp(15px,2vw,19px)}
+.mission .hero-actions{margin:18px 0 24px}
+.comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.comparison figcaption{font:600 clamp(12px,2vw,17px) var(--display);min-height:2.6em}
+.comparison .evacuation{aspect-ratio:1.8}
+.outcome-text{min-height:3em;padding-top:8px;color:var(--gold);font:600 clamp(11px,1.8vw,15px) var(--body)}
+@media(max-width:550px){.comparison{gap:8px}.comparison .evacuation{aspect-ratio:1.2;border-radius:10px}.fly-pilot{width:51%!important}}
+
+#evacReadout{color:var(--caption)}
+.evacuation{position:relative;isolation:isolate;overflow:hidden;aspect-ratio:1.37;border:1px solid var(--line);border-radius:22px;background:radial-gradient(circle at 37% 44%,#23120d,#080a12 53%,#020407)}
+.orbit{position:absolute;left:10%;top:26%;width:62%;height:37%;border:1px dashed var(--caption);border-radius:50%;transform:rotate(-16deg);opacity:.45}
+.dying-star{position:absolute;left:22%;top:30%;width:29%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 43% 43%,#fff8de,#ffd27b 35%,#da5226 72%,#5f1f12);box-shadow:0 0 42px #ec792b;transition:transform .85s ease,opacity .65s}
+.ship{position:absolute;z-index:2;left:65%;top:35%;width:10%;height:8%;filter:drop-shadow(0 0 8px #99dbff);transition:transform .85s cubic-bezier(.45,.06,.78,.39),opacity .7s}
+.ship i{display:block;width:100%;height:100%;background:linear-gradient(#c8e5f4,#465e72 49%,#e0f3fd 55%,#647e8f);clip-path:polygon(0 34%,32% 34%,25% 0,100% 50%,25% 100%,32% 66%,0 66%)}
+.fly-pilot{position:absolute;z-index:3;bottom:5%;right:5%;width:32%;background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.fly-pilot img{width:100%;display:block;aspect-ratio:1.8;object-fit:cover}
+.fly-pilot span{display:block;padding:6px;color:var(--ink);font:clamp(9px,1.2vw,13px) var(--mono)}
+.evacuation[data-phase=warning] .dying-star{transform:scale(1.45)}
+.evacuation[data-phase=escaped] .ship{transform:translate(430%,-220%) scale(.25);opacity:0}
+.evacuation[data-phase=escaped] .fly-pilot{border-color:var(--gold)}
+.evacuation[data-phase=escaped] .dying-star{animation:star-burst 1.5s .35s both}
+@keyframes star-burst{0%{transform:scale(1.45)}55%{transform:scale(4);opacity:.95}100%{transform:scale(2.7);opacity:.22}}
+@media(prefers-reduced-motion:reduce){.evacuation[data-phase=escaped] .dying-star{animation:none;opacity:.35}}
+.evacuation[data-phase=lost] .dying-star{transform:scale(4);opacity:.85}
+.evacuation[data-phase=lost] .ship{opacity:0}
+@media(prefers-reduced-motion:reduce){.dying-star,.ship{transition:none}}
 </style>
 </head>
 <body>
 <canvas id="sky" aria-hidden="true"></canvas>
 
 <main class="hero" id="hero">
-  <div class="hero-copy">
-    <div class="eyebrow">A fly brain in a simulated galaxy</div>
-    <h1>Fermi Fly</h1>
-    <p>We gave a fruit fly the keys to a galaxy. Its neural wiring decides when colonies grow, expand or flee.</p>
+  <header class="mission">
+    <div class="eyebrow">Fermi Fly</div>
+    <h1>Can a fly save a spaceship?</h1>
+    <p>Two ships. Same supernova. Only one fly brain can send the order to escape.</p>
     <div class="hero-actions">
-      <button class="btn primary" id="heroDemo">Play the galaxy</button>
-      <button class="btn" id="heroMap">Explore the star map</button>
+      <button class="btn primary" id="trigger" disabled>Trigger both supernovae</button>
+      <button class="btn" id="heroDemo">See the galaxy experiment</button>
     </div>
-  </div>
-  <figure class="specimen">
-    <div class="specimen-frame" id="specimenFrame">
-      <img src="fermi-fly.webp" alt="Illustrated fruit fly with a glowing neural circuit visible inside its head">
-      <div class="brain-flare"></div>
-    </div>
-    <figcaption>
-      <div class="stimuli" aria-label="Recorded brain stimuli">
-        <button class="btn" data-stimulus="sugar" aria-pressed="false">Sugar</button>
-        <button class="btn" data-stimulus="sugar+bitter" aria-pressed="false">Sugar + bitter</button>
-        <button class="btn" data-stimulus="looming" aria-pressed="false">Looming</button>
+  </header>
+  <div class="comparison">
+    <figure>
+      <figcaption>Normal fly brain</figcaption>
+      <div class="evacuation" data-phase="ready">
+        <div class="orbit"></div><div class="dying-star"></div><div class="ship"><i></i></div>
+        <div class="fly-pilot"><img src="fermi-fly.webp" alt="Illustrated fruit fly brain"><span>Escape neuron on</span></div>
       </div>
-      <div id="heroResponse" role="status">Choose a stimulus to replay a measured fly-brain response.</div>
-      <div class="specimen-note">Illustrated brain cutaway · Recorded connectome responses</div>
-    </figcaption>
-  </figure>
+      <p class="outcome-text" role="status">Ship in orbit</p>
+    </figure>
+    <figure>
+      <figcaption>Escape neuron switched off</figcaption>
+      <div class="evacuation" data-phase="ready">
+        <div class="orbit"></div><div class="dying-star"></div><div class="ship"><i></i></div>
+        <div class="fly-pilot"><img src="fermi-fly.webp" alt="Illustrated fruit fly brain"><span>Escape neuron off</span></div>
+      </div>
+      <p class="outcome-text" role="status">Ship in orbit</p>
+    </figure>
+  </div>
+  <p id="evacReadout" class="specimen-note" role="status">Ship movement follows recorded responses from the real fly-brain model.</p>
 </main>
 <div class="hint">Drag to look around · Click a world · <button class="btn" id="mapHome">Home</button></div>
 
@@ -1369,12 +1402,6 @@ const backend = (() => {
     $('#realFlyNote').textContent = 'Runs the actual connectome on this backend: 4 brains, 200 ms each, inputs scaled to 0–200 Hz.';
     try {
       const s = await get('api/sanity');
-      for (const name of Object.keys(heroTrials)){
-        const trial = s.result.conditions[name];
-        if (trial) heroTrials[name] = {
-          feed:trial.output_rate_hz_mean.feed, escapes:trial.giant_fibre_spiked, total:s.result.replicates
-        };
-      }
       renderSanity({time:s.run.time_utc, device:s.run.device, commit:(s.run.git_commit || '').slice(0, 7), replicates:s.result.replicates, checks:s.result.checks}, `From results/${s.file}`);
     } catch(e){}
     if (h.has_frames){
@@ -1437,27 +1464,7 @@ function renderExperiment(data){
 }
 
 $('#heroDemo').addEventListener('click', () => go('demo'));
-$('#heroMap').addEventListener('click', () => document.body.classList.add('star-map-open'));
 $('#mapHome').addEventListener('click', close);
-
-let heroTrials = {
-  sugar: {feed:66.7, escapes:0, total:6},
-  'sugar+bitter': {feed:0.4, escapes:0, total:6},
-  looming: {feed:0, escapes:6, total:6}
-};
-for (const button of document.querySelectorAll('[data-stimulus]')){
-  button.addEventListener('click', () => {
-    document.querySelectorAll('[data-stimulus]').forEach(el => el.setAttribute('aria-pressed', el === button));
-    const trial = heroTrials[button.dataset.stimulus];
-    const specimen = $('#specimenFrame');
-    specimen.dataset.active = 'false';
-    specimen.getBoundingClientRect();
-    specimen.dataset.active = String(trial.feed > heroTrials.sugar.feed * .5 || trial.escapes > 0);
-    $('#heroResponse').textContent = 'Feeding neuron ' + trial.feed.toFixed(1) + ' Hz · Escape in ' +
-      trial.escapes + ' of ' + trial.total + ' trials';
-  });
-}
-
 /* boot */
 backend.connect();
 resize();
@@ -1466,5 +1473,6 @@ const startId = location.hash.slice(1);
 if (byId[startId]) open(startId);
 })();
 </script>
+<script src="evacuation.js"></script>
 </body>
 </html>

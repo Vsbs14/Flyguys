@@ -69,19 +69,23 @@ def run(variant, scenario, table, scale, epochs, gains, writer=None):
         events = [{"type": "supernova", "star": int(i)} for i in supernovae[t]]
         colonies = {i: c for i, c in colonies.items() if explosions[i] > t}
         traveling = []
-        for source, target, start, arrival in fleets:
+        for source, target, start, arrival, passengers in fleets:
             if explosions[target] <= t:
                 if source in colonies:
                     colonies[source].alarm = max(colonies[source].alarm, 0.5)
             elif t == arrival:
-                colonies.setdefault(target, Colony())
+                colonies.setdefault(target, Colony(passengers))
             else:
-                traveling.append((source, target, start, arrival))
+                traveling.append((source, target, start, arrival, passengers))
         fleets = traveling
         snapshots = []
         abandoned = []
         occupied = set(colonies) | {f[1] for f in fleets}
         for star, colony in sorted(colonies.items()):
+            colony.population -= 0.12 * hostility[star] ** 2
+            if colony.population <= 0:
+                abandoned.append(star)
+                continue
             looming = (min(1, 3 / (explosions[star] - t)) if explosions[star] < epochs else 0)
             signals = np.clip(np.array([habitat[star], hostility[star], looming + colony.alarm]) * gains, 0, 1)
             colony.alarm *= 0.7
@@ -89,7 +93,19 @@ def run(variant, scenario, table, scale, epochs, gains, writer=None):
             action = "settle"
             if escape:
                 action = "flee"
-                abandoned.append(star)
+                destinations = []
+                for target, separation in enumerate(distance[star]):
+                    arrival = t + max(2, int(np.ceil(separation * 12)))
+                    if (target not in occupied and separation <= 0.38
+                            and explosions[target] >= epochs and hostility[target] <= 0.4):
+                        destinations.append((separation, target, arrival))
+                if destinations:
+                    _, target, arrival = min(destinations)
+                    fleets.append((star, target, t, arrival, colony.population))
+                    occupied.add(target)
+                    abandoned.append(star)
+                else:
+                    action = "retreat"
             else:
                 colony.population = min(1, colony.population + 0.22 * feed * (1 - retreat))
                 candidates = [int(i) for i in np.argsort(distance[star])
@@ -99,7 +115,7 @@ def run(variant, scenario, table, scale, epochs, gains, writer=None):
                 elif colony.population * (0.45 * feed + 0.55 * advance) >= 0.22 and candidates:
                     target = max(candidates[:5], key=lambda i: habitat[i] - hostility[i])
                     arrival = t + max(2, int(np.ceil(distance[star, target] * 12)))
-                    fleets.append((star, target, t, arrival))
+                    fleets.append((star, target, t, arrival, 0.35))
                     occupied.add(target)
                     colony.population *= 0.7
                     action = "expand"
@@ -116,7 +132,7 @@ def run(variant, scenario, table, scale, epochs, gains, writer=None):
             extinction = t
         if writer:
             ships = [{"from": a, "to": b, "progress": (t - depart) / (arrive - depart)}
-                     for a, b, depart, arrive in fleets]
+                     for a, b, depart, arrive, _ in fleets]
             writer.add(t, variant, snapshots, ships, events)
     return {"settled_fraction": settled, "survivors": len(colonies),
             "extinction_epoch": extinction,
@@ -180,6 +196,9 @@ def main():
                    "response_seed": table_seed, "rate_scale": dict(zip(OUTPUTS.values(), map(float, scale)))},
         "assumptions": {
             "supernova_damage_radius": 0.16,
+            "hostility_loss_per_epoch": "0.12 * hostility squared",
+            "evacuation": "Nearest unoccupied star within 0.38 units with hostility at most 0.4 and no scheduled destruction; hold if none",
+            "survivors": "Settled colonies at the final epoch; fleets in transit are excluded",
             "observer_position": [0.5, 0],
             "observer_radius": 0.45,
             "observer_minimum_population": 0.5,
