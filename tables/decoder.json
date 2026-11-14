@@ -1,0 +1,7 @@
+{
+ "feed_ref_hz": 75.5,
+ "retreat_ref_hz": 18.25,
+ "advance_ref_hz": 10.0,
+ "growth_to_launch": 0.5,
+ "fitted_on": "intact"
+}

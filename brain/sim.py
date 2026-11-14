@@ -66,6 +66,7 @@ class RunResult:
     total_spikes: torch.Tensor         # (B,) spikes across the whole brain
     first_spike_ms: torch.Tensor       # (n_monitor, B) time of first spike, NaN if none
     all_counts: torch.Tensor | None    # (N, B) if record_all
+    peak_u: torch.Tensor | None = None  # (N, B) if track_peak: highest membrane potential above rest, mV
 
     @property
     def rates_hz(self) -> torch.Tensor:
@@ -142,6 +143,7 @@ class BrainSim:
         inputs: list[tuple[torch.Tensor, torch.Tensor | float]] = (),
         monitor: torch.Tensor | None = None,
         record_all: bool = False,
+        track_peak: bool = False,
     ) -> RunResult:
         """Advance every brain by `duration_ms`. Can be called again to continue.
 
@@ -187,6 +189,7 @@ class BrainSim:
         first = torch.full((n_mon * B,), float("inf"), device=dev)
         total = torch.zeros(B, dtype=torch.float32, device=dev)
         all_counts = torch.zeros(N * B, dtype=torch.int32, device=dev) if record_all else None
+        peak = torch.zeros_like(u) if track_peak else None
 
         keep = max(self.n_delay, self.n_hold)
         hist = state.hist
@@ -202,6 +205,9 @@ class BrainSim:
             g.mul_(self.decay_s)
             if ref:
                 u_flat[ref_flat] = self.u_reset
+
+            if peak is not None:
+                torch.maximum(peak, u, out=peak)
 
             # 2. threshold
             crossed = (u > self.u_thresh).nonzero()
@@ -250,4 +256,5 @@ class BrainSim:
             total_spikes=total,
             first_spike_ms=first.view(n_mon, B),
             all_counts=all_counts.view(N, B) if all_counts is not None else None,
+            peak_u=peak,
         )

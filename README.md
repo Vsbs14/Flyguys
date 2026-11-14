@@ -7,13 +7,29 @@ Real fruit fly connectomes, coupled across a simulated galaxy. Each colony decid
 | Phase | What | State |
 |---|---|---|
 | 0 | Data, neuron IDs, repo layout | Done |
-| 1 | Batched, maskable fly-brain engine with sanity checks | Done on CPU; GPU run and benchmark pending (`fly_brain_gpu.ipynb`) |
-| 2 | Galaxy → senses, neurons → decisions | Not started |
-| 3 | Brain variants and response tables | Not started |
-| 4 | Lesion screen | Not started |
-| 5 | Galaxy simulation | Not started |
-| 6 | Experiments and baselines | Not started |
-| 7 | Visuals and pitch | Not started |
+| 1 | Batched, maskable fly-brain engine | Done. Matches Brian2 spike for spike; six sanity checks pass on CPU and on a T4 (`results/`) |
+| 2 | Galaxy → senses, neurons → decisions | Done (`galaxy/mapping.py`, `results/mapping_examples.md`) |
+| 3 | Brain variants and response tables | Done except the no-MDN variants and the shuffled control (still building). Table vs live brain: `results/table_validation_intact.md` |
+| 4 | Lesion screen | Partial: 913 candidate cell types found, 20 most active screened (`results/lesion_ranking.md`). 3D renders need a FlyWire token (`analysis/render_top10.py`) |
+| 5 | Galaxy simulation | Done (`galaxy/`); three-galaxy recording in `galaxy/frames.json` |
+| 6 | Experiments and baselines | Done at 20 seeds, not 100. Sensitivity sweep at 8 seeds (`results/experiments/`) |
+| 7 | Visuals and pitch | Figures in `analysis/figures/`, pitch in `PITCH.md`; viewer is on the `UI` branch |
+
+## Results so far (20 galaxy seeds, mean ± standard error)
+
+| Brain | Final colonies | Living civilizations (of 8) | Flights |
+|---|---|---|---|
+| Intact fly | 70.7 ± 5.3 | 7.7 | 214 |
+| Giant Fibre silenced (fearless) | 129.2 ± 5.8 | 7.7 | 0 |
+| Bitter silenced (always hungry) | 506.6 ± 7.0 | 6.6 | 11,975 |
+| 50%, 20% or 5% of interneurons | 0 | 0 | 6 |
+| Hand-written rule | 67.6 ± 4.8 | 7.3 | 226 |
+| Small neural net fitted to the fly | 75.4 ± 4.0 | 7.7 | 252 |
+
+* **The fly matches a hand rule.** At the base mapping the intact fly, the hand rule and the neural net are within about one standard error. They separate only when the mapping gains move away from 1 (sensitivity sweep).
+* **Dark forest needs a hungry brain.** In the three-galaxy run, first contacts between intact flies were all peaceful. Always-hungry flies produced 650 mutual flights and 101 escalations.
+* **Fear costs territory.** Silencing the Giant Fibre stops all flight and nearly doubles final colonies.
+* **Shrinking the brain kills feeding.** With half the interneurons removed, MN9 never fires, so colonies never grow and every civilization dies.
 
 ## Layout
 

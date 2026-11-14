@@ -1,0 +1,71 @@
+{
+ "run": {
+  "time_utc": "2026-11-14T18:36:27+00:00",
+  "git_commit": "610bfea2d7de24e750c22189d6b9bcc94abdd041",
+  "python": "3.14.0",
+  "torch": "2.9.0+cpu",
+  "device": "cpu",
+  "device_name": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+  "lif_params": {
+   "v_rest": -52.0,
+   "v_reset": -52.0,
+   "v_thresh": -45.0,
+   "tau_m": 20.0,
+   "tau_syn": 5.0,
+   "t_refrac": 2.2,
+   "t_delay": 1.8,
+   "w_syn": 0.275,
+   "dt": 0.1,
+   "poisson_gain": 250.0
+  },
+  "connectome": "Shiu et al. Connectivity_783.parquet (FlyWire v783)",
+  "config": {
+   "seed": 12345,
+   "n": 100
+  }
+ },
+ "result": {
+  "n": 100,
+  "seed": 12345,
+  "outputs": {
+   "feed": {
+    "live_mean_hz": 4.474999904632568,
+    "table_mean_hz": 4.9842344311619495,
+    "mean_abs_error_hz": 1.1754030100728248,
+    "bias_hz": -0.5092344311619496,
+    "trial_to_trial_sd_hz": 1.7569970358109612,
+    "correlation": 0.9775490186398343
+   },
+   "escape": {
+    "live_mean_hz": 59.650001525878906,
+    "table_mean_hz": 59.31777401946053,
+    "mean_abs_error_hz": 2.63358341498939,
+    "bias_hz": 0.3322259805394772,
+    "trial_to_trial_sd_hz": 2.340801509492735,
+    "correlation": 0.9985480950088403
+   },
+   "retreat": {
+    "live_mean_hz": 2.3375000953674316,
+    "table_mean_hz": 2.2728684669160093,
+    "mean_abs_error_hz": 0.6618407197542336,
+    "bias_hz": 0.06463153308399078,
+    "trial_to_trial_sd_hz": 0.6416540582259281,
+    "correlation": 0.9228398437221776
+   },
+   "advance": {
+    "live_mean_hz": 0.02500000037252903,
+    "table_mean_hz": 0.118580753135527,
+    "mean_abs_error_hz": 0.13699899660947978,
+    "bias_hz": -0.093580753135527,
+    "trial_to_trial_sd_hz": 0.14950906787479495,
+    "correlation": 0.06853264067648968
+   }
+  },
+  "giant_fibre": {
+   "live_spike_fraction": 0.69,
+   "table_mean_probability": 0.6586769999927878,
+   "agreement": 0.94,
+   "brier_score": 0.041837456352784595
+  }
+ }
+}

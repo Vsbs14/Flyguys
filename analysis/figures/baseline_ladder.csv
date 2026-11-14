@@ -1,0 +1,7 @@
+measure,policy,mean,standard_error,seeds
+final_colonies,intact,70.7000,5.3020,20
+final_colonies,hand_rule,67.6000,4.7713,20
+final_colonies,neural_net,75.4000,4.0200,20
+final_civilizations,intact,7.7000,0.1051,20
+final_civilizations,hand_rule,7.2500,0.1602,20
+final_civilizations,neural_net,7.6500,0.1500,20

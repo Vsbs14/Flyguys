@@ -1,0 +1,7 @@
+policy,effective_p_mean,standard_error,seeds
+intact,0.0496,0.0026,20
+no_gf,0.0537,0.0021,20
+no_bitter,0.0654,0.0013,20
+size_50,0.0000,0.0000,20
+size_20,0.0000,0.0000,20
+size_05,0.0000,0.0000,20

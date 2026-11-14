@@ -1,0 +1,210 @@
+{
+ "run": {
+  "time_utc": "2026-11-14T18:44:41+00:00",
+  "git_commit": "610bfea2d7de24e750c22189d6b9bcc94abdd041",
+  "python": "3.14.0",
+  "torch": "2.9.0+cpu",
+  "device": "cpu",
+  "device_name": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+  "lif_params": {
+   "v_rest": -52.0,
+   "v_reset": -52.0,
+   "v_thresh": -45.0,
+   "tau_m": 20.0,
+   "tau_syn": 5.0,
+   "t_refrac": 2.2,
+   "t_delay": 1.8,
+   "w_syn": 0.275,
+   "dt": 0.1,
+   "poisson_gain": 250.0
+  },
+  "connectome": "Shiu et al. Connectivity_783.parquet (FlyWire v783)",
+  "config": {
+   "seed": 0,
+   "replicates": 4,
+   "taste_hz": 200.0,
+   "looming_hz": 150.0,
+   "on_ms": 200.0,
+   "off_ms": 300.0
+  }
+ },
+ "result": {
+  "variant": "size_05",
+  "all_as_expected": true,
+  "checks": [
+   {
+    "check": "silence",
+    "name": "No input -> silence",
+    "criterion": "0 spikes in the whole brain",
+    "measured": "0 spikes",
+    "passed": true,
+    "expected_to_pass": null,
+    "as_expected": null
+   },
+   {
+    "check": "sugar_feeds",
+    "name": "Sugar (200 Hz) -> MN9 fires at about 50 Hz",
+    "criterion": "MN9 rate within 25-125 Hz",
+    "measured": "MN9 = 0.0 Hz",
+    "passed": false,
+    "expected_to_pass": null,
+    "as_expected": null
+   },
+   {
+    "check": "bitter_suppresses",
+    "name": "Sugar + bitter -> MN9 drops a lot",
+    "criterion": "MN9 below 50% of its sugar-only rate",
+    "measured": "MN9 = 0.0 Hz (nan% of sugar-only)",
+    "passed": false,
+    "expected_to_pass": null,
+    "as_expected": null
+   },
+   {
+    "check": "looming_escapes",
+    "name": "Looming (150 Hz) -> Giant Fibre fires",
+    "criterion": "Giant Fibre spikes in every replicate",
+    "measured": "spiked in 4/4, first spike at 4.7 ms",
+    "passed": true,
+    "expected_to_pass": null,
+    "as_expected": null
+   },
+   {
+    "check": "gf_off_no_escape",
+    "name": "Giant Fibre silenced -> no escape",
+    "criterion": "0 Giant Fibre spikes under the same looming input",
+    "measured": "spiked in 0/4",
+    "passed": true,
+    "expected_to_pass": null,
+    "as_expected": null
+   },
+   {
+    "check": "dies_out",
+    "name": "Input stopped -> activity dies out",
+    "criterion": "0 spikes in the whole brain 200-300 ms after input ends",
+    "measured": "0 spikes",
+    "passed": true,
+    "expected_to_pass": null,
+    "as_expected": null
+   }
+  ],
+  "conditions": {
+   "none": {
+    "inputs_hz": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 0.0
+    },
+    "giant_fibre_silenced": false,
+    "output_rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "output_rate_hz_sd": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "giant_fibre_spiked": 0,
+    "whole_brain_spikes_on": 0.0,
+    "whole_brain_spikes_quiet": 0.0
+   },
+   "sugar": {
+    "inputs_hz": {
+     "sugar": 200.0,
+     "bitter": 0.0,
+     "looming": 0.0
+    },
+    "giant_fibre_silenced": false,
+    "output_rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "output_rate_hz_sd": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "giant_fibre_spiked": 0,
+    "whole_brain_spikes_on": 1284.0,
+    "whole_brain_spikes_quiet": 0.0
+   },
+   "sugar+bitter": {
+    "inputs_hz": {
+     "sugar": 200.0,
+     "bitter": 200.0,
+     "looming": 0.0
+    },
+    "giant_fibre_silenced": false,
+    "output_rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "output_rate_hz_sd": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 0.0
+    },
+    "giant_fibre_spiked": 0,
+    "whole_brain_spikes_on": 3003.0,
+    "whole_brain_spikes_quiet": 0.0
+   },
+   "looming": {
+    "inputs_hz": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 150.0
+    },
+    "giant_fibre_silenced": false,
+    "output_rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 185.625,
+     "retreat": 0.0,
+     "advance": 31.875
+    },
+    "output_rate_hz_sd": {
+     "feed": 0.0,
+     "escape": 2.072890520095825,
+     "retreat": 0.0,
+     "advance": 1.0825318098068237
+    },
+    "giant_fibre_spiked": 4,
+    "whole_brain_spikes_on": 9955.75,
+    "whole_brain_spikes_quiet": 0.0
+   },
+   "looming, GF off": {
+    "inputs_hz": {
+     "sugar": 0.0,
+     "bitter": 0.0,
+     "looming": 150.0
+    },
+    "giant_fibre_silenced": true,
+    "output_rate_hz_mean": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 31.875
+    },
+    "output_rate_hz_sd": {
+     "feed": 0.0,
+     "escape": 0.0,
+     "retreat": 0.0,
+     "advance": 2.7243118286132812
+    },
+    "giant_fibre_spiked": 0,
+    "whole_brain_spikes_on": 9862.0,
+    "whole_brain_spikes_quiet": 0.0
+   }
+  },
+  "replicates": 4,
+  "wall_seconds": 36.1
+ }
+}

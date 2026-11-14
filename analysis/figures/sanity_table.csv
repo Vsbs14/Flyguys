@@ -1,0 +1,7 @@
+check,criterion,measured,result
+No input -> silence,0 spikes in the whole brain,0 spikes,pass
+Sugar (200 Hz) -> MN9 fires at about 50 Hz,MN9 rate within 25-125 Hz,MN9 = 69.1 Hz,pass
+Sugar + bitter -> MN9 drops a lot,MN9 below 50% of its sugar-only rate,MN9 = 3.4 Hz (5% of sugar-only),pass
+Looming (150 Hz) -> Giant Fibre fires,Giant Fibre spikes in every replicate,"spiked in 8/8, first spike at 5.0 ms",pass
+Giant Fibre silenced -> no escape,0 Giant Fibre spikes under the same looming input,spiked in 0/8,pass
+Input stopped -> activity dies out,0 spikes in the whole brain 200-300 ms after input ends,0 spikes,pass

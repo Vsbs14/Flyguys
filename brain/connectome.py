@@ -71,6 +71,18 @@ class Connectome:
         return cls.from_edges(ids, pre, con["Postsynaptic_Index"].to_numpy(),
                               con["Excitatory x Connectivity"].to_numpy())
 
+    def subset(self, keep: np.ndarray) -> "Connectome":
+        """The sub-network on the neurons `keep` (model indices), with every connection among them.
+
+        Neurons keep their FlyWire IDs, so `index_of` and `NeuronGroups` work on the result.
+        """
+        keep = np.unique(np.asarray(keep, dtype=np.int64))
+        new_index = np.full(self.n, -1, dtype=np.int64)
+        new_index[keep] = np.arange(len(keep))
+        pre, post, signed = self.edges()
+        inside = (new_index[pre] >= 0) & (new_index[post] >= 0)
+        return Connectome.from_edges(self.ids[keep], new_index[pre[inside]], new_index[post[inside]], signed[inside])
+
     def edges(self) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """(pre, post, signed) arrays, one entry per connection."""
         pre = np.repeat(np.arange(self.n, dtype=np.int32), np.diff(self.ptr))

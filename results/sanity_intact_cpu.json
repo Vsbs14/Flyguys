@@ -1,7 +1,7 @@
 {
  "run": {
-  "time_utc": "2026-11-14T17:43:35+00:00",
-  "git_commit": "8749f3feab411c6931a999cbc0b287f1a25674aa",
+  "time_utc": "2026-11-14T18:33:38+00:00",
+  "git_commit": "610bfea2d7de24e750c22189d6b9bcc94abdd041",
   "python": "3.14.0",
   "torch": "2.9.0+cpu",
   "device": "cpu",
@@ -21,7 +21,7 @@
   "connectome": "Shiu et al. Connectivity_783.parquet (FlyWire v783)",
   "config": {
    "seed": 0,
-   "replicates": 6,
+   "replicates": 4,
    "taste_hz": 200.0,
    "looming_hz": 150.0,
    "on_ms": 200.0,
@@ -45,7 +45,7 @@
     "check": "sugar_feeds",
     "name": "Sugar (200 Hz) -> MN9 fires at about 50 Hz",
     "criterion": "MN9 rate within 25-125 Hz",
-    "measured": "MN9 = 66.7 Hz",
+    "measured": "MN9 = 65.6 Hz",
     "passed": true,
     "expected_to_pass": true,
     "as_expected": true
@@ -54,7 +54,7 @@
     "check": "bitter_suppresses",
     "name": "Sugar + bitter -> MN9 drops a lot",
     "criterion": "MN9 below 50% of its sugar-only rate",
-    "measured": "MN9 = 0.4 Hz (1% of sugar-only)",
+    "measured": "MN9 = 3.1 Hz (5% of sugar-only)",
     "passed": true,
     "expected_to_pass": true,
     "as_expected": true
@@ -63,7 +63,7 @@
     "check": "looming_escapes",
     "name": "Looming (150 Hz) -> Giant Fibre fires",
     "criterion": "Giant Fibre spikes in every replicate",
-    "measured": "spiked in 6/6, first spike at 4.8 ms",
+    "measured": "spiked in 4/4, first spike at 4.7 ms",
     "passed": true,
     "expected_to_pass": true,
     "as_expected": true
@@ -72,7 +72,7 @@
     "check": "gf_off_no_escape",
     "name": "Giant Fibre silenced -> no escape",
     "criterion": "0 Giant Fibre spikes under the same looming input",
-    "measured": "spiked in 0/6",
+    "measured": "spiked in 0/4",
     "passed": true,
     "expected_to_pass": true,
     "as_expected": true
@@ -119,19 +119,19 @@
     },
     "giant_fibre_silenced": false,
     "output_rate_hz_mean": {
-     "feed": 66.66666412353516,
+     "feed": 65.625,
      "escape": 0.0,
      "retreat": 0.0,
      "advance": 0.0
     },
     "output_rate_hz_sd": {
-     "feed": 6.71854829788208,
+     "feed": 4.800715923309326,
      "escape": 0.0,
      "retreat": 0.0,
      "advance": 0.0
     },
     "giant_fibre_spiked": 0,
-    "whole_brain_spikes_on": 3756.333251953125,
+    "whole_brain_spikes_on": 3645.0,
     "whole_brain_spikes_quiet": 0.0
    },
    "sugar+bitter": {
@@ -142,19 +142,19 @@
     },
     "giant_fibre_silenced": false,
     "output_rate_hz_mean": {
-     "feed": 0.4166666567325592,
+     "feed": 3.125,
      "escape": 0.0,
      "retreat": 0.0,
      "advance": 0.0
     },
     "output_rate_hz_sd": {
-     "feed": 0.9316949844360352,
+     "feed": 1.0825318098068237,
      "escape": 0.0,
      "retreat": 0.0,
      "advance": 0.0
     },
     "giant_fibre_spiked": 0,
-    "whole_brain_spikes_on": 4554.5,
+    "whole_brain_spikes_on": 4604.25,
     "whole_brain_spikes_quiet": 0.0
    },
    "looming": {
@@ -166,18 +166,18 @@
     "giant_fibre_silenced": false,
     "output_rate_hz_mean": {
      "feed": 0.0,
-     "escape": 183.75,
-     "retreat": 11.25,
+     "escape": 184.375,
+     "retreat": 9.6875,
      "advance": 0.0
     },
     "output_rate_hz_sd": {
      "feed": 0.0,
-     "escape": 3.75,
-     "retreat": 2.3935678005218506,
+     "escape": 1.0825318098068237,
+     "retreat": 2.231696367263794,
      "advance": 0.0
     },
-    "giant_fibre_spiked": 6,
-    "whole_brain_spikes_on": 16700.5,
+    "giant_fibre_spiked": 4,
+    "whole_brain_spikes_on": 16783.0,
     "whole_brain_spikes_quiet": 0.0
    },
    "looming, GF off": {
@@ -190,21 +190,21 @@
     "output_rate_hz_mean": {
      "feed": 0.0,
      "escape": 0.0,
-     "retreat": 10.208333015441895,
+     "retreat": 10.625,
      "advance": 0.0
     },
     "output_rate_hz_sd": {
      "feed": 0.0,
      "escape": 0.0,
-     "retreat": 2.74019718170166,
+     "retreat": 3.5903515815734863,
      "advance": 0.0
     },
     "giant_fibre_spiked": 0,
-    "whole_brain_spikes_on": 16639.333984375,
+    "whole_brain_spikes_on": 16694.25,
     "whole_brain_spikes_quiet": 0.0
    }
   },
-  "replicates": 6,
-  "wall_seconds": 77.6
+  "replicates": 4,
+  "wall_seconds": 57.5
  }
 }

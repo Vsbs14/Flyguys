@@ -55,7 +55,7 @@ def run_sanity(
     alive: np.ndarray | None = None,
     replicates: int = 4,
     seed: int = 0,
-    expected_fail: tuple[str, ...] = (),
+    expected_fail: tuple[str, ...] | None = (),
     variant: str = "intact",
 ) -> dict:
     """Run the six checks on one brain variant.
@@ -63,6 +63,7 @@ def run_sanity(
     alive         : (N,) bool mask of the variant; False = silenced neuron.
     expected_fail : checks the variant's lesion is supposed to break. They are
                     still run and recorded, and flagged if they pass anyway.
+                    None means there is no prediction: results are only recorded.
     """
     n_cond = len(CONDITIONS)
     B = n_cond * replicates
@@ -127,15 +128,15 @@ def run_sanity(
     ]
     rows = []
     for key, name, criterion, measured, passed in checks:
-        expect_pass = key not in expected_fail
+        expect_pass = None if expected_fail is None else key not in expected_fail
         rows.append({
-            "check": key, "name": name, "criterion": criterion, "measured": measured,
-            "passed": passed, "expected_to_pass": expect_pass, "as_expected": passed == expect_pass,
+            "check": key, "name": name, "criterion": criterion, "measured": measured, "passed": passed,
+            "expected_to_pass": expect_pass, "as_expected": None if expect_pass is None else passed == expect_pass,
         })
 
     return {
         "variant": variant,
-        "all_as_expected": all(r["as_expected"] for r in rows),
+        "all_as_expected": all(r["as_expected"] is not False for r in rows),
         "checks": rows,
         "conditions": {
             c[0]: {
@@ -159,7 +160,13 @@ def sanity_config(seed: int, replicates: int) -> dict:
 
 
 def to_markdown(result: dict, record: dict) -> str:
-    mark = lambda r: ("PASS" if r["passed"] else "FAIL") + ("" if r["as_expected"] else " (unexpected)")
+    def mark(r):
+        word = "PASS" if r["passed"] else "FAIL"
+        if r["as_expected"] is False:
+            return word + " (unexpected)"
+        if not r["passed"] and r["as_expected"]:
+            return word + " (expected: the lesion removes this)"
+        return word
     lines = [
         f"# Sanity checks: {result['variant']} brain",
         "",

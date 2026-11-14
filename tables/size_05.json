@@ -1,0 +1,106 @@
+{
+ "run": {
+  "time_utc": "2026-11-14T18:44:41+00:00",
+  "git_commit": "610bfea2d7de24e750c22189d6b9bcc94abdd041",
+  "python": "3.14.0",
+  "torch": "2.9.0+cpu",
+  "device": "cpu",
+  "device_name": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+  "lif_params": {
+   "v_rest": -52.0,
+   "v_reset": -52.0,
+   "v_thresh": -45.0,
+   "tau_m": 20.0,
+   "tau_syn": 5.0,
+   "t_refrac": 2.2,
+   "t_delay": 1.8,
+   "w_syn": 0.275,
+   "dt": 0.1,
+   "poisson_gain": 250.0
+  },
+  "connectome": "Shiu et al. Connectivity_783.parquet (FlyWire v783)",
+  "config": {
+   "seed": 0,
+   "seeds_per_point": 5,
+   "batch": 256,
+   "decision_ms": 200.0,
+   "full_brain": false
+  }
+ },
+ "variant": "size_05",
+ "description": "5% of interneurons kept",
+ "neurons_silenced": 131329,
+ "reduction": {
+  "margin_mv": 2.0,
+  "calibration_brains": 72,
+  "calibration_seed": 0,
+  "neurons_full": 138639,
+  "neurons_that_spiked": 426,
+  "neurons_kept": 488,
+  "calibration_seconds": 83.7,
+  "verification_brains": 64,
+  "verification_seed": 1,
+  "spikes_compared": 303053,
+  "spikes_from_dropped_neurons": 0,
+  "dropped_spike_fraction": 0.0,
+  "brains_with_identical_spikes": 64,
+  "brains_with_identical_outputs": 64,
+  "output_rate_mean_abs_diff_hz": 0.0,
+  "output_rate_max_abs_diff_hz": 0.0,
+  "neurons_added_after_check": 0,
+  "exact": true
+ },
+ "grid": {
+  "sugar_hz": [
+   0.0,
+   22.22222222222222,
+   44.44444444444444,
+   66.66666666666666,
+   88.88888888888889,
+   111.11111111111111,
+   133.33333333333331,
+   155.55555555555554,
+   177.77777777777777,
+   200.0
+  ],
+  "bitter_hz": [
+   0.0,
+   22.22222222222222,
+   44.44444444444444,
+   66.66666666666666,
+   88.88888888888889,
+   111.11111111111111,
+   133.33333333333331,
+   155.55555555555554,
+   177.77777777777777,
+   200.0
+  ],
+  "looming_hz": [
+   0.0,
+   0.5,
+   1.0,
+   2.0,
+   3.0,
+   5.0,
+   10.0,
+   30.0,
+   100.0,
+   200.0
+  ]
+ },
+ "outputs": [
+  "feed",
+  "escape",
+  "retreat",
+  "advance"
+ ],
+ "table_seconds": 374.3,
+ "sanity": {
+  "silence": true,
+  "sugar_feeds": false,
+  "bitter_suppresses": false,
+  "looming_escapes": true,
+  "gf_off_no_escape": true,
+  "dies_out": true
+ }
+}

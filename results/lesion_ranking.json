@@ -1,0 +1,331 @@
+{
+ "seeds": 6,
+ "lesions_screened": 20,
+ "intact_coarse": {
+  "final_colonies": 137.33333333333334,
+  "final_civilizations": 7.0,
+  "flights": 415.3333333333333
+ },
+ "note": "Partial screen: only the most active candidate cell types, on the reduced network. Re-run if galaxy parameters change.",
+ "ranking": [
+  {
+   "cell_type": "CB0219",
+   "super_class": "central",
+   "transmitter": "glutamate",
+   "neurons": 2,
+   "ids": [
+    720575940624600840,
+    720575940626826288
+   ],
+   "d_final_colonies": 379.6666666666667,
+   "d_final_colonies_se": 16.716591890826447,
+   "d_final_civilizations": -0.16666666666666666,
+   "d_final_civilizations_se": 0.5426273532033236,
+   "d_flights": 7861.166666666667
+  },
+  {
+   "cell_type": "CB0499",
+   "super_class": "central",
+   "transmitter": "acetylcholine",
+   "neurons": 2,
+   "ids": [
+    720575940630461660,
+    720575940638103349
+   ],
+   "d_final_colonies": -74.66666666666667,
+   "d_final_colonies_se": 14.138992577659526,
+   "d_final_civilizations": 0.5,
+   "d_final_civilizations_se": 0.34156502553198664,
+   "d_flights": -307.5
+  },
+  {
+   "cell_type": "PVLP130",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 2,
+   "ids": [
+    720575940611347123,
+    720575940622339113
+   ],
+   "d_final_colonies": -51.666666666666664,
+   "d_final_colonies_se": 8.727988186161676,
+   "d_final_civilizations": 0.0,
+   "d_final_civilizations_se": 0.4472135954999579,
+   "d_flights": -163.0
+  },
+  {
+   "cell_type": "DNp04",
+   "super_class": "descending",
+   "transmitter": "acetylcholine",
+   "neurons": 2,
+   "ids": [
+    720575940604954289,
+    720575940629757036
+   ],
+   "d_final_colonies": -50.333333333333336,
+   "d_final_colonies_se": 6.442911695119771,
+   "d_final_civilizations": 0.5,
+   "d_final_civilizations_se": 0.22360679774997896,
+   "d_flights": -223.33333333333334
+  },
+  {
+   "cell_type": "CB0192",
+   "super_class": "central",
+   "transmitter": "acetylcholine",
+   "neurons": 2,
+   "ids": [
+    720575940611015122,
+    720575940629888530
+   ],
+   "d_final_colonies": -49.833333333333336,
+   "d_final_colonies_se": 8.068112818029038,
+   "d_final_civilizations": 0.3333333333333333,
+   "d_final_civilizations_se": 0.210818510677892,
+   "d_flights": -256.0
+  },
+  {
+   "cell_type": "PVLP011",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 2,
+   "ids": [
+    720575940638900713,
+    720575940640834211
+   ],
+   "d_final_colonies": -47.833333333333336,
+   "d_final_colonies_se": 10.743732022801844,
+   "d_final_civilizations": -0.6666666666666666,
+   "d_final_civilizations_se": 0.3333333333333334,
+   "d_flights": -172.16666666666666
+  },
+  {
+   "cell_type": "DNp103",
+   "super_class": "descending",
+   "transmitter": "acetylcholine",
+   "neurons": 2,
+   "ids": [
+    720575940610505006,
+    720575940623781127
+   ],
+   "d_final_colonies": -47.333333333333336,
+   "d_final_colonies_se": 8.134972512416855,
+   "d_final_civilizations": -0.6666666666666666,
+   "d_final_civilizations_se": 0.210818510677892,
+   "d_flights": -194.0
+  },
+  {
+   "cell_type": "AVLP479",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 4,
+   "ids": [
+    720575940614941992,
+    720575940620165541,
+    720575940620723126,
+    720575940628169219
+   ],
+   "d_final_colonies": -46.0,
+   "d_final_colonies_se": 11.144505372604028,
+   "d_final_civilizations": 0.3333333333333333,
+   "d_final_civilizations_se": 0.210818510677892,
+   "d_flights": -187.66666666666666
+  },
+  {
+   "cell_type": "AMMC-A1",
+   "super_class": "central",
+   "transmitter": "acetylcholine",
+   "neurons": 5,
+   "ids": [
+    720575940612001489,
+    720575940616313942,
+    720575940618522433,
+    720575940631200327,
+    720575940631693610
+   ],
+   "d_final_colonies": -42.0,
+   "d_final_colonies_se": 15.958278938114434,
+   "d_final_civilizations": -0.6666666666666666,
+   "d_final_civilizations_se": 0.3333333333333334,
+   "d_flights": -175.66666666666666
+  },
+  {
+   "cell_type": "CB0062",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 2,
+   "ids": [
+    720575940616103218,
+    720575940637763135
+   ],
+   "d_final_colonies": -41.666666666666664,
+   "d_final_colonies_se": 12.727049060083715,
+   "d_final_civilizations": 0.0,
+   "d_final_civilizations_se": 0.4472135954999579,
+   "d_flights": -176.66666666666666
+  },
+  {
+   "cell_type": "CB0118",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 2,
+   "ids": [
+    720575940619973712,
+    720575940633277209
+   ],
+   "d_final_colonies": -35.833333333333336,
+   "d_final_colonies_se": 9.547832796562323,
+   "d_final_civilizations": 0.6666666666666666,
+   "d_final_civilizations_se": 0.210818510677892,
+   "d_flights": -156.66666666666666
+  },
+  {
+   "cell_type": "CB0008",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 2,
+   "ids": [
+    720575940632648612,
+    720575940641366517
+   ],
+   "d_final_colonies": -33.333333333333336,
+   "d_final_colonies_se": 9.898372481260635,
+   "d_final_civilizations": 0.16666666666666666,
+   "d_final_civilizations_se": 0.16666666666666669,
+   "d_flights": -201.83333333333334
+  },
+  {
+   "cell_type": "PVLP151",
+   "super_class": "central",
+   "transmitter": "acetylcholine",
+   "neurons": 4,
+   "ids": [
+    720575940612612094,
+    720575940614492397,
+    720575940625656980,
+    720575940638910040
+   ],
+   "d_final_colonies": -33.333333333333336,
+   "d_final_colonies_se": 9.171210994798404,
+   "d_final_civilizations": 0.3333333333333333,
+   "d_final_civilizations_se": 0.210818510677892,
+   "d_flights": -145.83333333333334
+  },
+  {
+   "cell_type": "PVLP122b",
+   "super_class": "central",
+   "transmitter": "acetylcholine",
+   "neurons": 4,
+   "ids": [
+    720575940608120587,
+    720575940611602552,
+    720575940619601488,
+    720575940629602871
+   ],
+   "d_final_colonies": -33.0,
+   "d_final_colonies_se": 16.899704139422088,
+   "d_final_civilizations": 0.3333333333333333,
+   "d_final_civilizations_se": 0.210818510677892,
+   "d_flights": -135.16666666666666
+  },
+  {
+   "cell_type": "CB0159",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 2,
+   "ids": [
+    720575940614635175,
+    720575940620553094
+   ],
+   "d_final_colonies": -32.5,
+   "d_final_colonies_se": 9.429563439877091,
+   "d_final_civilizations": 0.16666666666666666,
+   "d_final_civilizations_se": 0.16666666666666669,
+   "d_flights": -176.0
+  },
+  {
+   "cell_type": "PVLP024",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 4,
+   "ids": [
+    720575940615528678,
+    720575940619709972,
+    720575940632381536,
+    720575940647966260
+   ],
+   "d_final_colonies": -31.166666666666668,
+   "d_final_colonies_se": 13.474461440484777,
+   "d_final_civilizations": 0.16666666666666666,
+   "d_final_civilizations_se": 0.47726070210921184,
+   "d_flights": -134.5
+  },
+  {
+   "cell_type": "PVLP010",
+   "super_class": "central",
+   "transmitter": "glutamate",
+   "neurons": 2,
+   "ids": [
+    720575940618932763,
+    720575940623957173
+   ],
+   "d_final_colonies": -30.666666666666668,
+   "d_final_colonies_se": 13.676419284463478,
+   "d_final_civilizations": 0.5,
+   "d_final_civilizations_se": 0.22360679774997896,
+   "d_flights": -161.5
+  },
+  {
+   "cell_type": "CB0248",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 2,
+   "ids": [
+    720575940622695448,
+    720575940627383685
+   ],
+   "d_final_colonies": -21.333333333333332,
+   "d_final_colonies_se": 7.111805521650448,
+   "d_final_civilizations": 0.8333333333333334,
+   "d_final_civilizations_se": 0.3073181485764296,
+   "d_flights": -174.66666666666666
+  },
+  {
+   "cell_type": "PVLP069",
+   "super_class": "central",
+   "transmitter": "acetylcholine",
+   "neurons": 2,
+   "ids": [
+    720575940618769153,
+    720575940630318533
+   ],
+   "d_final_colonies": -20.333333333333332,
+   "d_final_colonies_se": 10.935162448623148,
+   "d_final_civilizations": 1.0,
+   "d_final_civilizations_se": 0.25819888974716115,
+   "d_flights": -180.5
+  },
+  {
+   "cell_type": "PVLP111",
+   "super_class": "central",
+   "transmitter": "gaba",
+   "neurons": 10,
+   "ids": [
+    720575940611961878,
+    720575940622932487,
+    720575940623860458,
+    720575940624299534,
+    720575940624735463,
+    720575940625894799,
+    720575940625904414,
+    720575940629245903,
+    720575940629414987,
+    720575940636151871
+   ],
+   "d_final_colonies": -15.833333333333334,
+   "d_final_colonies_se": 13.577964174025176,
+   "d_final_civilizations": 0.3333333333333333,
+   "d_final_civilizations_se": 0.210818510677892,
+   "d_flights": -92.0
+  }
+ ]
+}
