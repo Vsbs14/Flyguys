@@ -95,7 +95,7 @@ def check(doc: dict) -> list[str]:
         p.append("no stars")
     if not doc.get("frames"):
         p.append("no frames")
-    for f in doc.get("frames", [])[:50]:
+    for f in doc.get("frames", []):
         for v, g in f.get("galaxies", {}).items():
             if v not in variants:
                 p.append(f"frame {f.get('t')}: galaxy {v!r} is not in meta.variants")

@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Where Is Everybody?</title>
+<title>Fermi Fly</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   /* Layout: a full-bleed spiral galaxy is the home screen; each project section is a world in it; clicking opens a side panel (the demo opens wide). Single dark theme by choice. */
@@ -14,35 +14,67 @@
   --ink:#e9edf8;
   --dim:#8d96b0;
   --line:rgba(160,176,226,.16);
-  --panel:rgba(8,10,24,.9);
+  --panel:#0b1018;
+  --nav:#101620;
+  --gold:#f5d48d;
+  --gold-ink:#15100a;
+  --active-gold:#211a10;
+  --active-border:#b7985a;
+  --body-copy:#c4c9d6;
+  --caption:#a8aec0;
+  --signal:#8ff0b4;
   --sugar:#f4b740;   /* sugar / MN9 / settle */
   --fwd:#4fd6e8;     /* DNp09 / expand */
-  --bitter:#a585ff;  /* bitter / MDN / retreat */
+  --bitter:#acbedc;  /* bitter / MDN / retreat */
   --loom:#ff5a4e;    /* looming / Giant Fiber / flee */
-  --display:"Syne",system-ui,sans-serif;
+  --display:"Instrument Sans",system-ui,sans-serif;
   --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   color-scheme:dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--void);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
+html,body{height:100%;background:var(--void);color:var(--ink);font-family:var(--body);overflow-x:clip;overflow-y:hidden;-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--fwd);outline-offset:2px}
 
 #sky{position:fixed;inset:0;width:100%;height:100%;display:block}
 
-.brand{position:fixed;left:clamp(16px,3vw,44px);top:clamp(16px,3vw,40px);max-width:430px;pointer-events:none;transition:opacity .4s;z-index:1}
-.brand::before{content:"";position:absolute;inset:-60px -80px -50px -60px;background:radial-gradient(closest-side,rgba(4,5,13,.82),rgba(4,5,13,0));z-index:-1}
-.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--sugar)}
-.brand h1{font-family:var(--display);font-weight:800;font-size:clamp(36px,5.2vw,64px);line-height:.94;letter-spacing:-.015em;margin:12px 0 14px;text-wrap:balance}
-.brand p{color:var(--dim);font-size:15px;line-height:1.55;max-width:34ch}
-.brand p b{color:var(--ink);font-weight:500}
-body.panel-open .brand{opacity:0}
-
-.dock{position:fixed;left:50%;bottom:clamp(12px,2.4vw,26px);transform:translateX(-50%);display:flex;gap:2px;padding:5px;background:rgba(10,12,30,.72);border:1px solid var(--line);border-radius:999px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);max-width:calc(100% - 32px);overflow-x:auto;scrollbar-width:none;z-index:5}
+#sky{opacity:.62}
+.hero{position:fixed;inset:0;display:grid;grid-template-columns:minmax(290px,.8fr) minmax(0,1.2fr);align-items:center;gap:clamp(12px,3vw,64px);padding:clamp(32px,7vw,108px) clamp(24px,8vw,144px) 104px;background:linear-gradient(90deg,rgba(3,4,10,.94),rgba(3,4,10,.57));z-index:1;overflow:auto}
+.panel-open .hero,.star-map-open .hero{display:none}
+.hero-copy{position:relative;z-index:1}
+.hero h1{overflow-wrap:anywhere;min-width:0;font-family:var(--display);font-weight:700;font-size:clamp(54px,8.8vw,126px);letter-spacing:-.057em;line-height:.91;margin:15px 0 22px}
+.hero-copy p{max-width:34ch;color:var(--body-copy);font-size:clamp(17px,2vw,22px);line-height:1.48}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-actions .btn.primary{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.hero-actions .btn:hover{filter:brightness(1.12)}
+.specimen{width:min(100%,720px);justify-self:center;display:grid;gap:14px;min-width:0}
+.specimen-frame{position:relative;overflow:hidden;border-radius:26px;aspect-ratio:1.52;background:#050608;border:1px solid rgba(255,255,255,.12);isolation:isolate}
+.specimen-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.specimen-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(4,5,13,.68) 100%)}
+.brain-flare{position:absolute;left:var(--brain-x,29%);top:var(--brain-y,35%);width:22%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,219,129,.72),rgba(221,141,50,.18) 38%,transparent 68%);mix-blend-mode:screen;opacity:0;pointer-events:none;z-index:1}
+.specimen-frame[data-active="true"] .brain-flare{animation:brain-pulse 1.1s ease-out both}
+@keyframes brain-pulse{0%,100%{opacity:0}30%{opacity:1}60%{opacity:.25}}
+.specimen figcaption{padding:0 4px;display:grid;gap:10px}
+.stimuli{display:flex;gap:7px;flex-wrap:wrap}
+.stimuli .btn{font-size:12px;padding:6px 12px}
+.stimuli .btn[aria-pressed="true"]{color:var(--gold);border-color:var(--active-border);background:var(--active-gold)}
+#heroResponse{color:#d7dbe5;font-family:var(--mono);font-size:12px;min-height:2.8em;line-height:1.55}
+.specimen-note{color:var(--caption);font-size:12px}
+@media(max-width:790px){
+  .hero{grid-template-columns:minmax(0,1fr);align-content:start;gap:26px;padding:56px 24px 100px}
+  .hero h1{margin:8px 0 12px}
+  .hero-actions{margin-top:18px}
+  .specimen{width:min(100%,560px);justify-self:start}
+}
+@media(max-height:660px) and (min-width:791px){.hero{padding-block:44px 90px}}
+@media(prefers-reduced-motion:reduce){.specimen-frame[data-active="true"] .brain-flare{animation:none;opacity:.7}}
+.dock{position:fixed;left:50%;bottom:clamp(12px,2.4vw,26px);transform:translateX(-50%);display:flex;gap:2px;padding:5px;background:var(--nav);border:1px solid var(--line);border-radius:999px;max-width:calc(100% - 32px);overflow-x:auto;scrollbar-width:none;z-index:5}
 .dock button{background:none;border:0;border-radius:999px;padding:8px 14px;font-size:13px;color:var(--dim);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s,color .2s}
 .dock button:hover{color:var(--ink);background:rgba(255,255,255,.06)}
 .dock button[aria-current="true"]{color:var(--void);background:var(--ink)}
+body:not(.star-map-open):not(.panel-open) .dock .secondary-place{display:none}
 .dock .dot{width:7px;height:7px;border-radius:50%;flex:none}
 
 .tip{position:fixed;pointer-events:none;padding:8px 12px;border-radius:10px;background:rgba(8,10,24,.92);border:1px solid var(--line);font-size:13px;line-height:1.35;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;z-index:4;max-width:240px}
@@ -50,13 +82,14 @@ body.panel-open .brand{opacity:0}
 .tip b{display:block;font-family:var(--display);font-size:15px;font-weight:700;margin-bottom:2px}
 .tip span{color:var(--dim)}
 
-.hint{position:fixed;right:clamp(16px,3vw,44px);top:clamp(20px,3vw,44px);font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;pointer-events:none;transition:opacity .4s}
-body.panel-open .hint{opacity:0}
+.hint{display:none;position:fixed;right:clamp(16px,3vw,44px);top:clamp(20px,3vw,44px);font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;pointer-events:auto;transition:opacity .4s;z-index:2}
+body.star-map-open .hint{display:block}
+body.panel-open .hint{visibility:hidden}
 
 /* ---------- panel ---------- */
-.panel{position:fixed;top:0;right:0;height:100%;width:min(480px,100%);background:var(--panel);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-left:1px solid var(--line);transform:translateX(102%);transition:transform .5s cubic-bezier(.2,.8,.2,1),width .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;z-index:6;visibility:hidden}
+.panel{position:fixed;top:0;right:0;height:100%;width:min(480px,100%);background:var(--panel);border-left:1px solid var(--line);transform:translateX(102%);transition:transform .5s cubic-bezier(.2,.8,.2,1),width .5s cubic-bezier(.2,.8,.2,1);overflow-y:auto;z-index:6;visibility:hidden}
 .panel.open{transform:none;visibility:visible}
-.panel.wide{width:min(1240px,100%);background:rgba(6,8,20,.97)}
+.panel.wide{width:min(1240px,100%);background:var(--panel)}
 .panel-inner{padding:28px clamp(18px,3vw,36px) 120px;display:flex;flex-direction:column;gap:22px}
 .panel-top{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;margin:-28px calc(-1*clamp(18px,3vw,36px)) 0;padding:16px clamp(18px,3vw,36px);background:inherit;z-index:2}
 .crumb{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
@@ -81,8 +114,8 @@ section p strong{color:var(--ink);font-weight:600}
 .q b{font-weight:600;font-size:15px}
 .q span{color:var(--dim);font-size:14px;line-height:1.5}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stat{padding:14px;border:1px solid var(--line);border-radius:14px}
+.stats{display:flex;flex-wrap:wrap;gap:14px;padding-block:12px;border-block:1px solid var(--line)}
+.stat{flex:1;min-width:95px}
 .stat b{display:block;font-family:var(--display);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
 .stat span{font-size:12.5px;color:var(--dim);line-height:1.35;display:block;margin-top:4px}
 
@@ -108,10 +141,11 @@ section p strong{color:var(--ink);font-weight:600}
 .checks li > div{display:flex;flex-direction:column;gap:2px}
 .checks li small{color:var(--dim);font-family:var(--mono);font-size:11.5px}
 .small-note{font-size:12.5px!important;color:var(--dim)!important;line-height:1.5!important}
-.conn{position:fixed;left:clamp(16px,3vw,44px);bottom:clamp(16px,2.4vw,30px);z-index:7;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px;border-radius:999px;border:1px solid rgba(127,227,165,.45);color:#8ff0b4;background:rgba(8,10,24,.85);display:none;align-items:center;gap:7px}
-.conn::before{content:"";width:7px;height:7px;border-radius:50%;background:#8ff0b4;box-shadow:0 0 8px #8ff0b4}
+.conn{position:fixed;left:clamp(16px,3vw,44px);bottom:clamp(16px,2.4vw,30px);z-index:7;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px;border-radius:999px;border:1px solid rgba(127,227,165,.45);color:var(--signal);background:var(--nav);display:none;align-items:center;gap:7px}
+.conn::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 8px var(--signal)}
 .conn.on{display:flex}
-@media (max-width:860px){.conn{bottom:auto;top:12px}}
+.conn{bottom:auto;top:clamp(12px,2vw,24px)}
+.panel-open .conn{display:none}
 .real-fly{display:grid;gap:12px}
 .slider{display:grid;grid-template-columns:76px 1fr 42px;align-items:center;gap:10px;font-size:13px;color:var(--dim)}
 .slider input{width:100%;accent-color:var(--c)}
@@ -122,9 +156,8 @@ section p strong{color:var(--ink);font-weight:600}
 .offline{opacity:.55}
 .offline .btn{pointer-events:none}
 
-.steps{display:grid;gap:8px;counter-reset:s;list-style:none}
-.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px;font-size:14.5px;line-height:1.5;color:#c9cfe0}
-.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:12px;color:var(--dim);padding-top:2px}
+.steps{display:grid;gap:8px;padding-left:1.2em;color:var(--body-copy);font-size:14.5px;line-height:1.5}
+.steps li::marker{color:var(--gold)}
 
 .outcomes{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .outcome{padding:14px;border-radius:12px;border:1px dashed var(--line);display:flex;flex-direction:column;gap:6px}
@@ -159,6 +192,7 @@ section p strong{color:var(--ink);font-weight:600}
 .meter .fill{height:100%;width:0;border-radius:3px;background:var(--c);transition:width .25s}
 .meter b{font-family:var(--mono);font-weight:500;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums;font-size:12px}
 .btn{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);border-radius:999px;padding:9px 16px;font-size:13.5px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+[hidden]{display:none!important}
 .btn:hover{background:rgba(255,255,255,.1)}
 .btn.primary{background:var(--ink);color:var(--void);border-color:var(--ink);font-weight:600}
 .btn.primary:hover{background:#fff}
@@ -217,27 +251,46 @@ details > div{margin-top:12px;display:grid;gap:10px}
 @media (max-width:860px){
   .gal-grid{grid-template-columns:1fr}
   .demo-bottom{grid-template-columns:1fr}
-  .hint{display:none}
 }
 @media (max-width:480px){
-  .stats{grid-template-columns:1fr 1fr}
   .outcomes,.team,.params{grid-template-columns:1fr}
   .map-row{grid-template-columns:92px 14px 1fr}
 }
 @media (prefers-reduced-motion:reduce){
-  .panel,.brand,.tip{transition:none}
+  .panel,.tip{transition:none}
 }
 </style>
 </head>
 <body>
 <canvas id="sky" aria-hidden="true"></canvas>
 
-<header class="brand">
-  <div class="eyebrow">Hack Day · Fruit Fly Hackathon</div>
-  <h1>Where is everybody?</h1>
-  <p>We gave a fruit fly the keys to a galaxy. Every colony is steered by a <b>real fly brain</b>, wired neuron for neuron. Click a world to explore.</p>
-</header>
-<div class="hint">Drag to look around · Click a world</div>
+<main class="hero" id="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">A fly brain in a simulated galaxy</div>
+    <h1>Fermi Fly</h1>
+    <p>We gave a fruit fly the keys to a galaxy. Its neural wiring decides when colonies grow, expand or flee.</p>
+    <div class="hero-actions">
+      <button class="btn primary" id="heroDemo">Play the galaxy</button>
+      <button class="btn" id="heroMap">Explore the star map</button>
+    </div>
+  </div>
+  <figure class="specimen">
+    <div class="specimen-frame" id="specimenFrame">
+      <img src="fermi-fly.webp" alt="Illustrated fruit fly with a glowing neural circuit visible inside its head">
+      <div class="brain-flare"></div>
+    </div>
+    <figcaption>
+      <div class="stimuli" aria-label="Recorded brain stimuli">
+        <button class="btn" data-stimulus="sugar" aria-pressed="false">Sugar</button>
+        <button class="btn" data-stimulus="sugar+bitter" aria-pressed="false">Sugar + bitter</button>
+        <button class="btn" data-stimulus="looming" aria-pressed="false">Looming</button>
+      </div>
+      <div id="heroResponse" role="status">Choose a stimulus to replay a measured fly-brain response.</div>
+      <div class="specimen-note">Illustrated brain cutaway · Recorded connectome responses</div>
+    </figcaption>
+  </figure>
+</main>
+<div class="hint">Drag to look around · Click a world · <button class="btn" id="mapHome">Home</button></div>
 
 <nav class="dock" id="dock" aria-label="Project sections"></nav>
 <div class="tip" id="tip" role="status" aria-live="polite"></div>
@@ -255,14 +308,10 @@ details > div{margin-top:12px;display:grid;gap:10px}
       <h2>The galaxy should be full. It's silent.</h2>
       <p class="lede">The Milky Way is old and big enough that someone should have spread across it by now. We see no one. That gap is the Fermi paradox.</p>
       <p>We fill a simulated galaxy with colonies and give every one of them the same decision maker: a fruit fly brain from the <strong>FlyWire connectome</strong>. Planets taste good or bad, dying stars loom, and the fly's own wiring decides whether to settle, expand, pull back or flee.</p>
-      <div class="pitch">“We coupled real fly connectomes across a galaxy and found which neurons decide whether it goes quiet.”</div>
+      <div class="pitch">“We gave a fruit fly the keys to a galaxy.”</div>
       <div class="block">
-        <h3>Three questions we test</h3>
-        <div class="qs">
-          <div class="q"><span class="n">01</span><b>Dark forest</b><span>When two fly brains meet, do they settle into peace, or learn to hide and run?</span></div>
-          <div class="q"><span class="n">02</span><b>Fear vs. greed</b><span>Normal, fearless and always-hungry flies run three galaxies side by side. Which one fills with life?</span></div>
-          <div class="q"><span class="n">03</span><b>Real vs. shuffled wiring</b><span>Does a brain shaped by evolution spread life better than the same neurons rewired at random?</span></div>
-        </div>
+        <h3>What we test</h3>
+        <p>Does a colony spread farther when it cannot flee or sense hostility? Does the intact brain behave differently from a hand-written rule or a degree-preserving shuffle of its wiring?</p>
       </div>
     </section>
 
@@ -310,18 +359,23 @@ details > div{margin-top:12px;display:grid;gap:10px}
         <ul class="checks" id="checks"></ul>
         <p class="small-note" id="sanityMeta"></p>
       </div>
+      <div class="block">
+        <h3>Escape response map</h3>
+        <p>Percent of intact brains that fired Giant Fiber. Rows are sugar, columns are looming, and bitter is held at zero.</p>
+        <div id="escapeMap" style="overflow:auto">Run the backend with a generated experiment to see the map.</div>
+      </div>
     </section>
 
     <!-- DEMO -->
     <section data-id="demo">
       <div class="demo-head">
         <div class="block" style="gap:8px">
-          <h2>Three galaxies, one seed</h2>
-          <p style="margin:0">Same stars, same supernova schedule. Only the brain differs. Click any colony to see what its fly sensed and decided.</p>
+          <h2>One galaxy, six decision makers</h2>
+          <p style="margin:0">Same stars, same supernova schedule. Click a colony to inspect its inputs and decision.</p>
         </div>
         <div class="controls">
           <button class="btn primary" id="playBtn" aria-label="Pause playback">❚❚ Pause</button>
-          <button class="btn" id="seedBtn">New seed</button>
+          <button class="btn" id="seedBtn">New mock seed</button>
           <label class="sr" for="speedSel" style="position:absolute;left:-9999px">Playback speed</label>
           <select id="speedSel">
             <option value="8">0.5× speed</option>
@@ -369,23 +423,23 @@ details > div{margin-top:12px;display:grid;gap:10px}
     <!-- FIRST CONTACT -->
     <section data-id="contact">
       <h2>First contact: two fly brains meet</h2>
-      <p class="lede">Colonies don't only react to stars. They react to each other, through the same circuits.</p>
+      <p class="lede">A proposed extension would let colonies send each other signals through the same circuits. The recorded experiment uses environmental hazards.</p>
       <div class="loop">
         <svg viewBox="0 0 420 190" role="img" aria-label="Encounter loop: colony A's DNp09 rate becomes looming for colony B, A's MN9 becomes mild sugar for B, and B's response feeds back to A.">
           <defs>
             <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8d96b0"/></marker>
           </defs>
           <circle cx="70" cy="95" r="42" fill="rgba(79,214,232,.08)" stroke="#4fd6e8"/>
-          <text x="70" y="91" text-anchor="middle" fill="#e9edf8" font-family="Syne, sans-serif" font-weight="700" font-size="22">A</text>
-          <text x="70" y="112" text-anchor="middle" fill="#8d96b0" font-family="IBM Plex Mono, monospace" font-size="10">fly brain</text>
+          <text x="70" y="91" text-anchor="middle" fill="#e9edf8" style="font-family:var(--display)" font-weight="700" font-size="22">A</text>
+          <text x="70" y="112" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="10">fly brain</text>
           <circle cx="350" cy="95" r="42" fill="rgba(165,133,255,.08)" stroke="#a585ff"/>
-          <text x="350" y="91" text-anchor="middle" fill="#e9edf8" font-family="Syne, sans-serif" font-weight="700" font-size="22">B</text>
-          <text x="350" y="112" text-anchor="middle" fill="#8d96b0" font-family="IBM Plex Mono, monospace" font-size="10">fly brain</text>
+          <text x="350" y="91" text-anchor="middle" fill="#e9edf8" style="font-family:var(--display)" font-weight="700" font-size="22">B</text>
+          <text x="350" y="112" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="10">fly brain</text>
           <path d="M112,72 C180,30 240,30 308,72" fill="none" stroke="#8d96b0" marker-end="url(#ah)"/>
-          <text x="210" y="30" text-anchor="middle" fill="#ff5a4e" font-family="IBM Plex Mono, monospace" font-size="11">A's DNp09 → looming for B</text>
-          <text x="210" y="46" text-anchor="middle" fill="#f4b740" font-family="IBM Plex Mono, monospace" font-size="11">A's MN9 → mild sugar for B</text>
+          <text x="210" y="30" text-anchor="middle" fill="#ff5a4e" style="font-family:var(--mono)" font-size="11">A's DNp09 → looming for B</text>
+          <text x="210" y="46" text-anchor="middle" fill="#f4b740" style="font-family:var(--mono)" font-size="11">A's MN9 → mild sugar for B</text>
           <path d="M308,118 C240,160 180,160 112,118" fill="none" stroke="#8d96b0" marker-end="url(#ah)"/>
-          <text x="210" y="178" text-anchor="middle" fill="#8d96b0" font-family="IBM Plex Mono, monospace" font-size="11">B responds the same way · up to 3 rounds</text>
+          <text x="210" y="178" text-anchor="middle" fill="#8d96b0" style="font-family:var(--mono)" font-size="11">B responds the same way · up to 3 rounds</text>
         </svg>
       </div>
       <ol class="steps">
@@ -407,52 +461,23 @@ details > div{margin-top:12px;display:grid;gap:10px}
     <!-- LESIONS -->
     <section data-id="lesions">
       <h2>Which neurons decide whether a galaxy goes quiet?</h2>
-      <p class="lede">The lesion lab at galactic scale: silence one cell type at a time and see what changes.</p>
-      <p>We take every cell type within about 3 synaptic hops of the sugar, bitter and looming inputs and the four output neurons, a few hundred in all. Each one is silenced in turn, run through the same set of galaxies, and ranked by how much it changes the final count of living civilizations.</p>
-      <div class="block">
-        <h3>Brain variants</h3>
-        <div class="chips">
-          <span class="chip">Intact (reference)</span>
-          <span class="chip">Giant Fiber off</span>
-          <span class="chip">MDN off</span>
-          <span class="chip">Both off</span>
-          <span class="chip">Bitter-blind</span>
-          <span class="chip">Interneurons 50 / 20 / 5%</span>
-          <span class="chip">Shuffled wiring</span>
-        </div>
-        <p style="font-size:13.5px;color:var(--dim)">Inputs and outputs are never removed. Brain size stands for decision-making capacity, not population.</p>
-      </div>
-      <div class="block">
-        <h3>Top 10 cell types by effect on survival</h3>
-        <ol class="rank" id="rank"></ol>
-      </div>
+      <p class="lede">Compare the intact brain with Giant Fiber silenced, Giant Fiber and MDN silenced, or bitter-sensing neurons silenced.</p>
+      <p>The results panel reports survival for each variant under the same sequence of hazards.</p>
     </section>
 
     <!-- BASELINES -->
     <section data-id="baselines">
       <h2>Does the fly actually matter?</h2>
-      <p class="lede">The fly is a strange fixed filter, not an optimizer. So we compare it against simpler deciders on identical galaxies.</p>
-      <div class="ladder">
-        <div class="rung"><span class="n">01</span><div><b>Intact fly brain</b><small>The real connectome</small></div><span class="pill">Awaiting run</span></div>
-        <div class="rung"><span class="n">02</span><div><b>Hand-written rule</b><small>Same thresholds, no brain</small></div><span class="pill">Awaiting run</span></div>
-        <div class="rung"><span class="n">03</span><div><b>Small neural net</b><small>Fitted to the fly's own responses</small></div><span class="pill">Awaiting run</span></div>
-        <div class="rung"><span class="n">04</span><div><b>Shuffled wiring</b><small>Same connection counts, rewired at random</small></div><span class="pill">Awaiting run</span></div>
-      </div>
-      <div class="block">
-        <h3>Keeping it fair</h3>
-        <ol class="steps">
-          <li>Every variant gets the same star map and supernova schedule.</li>
-          <li>100+ galaxy seeds per variant, reported with error bars.</li>
-          <li>Sense-mapping gains swept ±50%. We only claim what survives the sweep.</li>
-          <li>Where the fly simply matches the hand rule, we say so.</li>
-        </ol>
-      </div>
+      <p class="lede">Each policy sees the same stars and hazards as the intact fly.</p>
+      <label>Signal gain <select id="gain"><option>0.8</option><option selected>1.0</option><option>1.2</option></select></label>
+      <canvas id="experimentChart" width="640" height="220" style="width:100%;height:auto" aria-label="Mean surviving colonies with standard error bars"></canvas>
+      <div class="block" id="experiment">Run the backend with a generated experiment to see measured results.</div>
     </section>
 
     <!-- HARDWARE -->
     <section data-id="hardware">
-      <h2>Wave a hand. The fly flees.</h2>
-      <p class="lede">An Arduino UNO Q turns real-world motion into looming input for the same brain that runs the galaxy.</p>
+      <h2>Try a colony scenario</h2>
+      <p class="lede">Adjust sugar, bitter and looming to see how the intact or escape-silenced brain responds.</p>
       <div class="console" aria-label="Console preview">
         <div class="leds" id="leds">
           <div class="led" data-n="MN9" style="--c:var(--sugar)"><i></i>MN9</div>
@@ -472,7 +497,7 @@ details > div{margin-top:12px;display:grid;gap:10px}
           <div class="slider" style="--c:var(--bitter)"><label for="inBitter">Bitter</label><input type="range" id="inBitter" min="0" max="1" step="0.05" value="0"><b id="vBitter">0.00</b></div>
           <div class="slider" style="--c:var(--loom)"><label for="inLoom">Looming</label><input type="range" id="inLoom" min="0" max="1" step="0.05" value="0"><b id="vLoom">0.00</b></div>
           <label class="check-row"><input type="checkbox" id="silGF"> Silence the Giant Fiber</label>
-          <div><button class="btn primary" id="runFly">Run the fly brain</button></div>
+          <div><button class="btn primary" id="runFly">Run the fly brain</button> <button class="btn" id="previewFly">Look up cached response</button></div>
           <div class="fly-out" id="flyOut"></div>
         </div>
       </div>
@@ -523,13 +548,14 @@ const hexA = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n>>1
 const PLACES = [
   {id:'question', label:'The Question',  blurb:'Why is the galaxy so quiet?',      r:.62, a:2.4,  size:13, kind:'star',   c:['#fff6dc','#f4b740']},
   {id:'brain',    label:'The Fly Brain', blurb:'138k neurons behind every choice', r:.47, a:4.15, size:12, kind:'ring',   c:['#ffd6ea','#c4508a']},
-  {id:'demo',     label:'Live Demo',     blurb:'Three galaxies, one seed',         r:0,   a:0,    size:20, kind:'core',   c:['#ffffff','#9fd8ff']},
+  {id:'demo',     label:'Live Demo',     blurb:'One map, six policies',         r:0,   a:0,    size:20, kind:'core',   c:['#ffffff','#9fd8ff']},
   {id:'contact',  label:'First Contact', blurb:'Two fly brains meet',              r:.75, a:5.42, size:9,  kind:'binary', c:['#dcfbff','#4fd6e8']},
   {id:'lesions',  label:'Lesion Screen', blurb:'Which neurons decide it',          r:.36, a:1.0,  size:11, kind:'planet', c:['#ffd3c8','#ff5a4e']},
   {id:'baselines',label:'Baselines',     blurb:'Does the fly matter?',             r:.84, a:3.75, size:10, kind:'planet', c:['#eef3ff','#7d93c9']},
-  {id:'hardware', label:'Hardware',      blurb:'Wave a hand, the fly flees',       r:.70, a:.22,  size:10, kind:'moon',   c:['#f0eadf','#a39582']},
+  {id:'hardware', label:'Fly Console',   blurb:'Try a colony scenario',       r:.70, a:.22,  size:10, kind:'moon',   c:['#f0eadf','#a39582']},
   {id:'team',     label:'The Crew',      blurb:'Who built this',                   r:.86, a:4.85, size:8,  kind:'planet', c:['#dcffe6','#3fae74']}
 ];
+const HOME_SECTIONS = ['brain', 'demo', 'baselines', 'hardware'];
 const ORDER = ['question','brain','demo','contact','lesions','baselines','hardware','team'];
 const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
 
@@ -539,6 +565,7 @@ ORDER.forEach(id => {
   const p = byId[id], b = document.createElement('button');
   b.innerHTML = `<span class="dot" style="background:${p.c[1]}"></span>${p.label}`;
   b.dataset.id = id;
+  if (!HOME_SECTIONS.includes(id)) b.classList.add('secondary-place');
   b.addEventListener('click', () => go(id));
   dock.appendChild(b);
 });
@@ -715,6 +742,8 @@ function drawSky(now){
   g.globalCompositeOperation = 'lighter';
   drawSet(buckets, zs);
 
+  if (!current && !document.body.classList.contains('star-map-open')) return;
+
   /* orbits */
   g.globalCompositeOperation = 'source-over';
   g.setLineDash([2, 6]); g.lineWidth = 1;
@@ -840,6 +869,7 @@ function open(id){
 }
 function close(){
   current = null;
+  document.body.classList.remove('star-map-open');
   document.body.classList.remove('panel-open');
   panel.classList.remove('open', 'wide');
   dock.querySelectorAll('button').forEach(b => b.setAttribute('aria-current', false));
@@ -849,12 +879,10 @@ function close(){
 }
 addEventListener('hashchange', () => { const id = location.hash.slice(1); id && byId[id] ? open(id) : close(); });
 $('#closeBtn').addEventListener('click', close);
-addEventListener('keydown', e => { if (e.key === 'Escape' && current) close(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && (current || document.body.classList.contains('star-map-open'))) close(); });
 $('#prevBtn').addEventListener('click', () => { const i = ORDER.indexOf(current.id); go(ORDER[(i + ORDER.length - 1) % ORDER.length]); });
 $('#nextBtn').addEventListener('click', () => { const i = ORDER.indexOf(current.id); go(ORDER[(i + 1) % ORDER.length]); });
 
-/* lesion rank placeholder */
-$('#rank').innerHTML = Array.from({length:10}, (_, i) => `<li><span>${String(i+1).padStart(2,'0')}</span><span>Cell type awaiting screen</span><span class="bar" style="width:${100 - i*8}%"></span></li>`).join('');
 
 /* hardware preview */
 const hw = (() => {
@@ -909,10 +937,15 @@ renderSanity(BUNDLED_SANITY, 'From results/sanity_intact_cpu.json');
 const VARIANT_INFO = {
   intact:   {label:'Intact fly',    note:'Real wiring',              color:'#f2f4ff'},
   fearless: {label:'Fearless',      note:'Giant Fiber silenced',     color:'#ff9f5a'},
-  hungry:   {label:'Always hungry', note:'Bitter neurons silenced',  color:'#c9a4ff'}
+  hungry:   {label:'Always hungry', note:'Bitter neurons silenced',  color:'#acbedc'},
+  fearless_no_retreat: {label:'Fearless, no retreat', note:'Giant Fiber and MDN silenced', color:'#ffcf85'},
+  shuffle: {label:'Degree-preserving shuffle', note:'Interneuron targets rewired', color:'#78d9ae'},
+  threshold: {label:'Threshold rule', note:'Hand-written decisions', color:'#e7eaf0'}
 };
 const EXTRA_COLORS = ['#7fe3c1','#ffd36e','#8fb8ff','#ff8fb1'];
-const ACTION_COLOR = {settle:'#f4b740', expand:'#4fd6e8', retreat:'#a585ff', flee:'#ff5a4e'};
+const tokens = getComputedStyle(document.documentElement);
+const ACTION_COLOR = Object.fromEntries(Object.entries({settle:'--sugar', expand:'--fwd', retreat:'--bitter', flee:'--loom'})
+  .map(([action, token]) => [action, tokens.getPropertyValue(token).trim()]));
 
 function mulberry32(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
@@ -1049,6 +1082,7 @@ const demo = (() => {
     series = {};
     for (const v of variants) series[v] = run.frames.map(f => ((f.galaxies[v] || {}).colonies || []).filter(c => c.action !== 'flee').length);
     buildCards();
+    $('#seedBtn').hidden = Boolean(sourceName);
     frame = 0; scrub.max = run.frames.length - 1; scrub.value = 0;
     $('#epochMax').textContent = run.frames.length - 1;
     const first = (run.frames[0].galaxies[variants[0]] || {}).colonies || [];
@@ -1069,7 +1103,7 @@ const demo = (() => {
 
   function buildCards(){
     grid.innerHTML = '';
-    grid.style.setProperty('--cols', Math.min(3, run.meta.variants.length));
+    grid.style.setProperty('--cols', Math.min(2, run.meta.variants.length));
     cards = run.meta.variants.map((v, i) => {
       const info = VARIANT_INFO[v] || {label:v, note:''};
       const el = document.createElement('div');
@@ -1275,6 +1309,19 @@ const backend = (() => {
     const pct = Math.max(0, Math.min(1, v/200))*100;
     return `<div class="meter" style="--c:${col}"><span>${label}</span><div class="track"><div class="fill" style="width:${pct}%"></div></div><b>${Math.round(v)} Hz</b></div>`;
   }
+  $('#previewFly').addEventListener('click', async () => {
+    const body = {sugar:+$('#inSugar').value, bitter:+$('#inBitter').value, looming:+$('#inLoom').value,
+                  silence:$('#silGF').checked ? ['escape'] : []};
+    try {
+      const r = await fetch('api/preview', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || r.status);
+      out.textContent = 'Cached estimate · escape probability ' + Math.round(100 * d.escape_probability) + '% · ' +
+        Object.entries(d.rates).map(([name,hz]) => name + ' ' + hz.toFixed(1) + ' Hz').join(' · ');
+    } catch (error) {
+      out.textContent = error.message;
+    }
+  });
   async function runFly(){
     if (!up) return;
     const body = {sugar:+$('#inSugar').value, bitter:+$('#inBitter').value, looming:+$('#inLoom').value, brains:4,
@@ -1322,15 +1369,94 @@ const backend = (() => {
     $('#realFlyNote').textContent = 'Runs the actual connectome on this backend: 4 brains, 200 ms each, inputs scaled to 0–200 Hz.';
     try {
       const s = await get('api/sanity');
+      for (const name of Object.keys(heroTrials)){
+        const trial = s.result.conditions[name];
+        if (trial) heroTrials[name] = {
+          feed:trial.output_rate_hz_mean.feed, escapes:trial.giant_fibre_spiked, total:s.result.replicates
+        };
+      }
       renderSanity({time:s.run.time_utc, device:s.run.device, commit:(s.run.git_commit || '').slice(0, 7), replicates:s.result.replicates, checks:s.result.checks}, `From results/${s.file}`);
     } catch(e){}
     if (h.has_frames){
       try { demo.loadData(await get('api/frames', 30000), 'galaxy/frames.json'); } catch(e){}
     }
+    try { renderExperiment(await get('api/experiment')); } catch(e){}
     socket();
   }
   return {connect};
 })();
+
+function renderExperiment(data){
+  const pct = n => (100 * n).toFixed(1) + '%';
+  const map = data.escape_response_at_zero_bitter;
+  const headings = map.map((_, i) => '<th>' + Math.round(200 * i / (map.length - 1)) + ' Hz</th>');
+  $('#escapeMap').innerHTML = '<table><thead><tr><th>Sugar / looming</th>' + headings.join('') +
+    '</tr></thead><tbody>' + map.map((row, i) => '<tr>' + headings[i] + row.map(p =>
+      '<td style="padding:6px;background:rgba(255,90,78,' + (p * .45) + ')">' + pct(p) + '</td>').join('') +
+    '</tr>').join('') + '</tbody></table>';
+
+  function update(){
+    const gain = $('#gain').value;
+    const policies = Object.entries(data.gains[gain]);
+    const chart = $('#experimentChart'), ctx = chart.getContext('2d');
+    ctx.clearRect(0, 0, chart.width, chart.height);
+    ctx.font = '14px system-ui';
+    const max = Math.max(1, ...Object.values(data.gains).flatMap(policies =>
+      Object.values(policies).map(r => r.survivors.mean + (r.survivors.se || 0))));
+    const x = n => 200 + 405 * n / max;
+    policies.forEach(([name,r], i) => {
+      const y = 23 + i * 34, {mean,se} = r.survivors, error = se || 0;
+      ctx.fillStyle = '#e9edf8';
+      ctx.fillText(VARIANT_INFO[name].label, 0, y + 5, 190);
+      ctx.fillStyle = VARIANT_INFO[name].color;
+      ctx.fillRect(x(0), y - 7, x(mean) - x(0), 14);
+      ctx.strokeStyle = '#fff';
+      ctx.beginPath();
+      ctx.moveTo(x(mean - error), y);
+      ctx.lineTo(x(mean + error), y);
+      for (const bound of [mean - error, mean + error]){
+        ctx.moveTo(x(bound), y - 5);
+        ctx.lineTo(x(bound), y + 5);
+      }
+      ctx.stroke();
+    });
+    const stat = ({mean,se}) => mean.toFixed(1) + (se === null ? '' : ' ± ' + se.toFixed(1));
+    $('#experiment').innerHTML = '<p>Mean ± standard error across ' + data.config.seeds +
+      ' matched galaxy seeds. The detector counts nearby colonies at 50% population or higher.</p>' +
+      '<div style="overflow:auto"><table style="width:100%;text-align:left"><thead><tr>' +
+      '<th>Policy</th><th>Survivors</th><th>Detected</th><th>Extinct</th><th>Change vs. intact</th>' +
+      '</tr></thead><tbody>' + policies.map(([name,r]) => {
+        const delta = data.paired_survivor_difference_from_intact[gain][name];
+        return '<tr><th scope="row">' + VARIANT_INFO[name].label + '</th><td>' + stat(r.survivors) +
+          '</td><td>' + stat(r.detectable_colonies) + '</td><td>' + pct(r.extinction_fraction.mean) +
+          '</td><td>' + (delta ? stat(delta) : 'Reference') + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  $('#gain').addEventListener('change', update);
+  update();
+}
+
+$('#heroDemo').addEventListener('click', () => go('demo'));
+$('#heroMap').addEventListener('click', () => document.body.classList.add('star-map-open'));
+$('#mapHome').addEventListener('click', close);
+
+let heroTrials = {
+  sugar: {feed:66.7, escapes:0, total:6},
+  'sugar+bitter': {feed:0.4, escapes:0, total:6},
+  looming: {feed:0, escapes:6, total:6}
+};
+for (const button of document.querySelectorAll('[data-stimulus]')){
+  button.addEventListener('click', () => {
+    document.querySelectorAll('[data-stimulus]').forEach(el => el.setAttribute('aria-pressed', el === button));
+    const trial = heroTrials[button.dataset.stimulus];
+    const specimen = $('#specimenFrame');
+    specimen.dataset.active = 'false';
+    specimen.getBoundingClientRect();
+    specimen.dataset.active = String(trial.feed > heroTrials.sugar.feed * .5 || trial.escapes > 0);
+    $('#heroResponse').textContent = 'Feeding neuron ' + trial.feed.toFixed(1) + ' Hz · Escape in ' +
+      trial.escapes + ' of ' + trial.total + ' trials';
+  });
+}
 
 /* boot */
 backend.connect();

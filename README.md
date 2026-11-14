@@ -2,18 +2,71 @@
 
 Real fruit fly connectomes, coupled across a simulated galaxy. Each colony decides what to do with a fly brain: its world tastes good, tastes bad, or something looms, and the fly's wiring answers eat, back off, or flee.
 
-## Status
+## Run the demo
 
-| Phase | What | State |
-|---|---|---|
-| 0 | Data, neuron IDs, repo layout | Done |
-| 1 | Batched, maskable fly-brain engine with sanity checks | Done on CPU; GPU run and benchmark pending (`fly_brain_gpu.ipynb`) |
-| 2 | Galaxy → senses, neurons → decisions | Not started |
-| 3 | Brain variants and response tables | Not started |
-| 4 | Lesion screen | Not started |
-| 5 | Galaxy simulation | Not started |
-| 6 | Experiments and baselines | Not started |
-| 7 | Visuals and pitch | Not started |
+From this directory, install `requirements.txt` in a Python virtual environment, then start the server.
+
+```bash
+python -m viz.server
+```
+
+Open http://localhost:8000. **Live Demo** plays a recorded run from the cached fly responses.
+**The Fly Brain** shows the escape response map. **Baselines** compares survival and
+detectability at three signal gains. The playback and cached lookup use the supplied
+artifacts. The live console also needs the connectome download.
+
+## Reproduce the experiments
+
+```bash
+python scripts/fetch_data.py
+python -m brain.test_equivalence
+python -m brain.sanity
+python -m galaxy.responses
+python -m galaxy.simulate
+python -m viz.frames
+```
+
+### Run the response table on Colab
+
+Upload a copy of this checkout or clone a branch that contains the galaxy code.
+Select a GPU runtime, install `requirements.txt`, then run these commands from
+the repo root (prefix shell commands with `!` in a notebook cell).
+
+```bash
+python scripts/fetch_data.py
+python -m galaxy.responses --device cuda --batch 64
+```
+
+Download `tables/responses.npz` and put it in the same directory of your local
+checkout. Run `python -m galaxy.simulate` locally to refresh the results and
+playback. The browser demo itself runs locally and needs no GPU.
+
+Use `python -m galaxy.responses --device cuda` on a GPU. The default cache runs three
+independent replicates at each of 216 input combinations for each of five brain
+variants. Each decision starts from rest. The galaxy samples the neighboring grid
+points and a stored replicate. It uses the same fixed rate normalization from the
+intact trials for every brain variant. The threshold policy sees the same scaled
+inputs and uses the same downstream colony rules.
+
+The experiment compares the intact brain, Giant Fibre silenced, Giant Fibre and
+MDN silenced, bitter inputs silenced, a degree-preserving shuffle, and a threshold
+policy. Run the same six checks on a variant with `python -m brain.sanity --variant VARIANT`.
+The shuffled control preserves incoming and outgoing edge counts by permuting
+interneuron targets with equal incoming degree. It loses the sugar-to-MN9 response
+in the recorded sanity run, which limits how broadly to interpret its survival result.
+The intact GPU sanity checks and benchmark are in `results/`.
+
+Galaxy assumptions are synthetic. Each run has 64 stars and 48 epochs. Scheduled
+supernovae damage stars within 0.16 units of the source in a unit-radius disk.
+The observer at (0.5, 0) detects colonies within 0.45 units that have reached at
+least half their population capacity. We compare 50 matched maps per gain at
+0.8×, 1.0× and 1.2×. The report saves means, standard errors, and paired survival
+differences relative to the intact brain. Its uncertainty reflects galaxy seeds
+with a fixed response table and one shuffled wiring realization.
+
+The first-contact storyboard and hardware panel are previews. The wider lesion
+screen, network thinning, small-network baseline and hardware integration are
+follow-up work.
 
 ## Layout
 
@@ -23,9 +76,9 @@ Real fruit fly connectomes, coupled across a simulated galaxy. Each colony decid
 | `data/` | Small committed inputs: neuron groups, the Brian2 equivalence case |
 | `scripts/` | Data download, neuron-group builder, Brian2 reference runs |
 | `results/` | Result tables, each saved with the configuration and seed that produced it |
-| `tables/` | Cached brain response tables (Phase 3) |
-| `galaxy/` | Galaxy simulation (Phase 5) |
-| `viz/` | three.js playback (Phase 7) |
+| `tables/` | Cached whole-brain responses |
+| `galaxy/` | Response-table generator, paired galaxy experiments and recorded playback |
+| `viz/` | Browser playback and local API |
 | `analysis/` | Figures |
 | `external/` | Downloaded third-party data. Not committed |
 

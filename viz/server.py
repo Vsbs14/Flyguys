@@ -120,16 +120,41 @@ async def decide(req: DecideRequest):
             raise HTTPException(400, str(e))
 
 
+@app.post("/api/preview")
+def preview(req: DecideRequest):
+    """Estimate output rates from the intact or escape-silenced cached trials."""
+    import numpy as np
+    from itertools import product
+    from galaxy.responses import TABLE
+
+    if req.silence not in ([], ["escape"]):
+        raise HTTPException(400, "the preview supports intact or escape-silenced brains")
+    if not TABLE.exists():
+        raise HTTPException(404, "run python -m galaxy.responses to build the cache")
+    with np.load(TABLE) as cache:
+        table = cache["fearless" if req.silence else "intact"]
+    coordinates = np.asarray([req.sugar, req.bitter, req.looming]) * (len(table) - 1)
+    lower = coordinates.astype(int)
+    fraction = coordinates - lower
+    estimate = np.zeros(5)
+    for corner in product((0, 1), repeat=3):
+        weight = np.prod(np.where(corner, fraction, 1 - fraction))
+        if weight:
+            estimate += weight * table[tuple(lower + corner)].mean(axis=0)
+    return {"rates": {name: float(rate) for name, rate in zip(OUTPUT_NAMES.values(), estimate)},
+            "escape_probability": float(estimate[4])}
+
+
 # ---------------------------------------------------------------- results and frames
 @app.get("/api/health")
 def health():
     return {"ok": True, "device": DEVICE, "brain_loaded": _engine is not None,
-            "has_frames": FRAMES.exists(), "has_sanity": any(RESULTS.glob("sanity_*.json"))}
+            "has_frames": FRAMES.exists(), "has_sanity": any(RESULTS.glob("sanity_intact_*.json"))}
 
 
 @app.get("/api/sanity")
 def sanity():
-    files = sorted(RESULTS.glob("sanity_*.json"), key=lambda p: p.stat().st_mtime)
+    files = sorted(RESULTS.glob("sanity_intact_*.json"), key=lambda p: p.stat().st_mtime)
     if not files:
         raise HTTPException(404, "no sanity results yet; run python -m brain.sanity")
     doc = json.loads(files[-1].read_text(encoding="utf8"))
@@ -142,6 +167,14 @@ def frames():
     if not FRAMES.exists():
         raise HTTPException(404, "galaxy/frames.json not written yet")
     return FileResponse(FRAMES, media_type="application/json")
+
+
+@app.get("/api/experiment")
+def experiment():
+    path = RESULTS / "galaxy_experiment.json"
+    if not path.exists():
+        raise HTTPException(404, "run python -m galaxy.simulate")
+    return FileResponse(path, media_type="application/json")
 
 
 # ---------------------------------------------------------------- live messages
