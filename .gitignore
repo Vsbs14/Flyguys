@@ -228,3 +228,5 @@ external/
 cloudvolume-secrets/
 cave-secret*.json
 .modal.toml
+# Code bundle for uploading to Colab while the repo is private
+flyguys_code.zip
